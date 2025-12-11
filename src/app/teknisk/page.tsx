@@ -20,13 +20,13 @@ export default function TechnicalPage() {
         />
 
         <header className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+          <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
             Teknisk
           </p>
-          <h1 className="text-3xl font-semibold text-neutral-900">
+          <h1 className="text-3xl font-bold text-neutral-950">
             AI-basert DMX-automasjon, bygget for lav latenstid og forutsigbarhet
           </h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-700">
+          <p className="max-w-3xl text-base leading-7 text-neutral-800">
             Y-Link er en musikkdrevet lysplattform. AI analyserer musikkfiler og genererer
             automatiserte cues som spiller ut med stabil timing. Dedikert kontroller-hardware
             sikrer lave forsinkelser, mens programvaren orkestrerer DMX-strømmen pålitelig.
@@ -61,18 +61,18 @@ export default function TechnicalPage() {
               className="space-y-2 rounded-2xl border border-neutral-200/80 bg-gradient-to-br from-white via-white to-neutral-50 px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]"
             >
               <h2 className="text-base font-semibold text-neutral-900">{item.title}</h2>
-              <p className="text-sm leading-6 text-neutral-700">{item.body}</p>
+              <p className="text-sm leading-6 text-neutral-800">{item.body}</p>
             </div>
           ))}
         </SectionCard>
 
         <SectionCard className="space-y-4">
           <h2 className="text-xl font-semibold text-neutral-900">ALPINE som ryggrad</h2>
-          <p className="text-base leading-7 text-neutral-700">
+          <p className="text-base leading-7 text-neutral-800">
             ALPINE er kommunikasjonssjiktet i Y-Link. Det er fokusert på autentisering og stabil
             realtidsleveranse slik at DMX-signaler når frem presist.
           </p>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-neutral-800">
             Vil du være tidlig bruker? Meld interesse på{" "}
             <Link href="/" className="underline underline-offset-4 hover:text-neutral-800">
               forsiden

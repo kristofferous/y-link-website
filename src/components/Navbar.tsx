@@ -20,11 +20,11 @@ export function Navbar() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
         <Link
           href="/"
-          className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-700"
+          className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-900"
         >
           Y-Link
         </Link>
-        <nav className="flex items-center gap-3 text-sm text-neutral-700">
+        <nav className="flex items-center gap-3 text-sm text-neutral-900">
           {links.map((link) => {
             const isActive =
               link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
@@ -36,7 +36,7 @@ export function Navbar() {
                   "rounded-full px-3.5 py-2 font-medium transition",
                   isActive
                     ? "bg-neutral-900 text-white shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)]"
-                    : "text-neutral-700 hover:bg-neutral-200/70",
+                    : "text-neutral-900 hover:bg-neutral-200/70",
                 )}
               >
                 {link.label}

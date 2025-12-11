@@ -11,18 +11,18 @@ export default function Home() {
         <header className="space-y-6">
           <Breadcrumbs items={[{ label: "Hjem" }]} />
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center rounded-full bg-white/80 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-neutral-600 ring-1 ring-neutral-200">
+            <span className="inline-flex items-center rounded-full bg-white/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-800 ring-1 ring-neutral-200">
               Y-Link
             </span>
-            <span className="text-sm text-neutral-500">
+            <span className="text-sm text-neutral-800">
               Presisjon. Forutsigbarhet. Fremdrift.
             </span>
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
+            <h1 className="text-4xl font-bold leading-tight text-neutral-950 sm:text-5xl">
               AI-drevet DMX-styring med stabilitet som standard.
             </h1>
-            <p className="max-w-3xl text-lg leading-8 text-neutral-700">
+            <p className="max-w-3xl text-lg leading-8 text-neutral-800">
               Y-Link kombinerer dedikert kontroller-hardware med et moderne
               operativt lag for stabil, lav-latens DMX-styring. Systemet er
               designet for fullautomatisk lyskjøring basert på musikkfiler, der
@@ -33,7 +33,7 @@ export default function Home() {
 
         <SectionCard className="space-y-10">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-xl font-semibold">Hva som skiller Y-Link</h2>
+            <h2 className="text-xl font-bold text-neutral-950">Hva som skiller Y-Link</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-neutral-200 to-transparent" />
           </div>
           <div className="grid gap-6 md:grid-cols-2">
@@ -66,7 +66,7 @@ export default function Home() {
                 <h3 className="text-base font-semibold text-neutral-900">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-6 text-neutral-700">{item.body}</p>
+                <p className="text-sm leading-6 text-neutral-800">{item.body}</p>
               </div>
             ))}
           </div>
@@ -74,12 +74,12 @@ export default function Home() {
 
         <section className="space-y-10">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-xl font-semibold">Intelligente arbeidsflyter</h2>
+            <h2 className="text-xl font-bold text-neutral-950">Intelligente arbeidsflyter</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-neutral-200 to-transparent" />
           </div>
           <SectionCard className="grid gap-6 md:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-4">
-              <p className="text-base leading-7 text-neutral-700">
+              <p className="text-base leading-7 text-neutral-800">
                 Y-Link utforsker fullautomatisert lysdesign basert på musikkfiler,
                 der AI analyserer tempo, struktur og dynamikk for å levere
                 synkronisert DMX uten manuell innprogrammering.
@@ -93,7 +93,7 @@ export default function Home() {
                 ].map((line) => (
                   <div
                     key={line}
-                    className="rounded-xl border border-neutral-200/80 bg-neutral-50 px-3 py-2 text-sm text-neutral-700"
+                    className="rounded-xl border border-neutral-200/80 bg-neutral-50 px-3 py-2 text-sm text-neutral-800"
                   >
                     {line}
                   </div>
@@ -104,13 +104,13 @@ export default function Home() {
               <h3 className="text-base font-semibold text-neutral-900">
                 Modernisert operatørverktøy
               </h3>
-              <p className="text-sm leading-6 text-neutral-700">
+              <p className="text-sm leading-6 text-neutral-800">
                 Moderne arbeidsflate som prioriterer hastighet og tydelighet.
                 Fokus på sikre handlinger, raske revisjoner og lav kognitiv
                 belastning når tempoet øker. Full automasjon betyr færre manuelle
                 grep, men tydelige kontroller når du vil justere.
               </p>
-              <p className="text-sm leading-6 text-neutral-700">
+              <p className="text-sm leading-6 text-neutral-800">
                 AI-assistert støtte brukes for å verifisere, kalibrere og sikre
                 kvalitet. Operatøren kan overstyre ved behov, men målet er trygg
                 autonom drift.
@@ -122,8 +122,8 @@ export default function Home() {
         <SectionCard className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
           <div className="space-y-8">
             <div className="space-y-3">
-              <h2 className="text-xl font-semibold">Hvem det er for</h2>
-              <ul className="space-y-2 text-base leading-7 text-neutral-700">
+              <h2 className="text-xl font-bold text-neutral-950">Hvem det er for</h2>
+              <ul className="space-y-2 text-base leading-7 text-neutral-800">
                 <li>- scener og konsertsaler</li>
                 <li>- live-arrangementer</li>
                 <li>- tekniske operatører</li>
@@ -132,13 +132,13 @@ export default function Home() {
             </div>
 
             <div className="space-y-3">
-              <h2 className="text-xl font-semibold">ALPINE</h2>
-              <p className="text-base leading-7 text-neutral-700">
+              <h2 className="text-xl font-bold text-neutral-950">ALPINE</h2>
+              <p className="text-base leading-7 text-neutral-800">
                 ALPINE er kommunikasjonsryggraden i Y-Link. Den er laget for
                 streng autentisering og forutsigbar sanntidsoppførsel, slik at
                 styresignaler leveres presist uten støy eller usikkerhet.
               </p>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-800">
                 Les mer om hvordan vi håndterer data i{" "}
                 <Link
                   href="/privacy"
@@ -151,10 +151,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200">
+            <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200">
             <div className="mb-6 space-y-2">
-              <h3 className="text-lg font-semibold">Meld interesse</h3>
-              <p className="text-sm leading-6 text-neutral-700">
+              <h3 className="text-lg font-semibold text-neutral-950">Meld interesse</h3>
+              <p className="text-sm leading-6 text-neutral-900">
                 Vi samler et begrenset antall tidlige brukere til pilot,
                 forhåndsbestilling og dialog. Ingen unødvendig støy.
               </p>

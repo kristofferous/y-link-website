@@ -23,7 +23,7 @@ export function InterestForm({ defaultInterest }: InterestFormProps) {
         <div className="space-y-2">
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-neutral-700"
+            className="block text-sm font-medium text-neutral-900"
             >
             Navn (valgfritt)
           </label>
@@ -40,7 +40,7 @@ export function InterestForm({ defaultInterest }: InterestFormProps) {
         <div className="space-y-2">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-neutral-700"
+            className="block text-sm font-medium text-neutral-900"
           >
             E-post
           </label>
@@ -58,7 +58,7 @@ export function InterestForm({ defaultInterest }: InterestFormProps) {
         <div className="space-y-2">
           <label
             htmlFor="interest_type"
-            className="block text-sm font-medium text-neutral-700"
+            className="block text-sm font-medium text-neutral-900"
           >
             Hva slags interesse?
           </label>
@@ -99,7 +99,7 @@ export function InterestForm({ defaultInterest }: InterestFormProps) {
             {state.message}
           </p>
         ) : null}
-        <p className="text-xs text-neutral-600">
+        <p className="text-xs text-neutral-800">
           Du kan få relevante oppdateringer om Y-Link. Du kan når som helst
           avslutte abonnementet via lenke i e-postene.
         </p>

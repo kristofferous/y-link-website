@@ -7,8 +7,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-50 text-neutral-900">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,#e9edf7_0,#e9edf7_30%,transparent_45%),radial-gradient(circle_at_80%_0%,#eef0ff_0,#eef0ff_25%,transparent_45%),radial-gradient(circle_at_50%_90%,#f1f5fb_0,#f1f5fb_25%,transparent_45%)]" />
+    <main className="relative">
       <div className="relative mx-auto max-w-4xl px-6 py-16">
         <div className="mb-6">
           <Breadcrumbs
@@ -20,13 +19,13 @@ export default function PrivacyPage() {
         </div>
         <div className="rounded-3xl bg-white/85 p-10 shadow-sm ring-1 ring-neutral-200 backdrop-blur">
           <header className="space-y-3">
-            <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+            <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
               Personvern
             </p>
-            <h1 className="text-3xl font-semibold">Hvordan vi behandler data</h1>
+            <h1 className="text-3xl font-bold text-neutral-950">Hvordan vi behandler data</h1>
           </header>
 
-          <div className="mt-8 space-y-6 text-base leading-7 text-neutral-700">
+          <div className="mt-8 space-y-6 text-base leading-7 text-neutral-800">
             <p>
               Vi samler navn (valgfritt), e-post og hvilken type interesse du har
               for Y-Link. Informasjonen brukes for å dele oppdateringer om Y-Link,

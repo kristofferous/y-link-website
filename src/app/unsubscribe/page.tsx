@@ -75,10 +75,10 @@ export default async function UnsubscribePage({
       <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Avmelding" }]} />
       <SectionCard className="space-y-6">
         <header className="space-y-2">
-          <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+          <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
             Avmelding
           </p>
-          <h1 className="text-3xl font-semibold">E-postpreferanser</h1>
+          <h1 className="text-3xl font-bold text-neutral-950">E-postpreferanser</h1>
         </header>
 
         <div
@@ -91,7 +91,7 @@ export default async function UnsubscribePage({
           {result.message}
         </div>
 
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-neutral-800">
           Hvis du avmeldte ved en feil, kan du registrere interessen på nytt via hovedsiden.
         </p>
       </SectionCard>

@@ -12,11 +12,8 @@ type BreadcrumbsProps = {
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
-    <nav
-      aria-label="Brødsmulesti"
-      className={className}
-    >
-      <ol className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500">
+    <nav aria-label="Brødsmulesti" className={className}>
+      <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-800">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
@@ -24,14 +21,14 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="transition hover:text-neutral-800"
+                  className="transition hover:text-neutral-900"
                 >
                   {item.label}
                 </Link>
               ) : (
-                <span className="text-neutral-700">{item.label}</span>
+                <span className="text-neutral-900">{item.label}</span>
               )}
-              {!isLast ? <span className="text-neutral-300">›</span> : null}
+              {!isLast ? <span className="text-neutral-500">{">"}</span> : null}
             </li>
           );
         })}
