@@ -74,13 +74,14 @@ export function InterestSignup({
   useEffect(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
+    const getParam = (key: string) => url.searchParams.get(key) ?? undefined;
     setTracking({
-      utm_source: url.searchParams.get("utm_source") ?? url.searchParams.get("utm_source"),
-      utm_medium: url.searchParams.get("utm_medium") ?? url.searchParams.get("utm_medium"),
-      utm_campaign: url.searchParams.get("utm_campaign") ?? url.searchParams.get("utm_campaign"),
-      utm_term: url.searchParams.get("utm_term") ?? url.searchParams.get("utm_term"),
-      utm_content: url.searchParams.get("utm_content") ?? url.searchParams.get("utm_content"),
-      referrer: document.referrer,
+      utm_source: getParam("utm_source"),
+      utm_medium: getParam("utm_medium"),
+      utm_campaign: getParam("utm_campaign"),
+      utm_term: getParam("utm_term"),
+      utm_content: getParam("utm_content"),
+      referrer: document.referrer || undefined,
       pathname: window.location.pathname,
       timestamp: new Date().toISOString(),
     });
