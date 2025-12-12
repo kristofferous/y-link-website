@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { PageShell } from "@/components/PageShell";
+import { SectionCard } from "@/components/SectionCard";
 
-export const metadata = {
-  title: "Personvern | Y-Link",
-  description: "Kort personvernnotat for interessenter av Y-Link.",
+export const metadata: Metadata = {
+  title: "Personvern",
+  description: "Hvordan Y-Link håndterer kontaktdata for piloter, forhåndsinteresse og oppdateringer.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {
@@ -17,30 +23,30 @@ export default function PrivacyPage() {
             ]}
           />
         </div>
-        <div className="rounded-3xl bg-white/85 p-10 shadow-sm ring-1 ring-neutral-200 backdrop-blur">
+        <SectionCard>
           <header className="space-y-3">
-            <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
-              Personvern
-            </p>
-            <h1 className="text-3xl font-bold text-neutral-950">Hvordan vi behandler data</h1>
+            <p className="label-text text-sm text-neutral-800">Personvern</p>
+            <h1 className="text-3xl font-bold text-neutral-950">Slik håndterer vi data</h1>
           </header>
 
           <div className="mt-8 space-y-6 text-base leading-7 text-neutral-800">
             <p>
-              Vi samler navn (valgfritt), e-post og hvilken type interesse du har
-              for Y-Link. Informasjonen brukes for å dele oppdateringer om Y-Link,
-              invitere til piloter eller følge opp mulig forhåndsbestilling.
+              Vi samler navn (valgfritt), e-post og valgt interesse slik at vi kan sende Y-Link-oppdateringer, koordinere
+              pilottilgang eller følge opp forhåndsinteresse.
             </p>
             <p>
-              Data lagres sikkert i Supabase. Hver e-post kan inneholde en
-              avmeldingslenke som lar deg avslutte abonnementet umiddelbart.
+              Data lagres sikkert i Supabase. E-poster inneholder en avmeldingslenke som stopper videre kommunikasjon
+              umiddelbart. Vi selger eller deler ikke kontaktinformasjon med tredjeparter.
             </p>
             <p>
-              Ønsker du å få dataene dine fjernet, kan du kontakte oss så sletter
-              vi registreringen din.
+              For å slette data, send en e-post til{" "}
+              <a href="mailto:hello@y-link.no" className="underline underline-offset-4">
+                hello@y-link.no
+              </a>{" "}
+              så fjerner vi oppføringen.
             </p>
           </div>
-        </div>
+        </SectionCard>
       </div>
     </main>
   );

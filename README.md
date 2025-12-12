@@ -5,6 +5,7 @@ Legg til følgende i `.env.local`:
 ```
 SUPABASE_URL=<supabase prosjekt-url>
 SUPABASE_SERVICE_ROLE_KEY=<service role key>
+NEXT_PUBLIC_SITE_URL=https://y-link.no
 ```
 
 ## Dataflyt og avmelding

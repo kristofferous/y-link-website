@@ -14,7 +14,7 @@ function normalizeEmail(value: string | null): string {
   return (value ?? "").trim().toLowerCase();
 }
 
-function normalizeName(value: string | null): string | null {
+function normalizeString(value: string | null): string | null {
   const trimmed = (value ?? "").trim();
   return trimmed.length > 0 ? trimmed : null;
 }
@@ -40,24 +40,66 @@ export async function subscribeAction(
   }
 
   const email = normalizeEmail(formData.get("email") as string | null);
-  const name = normalizeName(formData.get("name") as string | null);
-  const interest = normalizeInterest(
-    formData.get("interest_type") as string | null,
+  const name = normalizeString(formData.get("name") as string | null);
+  const interest =
+    normalizeInterest(formData.get("interest_type") as string | null) ??
+    interestOptions[0];
+  const role = normalizeString(formData.get("role") as string | null);
+  const dmxSetup = normalizeString(formData.get("dmx_setup") as string | null);
+  const notes = normalizeString(formData.get("notes") as string | null);
+  const contextSource = normalizeString(
+    formData.get("context_source") as string | null,
   );
+
+  const utm_source = normalizeString(formData.get("utm_source") as string | null);
+  const utm_medium = normalizeString(formData.get("utm_medium") as string | null);
+  const utm_campaign = normalizeString(
+    formData.get("utm_campaign") as string | null,
+  );
+  const utm_term = normalizeString(formData.get("utm_term") as string | null);
+  const utm_content = normalizeString(formData.get("utm_content") as string | null);
+  const referrer = normalizeString(formData.get("referrer") as string | null);
+  const pathname = normalizeString(formData.get("pathname") as string | null);
+  const timestamp = normalizeString(formData.get("timestamp") as string | null);
 
   if (!email || !isValidEmail(email)) {
     return {
       status: "error",
-      message: "Vennligst oppgi en gyldig e-postadresse.",
+      message: "Legg inn en gyldig e-postadresse.",
     };
   }
 
-  if (!interest) {
-    return {
-      status: "error",
-      message: "Velg hva slags interesse du har.",
-    };
-  }
+  const trackingPayload = {
+    contextSource,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
+    referrer,
+    pathname,
+    timestamp,
+  };
+
+  const basePayload = {
+    email,
+    name,
+    interest_type: interest,
+    subscribed: true,
+    unsubscribe_token: randomUUID(),
+    role,
+    dmx_setup: dmxSetup,
+    notes,
+    tracking_payload: trackingPayload,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
+    referrer,
+    pathname,
+    captured_at: timestamp,
+  };
 
   try {
     const supabase = createServiceClient();
@@ -74,47 +116,85 @@ export async function subscribeAction(
       console.error(fetchError);
       return {
         status: "error",
-        message: "Kunne ikke lagre interessen akkurat nå. Prøv igjen senere.",
+        message: "Kunne ikke lagre forespørselen nå. Prøv igjen senere.",
       };
     }
 
-    if (!existing) {
-      const { error: insertError } = await supabase
-        .from("email_subscriptions")
-        .insert({
-          email,
-          name,
-          interest_type: interest,
-          subscribed: true,
-          unsubscribe_token: randomUUID(),
-        });
-
-      if (insertError) {
-        console.error(insertError);
-        return {
-          status: "error",
-          message:
-            "Kunne ikke lagre interessen akkurat nå. Prøv igjen senere.",
-        };
-      }
-    } else {
-      const { error: updateError } = await supabase
-        .from("email_subscriptions")
-        .update({
+    const trackingAwareInsert = existing
+      ? {
           name,
           interest_type: interest,
           subscribed: true,
           unsubscribe_token: existing.unsubscribe_token ?? randomUUID(),
-        })
+          role,
+          dmx_setup: dmxSetup,
+          notes,
+          tracking_payload: trackingPayload,
+          utm_source,
+          utm_medium,
+          utm_campaign,
+          utm_term,
+          utm_content,
+          referrer,
+          pathname,
+          captured_at: timestamp,
+        }
+      : basePayload;
+
+    if (!existing) {
+      const { error: insertError } = await supabase
+        .from("email_subscriptions")
+        .insert(trackingAwareInsert);
+
+      if (insertError) {
+        console.error(insertError);
+        // Retry without optional fields in case of column mismatches.
+        const { error: fallbackError } = await supabase
+          .from("email_subscriptions")
+          .insert({
+            email,
+            name,
+            interest_type: interest,
+            subscribed: true,
+            unsubscribe_token: randomUUID(),
+          });
+
+        if (fallbackError) {
+          console.error(fallbackError);
+          return {
+            status: "error",
+            message:
+              "Kunne ikke lagre forespørselen nå. Prøv igjen senere.",
+          };
+        }
+      }
+    } else {
+      const { error: updateError } = await supabase
+        .from("email_subscriptions")
+        .update(trackingAwareInsert)
         .eq("email", email);
 
       if (updateError) {
         console.error(updateError);
-        return {
-          status: "error",
-          message:
-            "Kunne ikke oppdatere oppføringen. Prøv igjen eller kontakt oss.",
-        };
+        // Retry minimal update to avoid losing signup.
+        const { error: fallbackError } = await supabase
+          .from("email_subscriptions")
+          .update({
+            name,
+            interest_type: interest,
+            subscribed: true,
+            unsubscribe_token: existing.unsubscribe_token ?? randomUUID(),
+          })
+          .eq("email", email);
+
+        if (fallbackError) {
+          console.error(fallbackError);
+          return {
+            status: "error",
+            message:
+              "Kunne ikke oppdatere oppføringen. Prøv igjen eller kontakt oss.",
+          };
+        }
       }
     }
 

@@ -1,42 +1,63 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageShell } from "@/components/PageShell";
 import { SectionCard } from "@/components/SectionCard";
+import { StructuredData } from "@/components/StructuredData";
+import { absoluteUrl } from "@/lib/seo";
 
-export const metadata = {
-  title: "FAQ | Y-Link",
-  description: "Korte svar om AI-drevet DMX og interesselisten.",
+export const metadata: Metadata = {
+  title: "FAQ",
+  description: "Vanlige spørsmål om Y-Link, AI DMX-kontrolleren, pilotprogrammet og e-postpreferanser.",
+  alternates: {
+    canonical: "/faq",
+  },
 };
 
 const items = [
   {
-    q: "Hva er automatisert?",
-    a: "Lysløp genereres automatisk fra musikkfiler. AI tolker struktur og dynamikk og spiller ut DMX-cues uten manuell programmering.",
+    q: "Hva automatiserer AI-en?",
+    a: "Kontrolleren analyserer lyd for tempo, fraser og energi. Den bygger cues, overganger og guardrails som følger låten uten manuell programmering.",
   },
   {
-    q: "Kan jeg justere selv?",
-    a: "Ja. Et komplementerende kontroll-lag (iOS/iPadOS eller desktop-studio) lar deg forme uttrykket mens automatikken holder flyten.",
+    q: "Kan operatører fortsatt styre riggen?",
+    a: "Ja. Operatør kan godkjenne looks, låse intensitet, øve seksjoner og overstyre automasjon. Målet er forutsigbar avspilling med menneskelig kontroll.",
   },
   {
-    q: "Hvordan avmelder jeg e-post?",
-    a: "Bruk avmeldingslenken i e-postene. Den peker til /unsubscribe med en unik token, og stopper videre utsendinger for den e-posten.",
+    q: "Hvordan håndteres latency?",
+    a: "Hvert steg budsjettsettes, og avspilling valideres før output. Runtime er tunet for lav jitter i klubber og små scener.",
   },
   {
-    q: "Hvordan blir jeg pilotkunde?",
-    a: "Meld interesse på forsiden eller pilotsiden. Vi kontakter utvalgte piloter direkte. Antall plasser er begrenset og ikke fastsatt.",
+    q: "Hvilke fixtures og universer støttes?",
+    a: "Vi retter oss mot vanlige DMX-universer med profiler for klubber og små venues. Universplanlegging og satureringssjekk kjøres før avspilling.",
   },
   {
-    q: "Hvilke miljøer prioriteres?",
-    a: "Klubber, små scener, utesteder, russebusser og utleieoppsett der musikkdriveren er sentral og bemanningen ofte er lav.",
+    q: "Hvordan blir jeg med i pilot eller forhåndsbestilling?",
+    a: "Bruk skjemaet på forsiden eller pilotsiden. Piloten er tidsbegrenset (ca. 4–8 uker), med utlån av Y1-hardware som returneres etterpå. Vi tar inn en liten, kurert gruppe for å teste stabilitet, timing og UX.",
   },
   {
-    q: "Hvilke filer trenger jeg?",
-    a: "Du laster opp musikkfiler; AI analyserer tempo, struktur og dynamikk. Detaljer om formater deles med piloter ved oppstart.",
+    q: "Hvordan melder jeg meg av e-post?",
+    a: "Hver e-post har en avmeldingslenke. Du kan også besøke /unsubscribe?token=<din-token> for å fjerne adressen umiddelbart.",
   },
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: items.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+  url: absoluteUrl("/faq"),
+};
 
 export default function FAQPage() {
   return (
     <PageShell>
+      <StructuredData data={faqSchema} />
       <div className="flex flex-col gap-12">
         <Breadcrumbs
           items={[
@@ -46,24 +67,24 @@ export default function FAQPage() {
         />
 
         <header className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
-            FAQ
-          </p>
+          <p className="label-text text-sm text-neutral-800">FAQ</p>
           <h1 className="text-3xl font-bold text-neutral-950">
-            Korte svar om Y-Link
+            Svar om AI DMX-kontrolleren og pilotprogrammet
           </h1>
           <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            AI-drevet DMX fra musikkfiler, med stabilitet og immersiv opplevelse som standard.
+            Få klarhet i hva som automatiseres, hvordan operatører har kontroll, og hvordan du melder deg på eller av.
           </p>
         </header>
 
-        <SectionCard className="space-y-4">
-          {items.map((item) => (
-            <div key={item.q} className="space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]">
-              <h2 className="text-base font-semibold text-neutral-900">{item.q}</h2>
-              <p className="text-sm leading-6 text-neutral-800">{item.a}</p>
-            </div>
-          ))}
+        <SectionCard className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            {items.map((item) => (
+              <div key={item.q} className="space-y-2 rounded-2xl bg-white p-4 ring-1 ring-neutral-200">
+                <p className="text-sm font-semibold text-neutral-900">{item.q}</p>
+                <p className="text-sm leading-6 text-neutral-800">{item.a}</p>
+              </div>
+            ))}
+          </div>
         </SectionCard>
       </div>
     </PageShell>

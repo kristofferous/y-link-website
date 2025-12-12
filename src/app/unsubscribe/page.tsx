@@ -1,13 +1,21 @@
 import { randomUUID } from "crypto";
+import type { Metadata } from "next";
 
 import { createServiceClient } from "@/lib/supabaseServer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageShell } from "@/components/PageShell";
 import { SectionCard } from "@/components/SectionCard";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Avmelding | Y-Link",
-  description: "Avmeld deg fra Y-Link-oppdateringer.",
+  description: "Meld deg av oppdateringer fra Y-Link.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+  alternates: {
+    canonical: "/unsubscribe",
+  },
 };
 
 type UnsubscribeResult =
@@ -48,7 +56,7 @@ async function handleUnsubscribe(token: string | undefined): Promise<Unsubscribe
 
     return {
       status: "success",
-      message: "Du er nå avmeldt e-postlisten.",
+      message: "Du er meldt av e-poster fra Y-Link.",
     };
   } catch (error) {
     console.error(error);
@@ -75,7 +83,7 @@ export default async function UnsubscribePage({
       <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Avmelding" }]} />
       <SectionCard className="space-y-6">
         <header className="space-y-2">
-          <p className="text-sm uppercase tracking-[0.2em] text-neutral-800">
+          <p className="label-text text-sm text-neutral-800">
             Avmelding
           </p>
           <h1 className="text-3xl font-bold text-neutral-950">E-postpreferanser</h1>
@@ -92,7 +100,7 @@ export default async function UnsubscribePage({
         </div>
 
         <p className="text-sm text-neutral-800">
-          Hvis du avmeldte ved en feil, kan du registrere interessen på nytt via hovedsiden.
+          Meldte du deg av ved en feil? Du kan registrere deg igjen på forsiden.
         </p>
       </SectionCard>
     </PageShell>

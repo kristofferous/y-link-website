@@ -1,5 +1,5 @@
 export const interestOptions = [
-  "Pilot / early access",
+  "Pilot / tidlig tilgang",
   "Forhåndsbestilling",
   "Generell interesse",
 ] as const;

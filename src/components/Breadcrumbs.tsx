@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { StructuredData } from "@/components/StructuredData";
+import { buildBreadcrumbSchema } from "@/lib/seo";
 
 type Crumb = {
   label: string;
@@ -11,9 +13,12 @@ type BreadcrumbsProps = {
 };
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+  const schema = buildBreadcrumbSchema(items);
+
   return (
-    <nav aria-label="Brødsmulesti" className={className}>
-      <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-800">
+    <nav aria-label="Breadcrumbs" className={className}>
+      <StructuredData data={schema} />
+      <ol className="flex items-center gap-2 text-xs font-semibold label-text text-neutral-800">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (

@@ -4,14 +4,16 @@ import clsx from "clsx";
 type PageShellProps = {
   children: ReactNode;
   className?: string;
+  spacingClass?: string;
 };
 
-export function PageShell({ children, className }: PageShellProps) {
+export function PageShell({ children, className, spacingClass }: PageShellProps) {
   return (
     <main className="relative">
       <div
         className={clsx(
-          "relative mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16",
+          "relative mx-auto flex max-w-5xl flex-col px-6",
+          spacingClass ?? "gap-16 py-16",
           className,
         )}
       >
