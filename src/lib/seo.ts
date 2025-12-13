@@ -1,7 +1,6 @@
 const defaultSiteUrl = "https://y-link.no";
 
-export const siteUrl =
-  (process.env.NEXT_PUBLIC_SITE_URL ?? defaultSiteUrl).replace(/\/$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? defaultSiteUrl).replace(/\/$/, "");
 
 export function absoluteUrl(path: string): string {
   if (!path) {
@@ -16,12 +15,6 @@ export function absoluteUrl(path: string): string {
 }
 
 export const defaultOgImage = `${siteUrl}/og-default.png`;
-
-export const defaultTitle =
-  "AI-styrt DMX-kontroller for musikkstyrt lys | Y-Link";
-
-export const defaultDescription =
-  "Y-Link er en AI-drevet DMX-kontroller som gjør lyd om til presist, musikkstyrt lys uten manuell programmering.";
 
 export function buildBreadcrumbSchema(items: { label: string; href?: string }[]) {
   return {
@@ -40,34 +33,38 @@ export function buildBreadcrumbSchema(items: { label: string; href?: string }[])
   };
 }
 
-export const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Y-Link",
-  url: siteUrl,
-  logo: `${siteUrl}/favicon.ico`,
-  contactPoint: [
-    {
-      "@type": "ContactPoint",
-      contactType: "sales",
-      email: "hello@y-link.no",
-      areaServed: "Norge",
-      availableLanguage: ["no"],
-    },
-  ],
-  description:
-    "Y-Link bygger en AI-drevet DMX-kontroller og lysprogramvare for forutsigbare, musikkstyrte show.",
-};
+export function organizationSchema(language: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Y-Link",
+    url: siteUrl,
+    logo: `${siteUrl}/favicon.ico`,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "hello@y-link.no",
+        areaServed: "Norway",
+        availableLanguage: ["no", "en"],
+      },
+    ],
+    description: "Y-Link builds an AI-driven DMX controller and lighting software for predictable, music-reactive shows.",
+    inLanguage: language,
+  };
+}
 
-export const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Y-Link",
-  url: siteUrl,
-  inLanguage: "nb",
-  potentialAction: {
-    "@type": "Action",
-    name: "Be om tilgang",
-    target: `${siteUrl}/ai-dmx-controller`,
-  },
-};
+export function websiteSchema(language: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Y-Link",
+    url: siteUrl,
+    inLanguage: language,
+    potentialAction: {
+      "@type": "Action",
+      name: "Request access",
+      target: `${siteUrl}/ai-dmx-controller`,
+    },
+  };
+}

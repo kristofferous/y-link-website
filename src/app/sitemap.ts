@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { locales } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/lib/seo";
 
 const staticRoutes = [
@@ -27,10 +28,15 @@ const staticRoutes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  return staticRoutes.map((path) => ({
-    url: absoluteUrl(path),
-    lastModified,
-    changeFrequency: "monthly",
-    priority: path === "/" ? 1 : 0.6,
-  }));
+  return locales.flatMap((locale) =>
+    staticRoutes.map((path) => {
+      const localizedPath = path === "/" ? `/${locale}` : `/${locale}${path}`;
+      return {
+        url: absoluteUrl(localizedPath),
+        lastModified,
+        changeFrequency: "monthly",
+        priority: path === "/" ? 1 : 0.6,
+      };
+    }),
+  );
 }

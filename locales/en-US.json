@@ -1,0 +1,488 @@
+{
+  "meta": {
+    "siteName": "Y-Link",
+    "title": "AI-driven DMX controller for predictable, music-reactive light",
+    "description": "Y-Link turns audio into stable, music-reactive lighting with deterministic playback, guardrails, and operator control.",
+    "ogAlt": "Y-Link AI DMX Controller"
+  },
+  "navigation": {
+    "main": [
+      { "label": "Home", "href": "/" },
+      { "label": "Platform", "href": "/ai-dmx-controller" },
+      { "label": "Use Cases", "href": "/use-cases" },
+      { "label": "Guides", "href": "/guides" },
+      { "label": "FAQ", "href": "/faq" }
+    ],
+    "secondary": [
+      { "label": "Pilot Program", "href": "/pilot" },
+      { "label": "Technical", "href": "/teknisk" },
+      { "label": "About Y-Link", "href": "/om" },
+      { "label": "Our Story", "href": "/story" }
+    ],
+    "utility": [
+      { "label": "Pilot Access", "href": "/access" },
+      { "label": "Privacy", "href": "/privacy" }
+    ],
+    "cta": "Join Pilot",
+    "mobile": {
+      "navigation": "Navigation",
+      "company": "Company",
+      "utility": "Account & Legal",
+      "ctaNote": "Limited slots available for early access",
+      "open": "Open menu",
+      "close": "Close menu"
+    }
+  },
+  "footer": {
+    "tagline": "Professional DMX lighting control platform. Engineered for precision, stability, and live performance.",
+    "builtOn": "Built on ALPINE protocol",
+    "location": "Kristiansand, Norway",
+    "product": {
+      "title": "Product",
+      "links": {
+        "platform": "Platform",
+        "useCases": "Use Cases",
+        "pilot": "Pilot Program"
+      }
+    },
+    "resources": {
+      "title": "Resources",
+      "links": {
+        "guides": "Guides",
+        "faq": "FAQ"
+      }
+    },
+    "company": {
+      "title": "Company",
+      "links": {
+        "about": "About",
+        "privacy": "Privacy"
+      }
+    },
+    "copyright": "All rights reserved."
+  },
+  "actions": {
+    "learnHow": "Learn how it works",
+    "joinPilot": "Join Pilot Program",
+    "viewUseCases": "View detailed use cases",
+    "applyPilot": "Apply for Pilot Access",
+    "expressInterest": "Express Interest",
+    "open": "Open",
+    "close": "Close"
+  },
+  "forms": {
+    "email": "Email",
+    "emailPlaceholder": "name@domain.com",
+    "role": "What best describes you? (optional)",
+    "selectOne": "Select one",
+    "roleOptions": {
+      "venue": "Venue",
+      "dj": "DJ",
+      "lightingOperator": "Lighting Operator",
+      "rental": "Rental",
+      "mobile": "Mobile Rig",
+      "other": "Other"
+    },
+    "dmxSetup": "DMX Setup (optional)",
+    "dmxPlaceholder": "Number of universes, fixtures, etc.",
+    "moreDetails": "More details (optional)",
+    "name": "Name (optional)",
+    "namePlaceholder": "Name",
+    "otherDetails": "Other details (optional)",
+    "otherPlaceholder": "Needs, timeline, special requirements",
+    "primaryCta": "Express Interest",
+    "secondaryCta": "Learn how it works",
+    "disclaimer": "Pilot invitation + updates. Unsubscribe anytime.",
+    "success": "Thanks! You're on the list. We'll be in touch when pilot opens.",
+    "joinPilot": "Join the pilot queue",
+    "modalTitle": "Get Early Access to Y-Link",
+    "modalDescription": "Express interest, and we'll follow up with pilots and updates.",
+    "close": "Close"
+  },
+  "home": {
+    "hero": {
+      "badge": "Pilot Program Open",
+      "title": "Professional DMX Control.",
+      "subtitle": "Built for Live Performance.",
+      "body": "Y-Link transforms audio into precise lighting sequences with stable timing and live control. Engineered for clubs, small venues, and mobile setups where reliability matters."
+    },
+    "features": [
+      {
+        "title": "Automated Sequences",
+        "description": "Generate lighting cues from audio analysis. No manual programming required."
+      },
+      {
+        "title": "Precise Timing",
+        "description": "BPM-locked execution with phrase detection. Consistent performance across sessions."
+      },
+      {
+        "title": "Live Guardrails",
+        "description": "Override controls that maintain timing and structure. Safe adjustments during live shows."
+      }
+    ],
+    "howItWorks": {
+      "eyebrow": "System Architecture",
+      "title": "From Audio to Light",
+      "description": "Three-stage pipeline designed for reliability and predictability.",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Audio Analysis",
+          "description": "Extract tempo, phrase structure, and energy profile from live or imported audio sources."
+        },
+        {
+          "step": "02",
+          "title": "Sequence Generation",
+          "description": "Generate cues, transitions, and intensity curves mapped to musical structure."
+        },
+        {
+          "step": "03",
+          "title": "Live Execution",
+          "description": "Run sequences with real-time adjustments. Guardrails preserve timing and coherence."
+        }
+      ]
+    },
+    "engineering": {
+      "eyebrow": "Engineering Focus",
+      "title": "Built for Stability",
+      "description": "Measured in pilot deployments across multiple venue types. Optimized for low latency, repeatable output, and operational uptime.",
+      "points": [
+        "Low-latency DMX output with jitter mitigation",
+        "Deterministic sequence generation",
+        "Robust error handling and recovery",
+        "Real-time performance monitoring"
+      ]
+    },
+    "runtimeGuarantees": {
+      "title": "Runtime Guarantees",
+      "items": [
+        {
+          "title": "Deterministic Execution",
+          "description": "Lighting output follows a predictable, frame-consistent execution model. No adaptive heuristics during playback."
+        },
+        {
+          "title": "Bounded Latency Path",
+          "description": "Control signals follow a fixed pipeline from scheduler to output, avoiding unbounded buffering or timing drift."
+        },
+        {
+          "title": "Explicit Failure States",
+          "description": "Errors surface as known states, not silent degradation. The system fails visibly and recoverably."
+        },
+        {
+          "title": "Session-Scoped Control",
+          "description": "All control actions are tied to authenticated sessions with clear ownership and lifecycle."
+        },
+        {
+          "title": "Repeatable Show Behavior",
+          "description": "Identical inputs produce identical lighting output across runs, venues, and devices."
+        }
+      ],
+      "helper": "No percentages, no pilot metrics — just the runtime rules the system upholds."
+    },
+    "applications": {
+      "eyebrow": "Applications",
+      "title": "Built for Professional Use",
+      "cards": [
+        {
+          "title": "Clubs & Venues",
+          "description": "Consistent shows with minimal staffing requirements"
+        },
+        {
+          "title": "Mobile Setups",
+          "description": "Quick deployment for touring and event productions"
+        },
+        {
+          "title": "Small Venues",
+          "description": "Professional automation without dedicated lighting operator"
+        }
+      ],
+      "cta": "View detailed use cases"
+    },
+    "cta": {
+      "title": "Join the Pilot Program",
+      "description": "Limited slots available for early access. We're working with select venues to refine the platform.",
+      "button": "Apply for Pilot Access"
+    }
+  },
+  "about": {
+    "metadata": {
+      "title": "About Y-Link",
+      "description": "AI-driven DMX controller for music-driven venues. Learn why it exists, who it's for, and how it works."
+    },
+    "breadcrumb": "About",
+    "hero": {
+      "label": "About",
+      "title": "AI-Powered DMX Controller",
+      "subtitle": "for Music-Driven Venues",
+      "body": "Y-Link generates lighting sequences automatically from music—with precise timing, guardrails, and operator control. Built for clubs, small stages, and mobile setups that need predictable shows.",
+      "secondary": "How it works"
+    },
+    "why": {
+      "title": "Why Y-Link",
+      "points": [
+        "Less staffing, higher tempo.",
+        "Shows that land every time—not random effects.",
+        "Fast setup for small venues and mobile rigs."
+      ],
+      "note": "The goal is to make solid lighting sequences the standard, not a side project."
+    },
+    "how": {
+      "title": "How It Works",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Audio In",
+          "body": "Import playlists or use live audio. The system extracts tempo, phrases, and energy."
+        },
+        {
+          "step": "02",
+          "title": "Planned Sequences",
+          "body": "AI builds cues, transitions, and guardrails that follow the music and your rig."
+        },
+        {
+          "step": "03",
+          "title": "Live with Control",
+          "body": "Operator can override while the system maintains structure and timing stability."
+        }
+      ]
+    },
+    "who": {
+      "title": "Who It's For",
+      "audiences": ["Club/Venue", "Small Stages", "Rental/Event", "Mobile Rigs", "Operators Saving Time"],
+      "ctaPrefix": "See details in",
+      "ctaUseCases": "use cases",
+      "ctaConnector": "or read",
+      "ctaHow": "how the system works"
+    },
+    "cta": {
+      "title": "Want to Be Early?",
+      "description": "Express interest for the pilot. We contact a limited number first."
+    }
+  },
+  "technical": {
+    "metadata": {
+      "title": "Technical overview",
+      "description": "How Y-Link analyzes audio, plans cues, budgets latency, and delivers safe DMX output."
+    },
+    "breadcrumb": "Technical",
+    "hero": {
+      "label": "Technical",
+      "title": "AI-Based DMX with Low Latency, Predictable Playback, and Safety",
+      "body": "Y-Link analyzes audio, generates cues, and delivers DMX within strict time requirements. Runtime is tuned for stable latency and clear overrides, keeping the show synchronized."
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "items": [
+        "Audio analysis for tempo, phrases, energy, and changes.",
+        "Planner builds cues, transitions, and guardrails per rig.",
+        "Output validated against latency budget and safety limits."
+      ]
+    },
+    "safety": {
+      "title": "Safety and Control",
+      "body": "Operators have locks for intensity, blackout rules, and ability to override. Guardrails prevent random jumps even when adjusting live.",
+      "latencyGuide": "Latency and jitter guide",
+      "pilot": "Join the pilot"
+    }
+  },
+  "pilot": {
+    "metadata": {
+      "title": "Pilot Program",
+      "description": "Validate stability, timing, and usability in real venues with a controlled, time-limited pilot."
+    },
+    "breadcrumb": "Pilot",
+    "hero": {
+      "badge": "Limited Slots",
+      "title": "Pilot Program",
+      "subtitle": "Controlled Rollout in Real Venues",
+      "body": "The purpose is to validate stability, timing, and usability in real shows, with structured technical and operational feedback. This is a controlled pilot, not an open beta giveaway.",
+      "cta": "Apply for Pilot Access"
+    },
+    "whatIs": {
+      "title": "What the Pilot Is",
+      "items": [
+        "Validate stability, timing, and operation in real venue environments.",
+        "Collect structured technical and operational feedback.",
+        "Controlled pilot with few partners - not an open beta.",
+        "Time-limited period: approximately 4-8 weeks.",
+        "Y1 hardware loaned out, Y-Link property, returned after pilot."
+      ]
+    },
+    "whatNot": {
+      "title": "What It Is Not",
+      "items": ["Not a finished commercial product.", "Not a free hardware giveaway.", "Not full production coverage - focus is on pilot verification."]
+    },
+    "partnersGet": {
+      "title": "What Pilot Partners Get",
+      "items": [
+        "Temporary loan of Y1 hardware (pilot/pre-production unit)",
+        "Full access to Y-Link Studio during pilot period",
+        "Music-reactive AI lighting with deterministic playback",
+        "Setup assistance and direct dialogue with the team",
+        "Ongoing software updates throughout the pilot"
+      ]
+    },
+    "expectations": {
+      "title": "What We Expect",
+      "items": [
+        "Use in real shows or events",
+        "Feedback on stability, timing, and show quality",
+        "Willingness for short feedback sessions",
+        "Optional: consent for anonymous pilot case study"
+      ]
+    },
+    "cta": {
+      "title": "Ready to Become a Pilot Partner?",
+      "body": "One point of contact, quick feedback, and updates throughout the pilot period.",
+      "primary": "Apply Now",
+      "secondary": "See how the system works"
+    }
+  },
+  "faq": {
+    "metadata": {
+      "title": "FAQ",
+      "description": "Common questions about Y-Link, the AI DMX controller, the pilot program, and email preferences."
+    },
+    "breadcrumb": "FAQ",
+    "hero": {
+      "label": "Support",
+      "title": "Frequently Asked Questions",
+      "body": "Get clarity on what's automated, how operators maintain control, and how to sign up or unsubscribe."
+    },
+    "items": [
+      {
+        "q": "What does the AI automate?",
+        "a": "The controller analyzes audio for tempo, phrases, and energy. It builds cues, transitions, and guardrails that follow the track without manual programming."
+      },
+      {
+        "q": "Can operators still control the rig?",
+        "a": "Yes. Operators can approve looks, lock intensity, rehearse sections, and override automation. The goal is predictable playback with human control."
+      },
+      {
+        "q": "How is latency handled?",
+        "a": "Each step is budgeted, and playback is validated before output. Runtime is tuned for low jitter in clubs and small venues."
+      },
+      {
+        "q": "Which fixtures and universes are supported?",
+        "a": "We target common DMX universes with profiles for clubs and small venues. Universe planning and saturation checks run before playback."
+      },
+      {
+        "q": "How do I join the pilot or pre-order?",
+        "a": "Use the form on the homepage or pilot page. The pilot is time-limited (approx. 4-8 weeks), with Y1 hardware loaned and returned afterward. We take in a small, curated group to test stability, timing, and UX."
+      },
+      {
+        "q": "How do I unsubscribe from emails?",
+        "a": "Each email has an unsubscribe link. You can also visit /unsubscribe?token=<your-token> to remove your address immediately."
+      }
+    ]
+  },
+  "privacy": {
+    "metadata": {
+      "title": "Privacy",
+      "description": "How Y-Link handles contact data for pilots, early interest, and updates."
+    },
+    "breadcrumb": "Privacy",
+    "hero": {
+      "label": "Privacy",
+      "title": "How we handle data"
+    },
+    "body": [
+      "We collect name (optional), email, and selected interest so we can send Y-Link updates, coordinate pilot access, or follow up on early interest.",
+      "Data is stored securely in Supabase. Emails include an unsubscribe link that stops communication immediately. We do not sell or share contact information with third parties.",
+      "To delete data, email hello@y-link.no and we will remove the record."
+    ],
+    "email": "hello@y-link.no"
+  },
+  "access": {
+    "metadata": {
+      "title": "Pilot Access",
+      "description": "Invite-only sign-in for approved pilot participants."
+    },
+    "hero": {
+      "label": "Pilot Access",
+      "title": "Sign in with invite",
+      "body": "Only approved pilots. Requires email registered with us and a valid invitation code. No password or account needed."
+    },
+    "form": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "pilot@domain.no",
+      "codeLabel": "Invitation Code",
+      "codePlaceholder": "Code from Y-Link",
+      "submit": "Get Access"
+    },
+    "footer": {
+      "questions": "Have questions?",
+      "pilotLink": "Read about the pilot"
+    },
+    "loading": "Loading..."
+  },
+  "unsubscribe": {
+    "metadata": {
+      "title": "Unsubscribe",
+      "description": "Unsubscribe from Y-Link updates."
+    },
+    "hero": {
+      "label": "Email Preferences",
+      "title": "Unsubscribe"
+    },
+    "messages": {
+      "invalid": "The link is not valid.",
+      "error": "Something went wrong. Please try again later.",
+      "expired": "The link has expired or has already been used.",
+      "success": "You have been unsubscribed from Y-Link emails."
+    },
+    "cta": {
+      "question": "Unsubscribed by mistake?",
+      "link": "Sign up again on the homepage"
+    }
+  },
+  "aiDmx": {
+    "metadata": {
+      "title": "AI DMX Controller",
+      "description": "Y-Link converts audio into predictable, music-driven lighting with low latency and guardrails."
+    },
+    "breadcrumb": "AI DMX Controller",
+    "hero": {
+      "label": "Platform",
+      "title": "AI DMX Controller",
+      "subtitle": "for Music-Reactive Lighting",
+      "body": "Y-Link converts audio to lighting sequences that follow tempo, phrasing, and energy. Low latency, guardrails, and operator control ensure your show is predictable, not random.",
+      "tags": ["AI DMX Controller", "Music Reactive", "Low Latency"]
+    },
+    "how": {
+      "title": "How It Works",
+      "steps": [
+        { "step": "01", "title": "Audio Input", "body": "Upload music or use live audio. The system captures tempo, phrases, and energy." },
+        { "step": "02", "title": "Planning", "body": "AI plans cues, transitions, and safety limits tailored to your rig." },
+        { "step": "03", "title": "Deterministic Playback", "body": "Signals are timed and monitored before output. Latency budget enforced live." }
+      ]
+    },
+    "who": {
+      "title": "Who It's For",
+      "items": [
+        "Clubs and bars wanting music-reactive lighting without manual programming.",
+        "Small stages and installations with minimal staffing but timing requirements.",
+        "Mobile rigs needing fast load-ins and predictable playback.",
+        "Operators wanting guardrails and the ability to override at any time."
+      ],
+      "club": "club use case",
+      "smallVenue": "small venue automation"
+    },
+    "setup": {
+      "title": "Setup Requirements",
+      "items": [
+        "Audio upload or live feed",
+        "Fixture list and universes for planning and safety",
+        "Network for updates and remote monitoring",
+        "Operator interface (desktop or iPad)"
+      ],
+      "note": "Timing and saturation validated before show so rehearsal matches live."
+    },
+    "cta": {
+      "title": "Next Steps",
+      "body": "Need music-reactive lighting with predictable timing? Join the pilot, and we'll document latency in your rig and fine-tune guardrails.",
+      "primary": "Apply for Pilot",
+      "secondary": "Read about latency and jitter"
+    }
+  }
+}

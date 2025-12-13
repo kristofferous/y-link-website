@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackUseSystemTlsCerts: true,
   },
+  i18n: {
+    locales: ["nb", "en"],
+    defaultLocale: "nb",
+  },
 };
 
 export default nextConfig;

@@ -1,78 +1,89 @@
-"use client"
+"use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react"
-import Link from "next/link"
-import clsx from "clsx"
+import { useActionState, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import clsx from "clsx";
 
-import { subscribeAction, type SubscriptionFormState } from "@/app/actions"
-import { interestOptions } from "@/lib/interest"
-import { guardText } from "@/lib/guardrails"
+import { subscribeAction, type SubscriptionFormState } from "@/app/actions";
+import { guardText } from "@/lib/guardrails";
+import { interestOptions } from "@/lib/interest";
+import { prefixLocale } from "@/lib/i18n/routing";
+import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
-type Variant = "hero" | "cta" | "footer" | "modal"
+type Variant = "hero" | "cta" | "footer" | "modal";
 
 type InterestSignupProps = {
-  variant?: Variant
-  title?: string
-  description?: string
-  ctaLabel?: string
-  contextSource?: string
-  secondaryCtaHref?: string
-  secondaryCtaLabel?: string
-  onClose?: () => void
-  id?: string
-}
+  variant?: Variant;
+  title?: string;
+  description?: string;
+  ctaLabel?: string;
+  contextSource?: string;
+  secondaryCtaHref?: string;
+  secondaryCtaLabel?: string;
+  onClose?: () => void;
+  id?: string;
+};
 
 type Tracking = {
-  utm_source?: string
-  utm_medium?: string
-  utm_campaign?: string
-  utm_term?: string
-  utm_content?: string
-  referrer?: string
-  pathname?: string
-  timestamp?: string
-}
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  referrer?: string;
+  pathname?: string;
+  timestamp?: string;
+};
 
 const initialState: SubscriptionFormState = {
   status: "idle",
   message: "",
-}
+};
 
 function trackEvent(name: string, detail?: Record<string, unknown>) {
-  if (typeof window === "undefined") return
-  const payload = { name, detail, ts: new Date().toISOString() }
+  if (typeof window === "undefined") return;
+  const payload = { name, detail, ts: new Date().toISOString() };
   if (typeof window.dispatchEvent === "function") {
-    window.dispatchEvent(new CustomEvent(name, { detail: payload }))
+    window.dispatchEvent(new CustomEvent(name, { detail: payload }));
   }
   if ((window as any).dataLayer) {
-    ;(window as any).dataLayer.push({ event: name, ...payload })
+    (window as any).dataLayer.push({ event: name, ...payload });
   }
-  console.debug("[tracking]", payload)
+  console.debug("[tracking]", payload);
+}
+
+function localizeHref(locale: string, href?: string) {
+  if (!href) return prefixLocale(locale, "/ai-dmx-controller");
+  if (href.startsWith("http")) return href;
+  return prefixLocale(locale, href);
 }
 
 export function InterestSignup({
   variant = "hero",
   title,
   description,
-  ctaLabel = "Express Interest",
+  ctaLabel,
   contextSource,
-  secondaryCtaHref = "/ai-dmx-controller",
-  secondaryCtaLabel = "Learn how it works",
+  secondaryCtaHref,
+  secondaryCtaLabel,
   onClose,
   id,
 }: InterestSignupProps) {
-  const [state, formAction] = useActionState(subscribeAction, initialState)
-  const [showDetails, setShowDetails] = useState(false)
+  const { dictionary, locale } = useTranslations();
+  const formCopy = dictionary.forms;
+
+  const [state, formAction] = useActionState(subscribeAction, initialState);
+  const [showDetails, setShowDetails] = useState(false);
   const [tracking, setTracking] = useState<Tracking>({
     pathname: "",
     referrer: "",
     timestamp: new Date().toISOString(),
-  })
+  });
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    const url = new URL(window.location.href)
-    const getParam = (key: string) => url.searchParams.get(key) ?? undefined
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    const getParam = (key: string) => url.searchParams.get(key) ?? undefined;
     setTracking({
       utm_source: getParam("utm_source"),
       utm_medium: getParam("utm_medium"),
@@ -82,50 +93,50 @@ export function InterestSignup({
       referrer: document.referrer || undefined,
       pathname: window.location.pathname,
       timestamp: new Date().toISOString(),
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     if (state.status === "success") {
-      trackEvent("signup_success", { context: contextSource ?? variant })
+      trackEvent("signup_success", { context: contextSource ?? variant });
     }
-  }, [state.status, contextSource, variant])
+  }, [state.status, contextSource, variant]);
+
+  const resolvedCtaLabel = ctaLabel ?? formCopy.primaryCta;
+  const resolvedSecondaryHref = localizeHref(locale, secondaryCtaHref);
+  const resolvedSecondaryLabel = secondaryCtaLabel ?? formCopy.secondaryCta;
 
   const containerClasses = useMemo(() => {
     if (variant === "hero") {
-      return "w-full rounded-xl border border-border/40 bg-card p-6"
+      return "w-full rounded-xl border border-border/40 bg-card p-6";
     }
     if (variant === "cta") {
-      return "w-full rounded-xl border border-border/40 bg-card p-6"
+      return "w-full rounded-xl border border-border/40 bg-card p-6";
     }
     if (variant === "footer") {
-      return "w-full rounded-lg border border-border/40 bg-card p-4"
+      return "w-full rounded-lg border border-border/40 bg-card p-4";
     }
-    return "w-full"
-  }, [variant])
+    return "w-full";
+  }, [variant]);
 
-  const safeTitle = guardText(title ?? "Get Early Access to Y-Link", "InterestSignup.title", 120)
-  const safeDescription = guardText(
-    description ?? "Express interest - get updates and pilot invitation when we open the next round.",
-    "InterestSignup.description",
-    180,
-  )
+  const safeTitle = guardText(title ?? formCopy.modalTitle, "InterestSignup.title", 120);
+  const safeDescription = guardText(description ?? formCopy.modalDescription, "InterestSignup.description", 180);
 
-  const labelClass = "block text-sm font-semibold text-foreground"
+  const labelClass = "block text-sm font-semibold text-foreground";
 
   const formBody = (
     <form
       id={id}
       action={(formData) => {
-        trackEvent("signup_submit", { context: contextSource ?? variant })
-        return formAction(formData)
+        trackEvent("signup_submit", { context: contextSource ?? variant });
+        return formAction(formData);
       }}
       className="space-y-5"
     >
       <div className="space-y-3">
         <div className="space-y-2">
           <label htmlFor={`email-${variant}-${id ?? ""}`} className={labelClass}>
-            Email
+            {formCopy.email}
           </label>
           <input
             id={`email-${variant}-${id ?? ""}`}
@@ -134,13 +145,13 @@ export function InterestSignup({
             required
             autoComplete="email"
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
-            placeholder="name@domain.com"
+            placeholder={formCopy.emailPlaceholder}
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor={`role-${variant}-${id ?? ""}`} className={labelClass}>
-            What best describes you? (optional)
+            {formCopy.role}
           </label>
           <select
             id={`role-${variant}-${id ?? ""}`}
@@ -148,26 +159,26 @@ export function InterestSignup({
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
             defaultValue=""
           >
-            <option value="">Select one</option>
-            <option value="Venue">Venue</option>
-            <option value="DJ">DJ</option>
-            <option value="Lighting Operator">Lighting Operator</option>
-            <option value="Rental">Rental</option>
-            <option value="Mobile Rig">Mobile Rig</option>
-            <option value="Other">Other</option>
+            <option value="">{formCopy.selectOne}</option>
+            <option value="Venue">{formCopy.roleOptions.venue}</option>
+            <option value="DJ">{formCopy.roleOptions.dj}</option>
+            <option value="Lighting Operator">{formCopy.roleOptions.lightingOperator}</option>
+            <option value="Rental">{formCopy.roleOptions.rental}</option>
+            <option value="Mobile Rig">{formCopy.roleOptions.mobile}</option>
+            <option value="Other">{formCopy.roleOptions.other}</option>
           </select>
         </div>
 
         <div className="space-y-2">
           <label htmlFor={`dmx-${variant}-${id ?? ""}`} className={labelClass}>
-            DMX Setup (optional)
+            {formCopy.dmxSetup}
           </label>
           <input
             id={`dmx-${variant}-${id ?? ""}`}
             name="dmx_setup"
             type="text"
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
-            placeholder="Number of universes, fixtures, etc."
+            placeholder={formCopy.dmxPlaceholder}
           />
         </div>
 
@@ -176,32 +187,32 @@ export function InterestSignup({
           onClick={() => setShowDetails((prev) => !prev)}
           className="text-sm font-semibold text-foreground underline underline-offset-4"
         >
-          More details (optional)
+          {formCopy.moreDetails}
         </button>
         {showDetails ? (
           <div className="space-y-3 rounded-lg border border-dashed border-border bg-accent/50 p-3">
             <div className="space-y-1.5">
               <label className={labelClass} htmlFor={`name-${variant}-${id ?? ""}`}>
-                Name (optional)
+                {formCopy.name}
               </label>
               <input
                 id={`name-${variant}-${id ?? ""}`}
                 name="name"
                 type="text"
                 className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
-                placeholder="Name"
+                placeholder={formCopy.namePlaceholder}
               />
             </div>
             <div className="space-y-1.5">
               <label className={labelClass} htmlFor={`notes-${variant}-${id ?? ""}`}>
-                Other details (optional)
+                {formCopy.otherDetails}
               </label>
               <textarea
                 id={`notes-${variant}-${id ?? ""}`}
                 name="notes"
                 rows={3}
                 className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
-                placeholder="Needs, timeline, special requirements"
+                placeholder={formCopy.otherPlaceholder}
               />
             </div>
           </div>
@@ -225,7 +236,7 @@ export function InterestSignup({
           onClick={() => trackEvent("cta_click", { context: contextSource ?? variant })}
           className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring"
         >
-          {ctaLabel}
+          {resolvedCtaLabel}
         </button>
         {state.message ? (
           <div
@@ -236,24 +247,22 @@ export function InterestSignup({
                 : "bg-destructive/10 text-destructive-foreground",
             )}
           >
-            {state.status === "success"
-              ? "Thanks! You're on the list. We'll be in touch when pilot opens."
-              : state.message}
+            {state.status === "success" ? formCopy.success : state.message}
           </div>
         ) : null}
         {state.status === "success" ? (
           <Link
-            href={secondaryCtaHref}
+            href={resolvedSecondaryHref}
             className="text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
           >
-            {secondaryCtaLabel}
+            {resolvedSecondaryLabel}
           </Link>
         ) : (
-          <p className="text-xs text-muted-foreground">Pilot invitation + updates. Unsubscribe anytime.</p>
+          <p className="text-xs text-muted-foreground">{formCopy.disclaimer}</p>
         )}
       </div>
     </form>
-  )
+  );
 
   if (variant === "modal") {
     return (
@@ -261,14 +270,12 @@ export function InterestSignup({
         <div className="w-full max-w-lg rounded-xl border border-border/40 bg-card p-6 shadow-2xl">
           <div className="mb-4 flex items-start justify-between gap-3">
             <div className="space-y-1">
-              <p className="text-label text-muted-foreground">Join the pilot queue</p>
-              <h2 className="text-heading text-foreground">Get Early Access to Y-Link</h2>
-              <p className="text-sm text-muted-foreground">
-                Express interest, and we'll follow up with pilots and updates.
-              </p>
+              <p className="text-label text-muted-foreground">{formCopy.joinPilot}</p>
+              <h2 className="text-heading text-foreground">{formCopy.modalTitle}</h2>
+              <p className="text-sm text-muted-foreground">{formCopy.modalDescription}</p>
             </div>
             <button
-              aria-label="Close"
+              aria-label={formCopy.close}
               onClick={onClose}
               className="rounded-full p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground"
             >
@@ -280,7 +287,7 @@ export function InterestSignup({
           {formBody}
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -291,5 +298,5 @@ export function InterestSignup({
       </div>
       <div className={variant === "footer" ? "mt-3" : "mt-5"}>{formBody}</div>
     </div>
-  )
+  );
 }

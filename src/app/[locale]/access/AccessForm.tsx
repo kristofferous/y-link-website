@@ -1,17 +1,20 @@
-"use client"
+"use client";
 
-import { Suspense } from "react"
-import { useActionState } from "react"
-import { useSearchParams } from "next/navigation"
-import Link from "next/link"
-import { accessAction } from "@/app/access/actions"
+import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { accessAction } from "@/app/access/actions";
+import { prefixLocale } from "@/lib/i18n/routing";
+import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
-const initialState = { status: "idle" as const, message: "" }
+const initialState = { status: "idle" as const, message: "" };
 
-function AccessForm() {
-  const params = useSearchParams()
-  const redirectTo = params?.get("redirectTo") ?? "/studio/download"
-  const [state, formAction] = useActionState(accessAction, initialState)
+export function AccessForm() {
+  const { locale, dictionary } = useTranslations();
+  const { access } = dictionary;
+  const params = useSearchParams();
+  const redirectTo = params?.get("redirectTo") ?? prefixLocale(locale, "/studio/download");
+  const [state, formAction] = useActionState(accessAction, initialState);
 
   return (
     <main>
@@ -19,12 +22,9 @@ function AccessForm() {
         <div className="container-custom">
           <div className="mx-auto max-w-lg">
             <div className="mb-8 space-y-4">
-              <p className="text-label text-muted-foreground">Pilot Access</p>
-              <h1 className="text-heading text-foreground">Sign in with invite</h1>
-              <p className="text-body text-muted-foreground">
-                Only approved pilots. Requires email registered with us and a valid invitation code. No password or
-                account needed.
-              </p>
+              <p className="text-label text-muted-foreground">{access.hero.label}</p>
+              <h1 className="text-heading text-foreground">{access.hero.title}</h1>
+              <p className="text-body text-muted-foreground">{access.hero.body}</p>
             </div>
 
             <div className="rounded-xl border border-border/40 bg-card p-6">
@@ -32,7 +32,7 @@ function AccessForm() {
                 <input type="hidden" name="redirectTo" value={redirectTo} />
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-foreground" htmlFor="email">
-                    Email
+                    {access.form.emailLabel}
                   </label>
                   <input
                     id="email"
@@ -40,19 +40,19 @@ function AccessForm() {
                     type="email"
                     required
                     className="w-full rounded-lg border border-border bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
-                    placeholder="pilot@domain.no"
+                    placeholder={access.form.emailPlaceholder}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-foreground" htmlFor="code">
-                    Invitation Code
+                    {access.form.codeLabel}
                   </label>
                   <input
                     id="code"
                     name="code"
                     required
                     className="w-full rounded-lg border border-border bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
-                    placeholder="Code from Y-Link"
+                    placeholder={access.form.codePlaceholder}
                   />
                 </div>
                 {state.status === "error" && state.message ? (
@@ -64,37 +64,23 @@ function AccessForm() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-3 text-base font-semibold text-primary-foreground transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring"
                 >
-                  Get Access
+                  {access.form.submit}
                 </button>
               </form>
             </div>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              Have questions?{" "}
+              {access.footer.questions}{" "}
               <Link
-                href="/pilot"
+                href={prefixLocale(locale, "/pilot")}
                 className="font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
               >
-                Read about the pilot
+                {access.footer.pilotLink}
               </Link>
             </p>
           </div>
         </div>
       </section>
     </main>
-  )
-}
-
-export default function AccessPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="flex min-h-[60vh] items-center justify-center">
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        </main>
-      }
-    >
-      <AccessForm />
-    </Suspense>
-  )
+  );
 }

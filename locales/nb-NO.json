@@ -1,0 +1,488 @@
+{
+  "meta": {
+    "siteName": "Y-Link",
+    "title": "AI-drevet DMX-kontroller for forutsigbart, musikkreaktivt lys",
+    "description": "Y-Link gjør lyd om til stabilt, musikkreaktivt lys med deterministisk avspilling, sikkerhetsnett og operatørkontroll.",
+    "ogAlt": "Y-Link AI DMX-kontroller"
+  },
+  "navigation": {
+    "main": [
+      { "label": "Hjem", "href": "/" },
+      { "label": "Plattform", "href": "/ai-dmx-controller" },
+      { "label": "Bruksområder", "href": "/use-cases" },
+      { "label": "Guider", "href": "/guides" },
+      { "label": "FAQ", "href": "/faq" }
+    ],
+    "secondary": [
+      { "label": "Pilotprogram", "href": "/pilot" },
+      { "label": "Teknisk", "href": "/teknisk" },
+      { "label": "Om Y-Link", "href": "/om" },
+      { "label": "Vår historie", "href": "/story" }
+    ],
+    "utility": [
+      { "label": "Pilottilgang", "href": "/access" },
+      { "label": "Personvern", "href": "/privacy" }
+    ],
+    "cta": "Bli med i pilot",
+    "mobile": {
+      "navigation": "Navigasjon",
+      "company": "Selskap",
+      "utility": "Konto og juridisk",
+      "ctaNote": "Begrensede plasser for tidlig tilgang",
+      "open": "Åpne meny",
+      "close": "Lukk meny"
+    }
+  },
+  "footer": {
+    "tagline": "Profesjonell DMX-plattform for lys. Utviklet for presisjon, stabilitet og live-bruk.",
+    "builtOn": "Bygget på ALPINE-protokollen",
+    "location": "Kristiansand, Norge",
+    "product": {
+      "title": "Produkt",
+      "links": {
+        "platform": "Plattform",
+        "useCases": "Bruksområder",
+        "pilot": "Pilotprogram"
+      }
+    },
+    "resources": {
+      "title": "Ressurser",
+      "links": {
+        "guides": "Guider",
+        "faq": "FAQ"
+      }
+    },
+    "company": {
+      "title": "Selskap",
+      "links": {
+        "about": "Om oss",
+        "privacy": "Personvern"
+      }
+    },
+    "copyright": "Alle rettigheter reservert."
+  },
+  "actions": {
+    "learnHow": "Lær hvordan det fungerer",
+    "joinPilot": "Bli med i pilotprogrammet",
+    "viewUseCases": "Se detaljerte bruksområder",
+    "applyPilot": "Søk pilottilgang",
+    "expressInterest": "Meld interesse",
+    "open": "Åpne",
+    "close": "Lukk"
+  },
+  "forms": {
+    "email": "E-post",
+    "emailPlaceholder": "navn@domene.com",
+    "role": "Hva beskriver deg best? (valgfritt)",
+    "selectOne": "Velg ett",
+    "roleOptions": {
+      "venue": "Venue",
+      "dj": "DJ",
+      "lightingOperator": "Lysoperatør",
+      "rental": "Utleie",
+      "mobile": "Mobilt rigg",
+      "other": "Annet"
+    },
+    "dmxSetup": "DMX-oppsett (valgfritt)",
+    "dmxPlaceholder": "Antall univers, lamper osv.",
+    "moreDetails": "Flere detaljer (valgfritt)",
+    "name": "Navn (valgfritt)",
+    "namePlaceholder": "Navn",
+    "otherDetails": "Andre detaljer (valgfritt)",
+    "otherPlaceholder": "Behov, tidslinje, spesielle krav",
+    "primaryCta": "Meld interesse",
+    "secondaryCta": "Lær hvordan det fungerer",
+    "disclaimer": "Pilotinvitasjon + oppdateringer. Avslutt når som helst.",
+    "success": "Takk! Du står på listen. Vi tar kontakt når piloten åpner.",
+    "joinPilot": "Bli med i pilotkøen",
+    "modalTitle": "Få tidlig tilgang til Y-Link",
+    "modalDescription": "Meld interesse, så følger vi opp med piloter og oppdateringer.",
+    "close": "Lukk"
+  },
+  "home": {
+    "hero": {
+      "badge": "Pilotprogram åpent",
+      "title": "Profesjonell DMX-kontroll.",
+      "subtitle": "Bygget for live-opptredener.",
+      "body": "Y-Link gjør lyd om til presise lyssekvenser med stabil timing og live-kontroll. Laget for klubber, små scener og mobile oppsett der pålitelighet er kritisk."
+    },
+    "features": [
+      {
+        "title": "Automatiserte sekvenser",
+        "description": "Generer lys-cues fra lydanalyse. Ingen manuell programmering."
+      },
+      {
+        "title": "Presis timing",
+        "description": "BPM-låst avspilling med frasedeteksjon. Konsistent ytelse på tvers av økter."
+      },
+      {
+        "title": "Live rekkverk",
+        "description": "Overstyringer som bevarer timing og struktur. Trygge justeringer under show."
+      }
+    ],
+    "howItWorks": {
+      "eyebrow": "Systemarkitektur",
+      "title": "Fra lyd til lys",
+      "description": "Trestegs pipeline designet for pålitelighet og forutsigbarhet.",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Lydanalyse",
+          "description": "Henter tempo, fraser og energiprofil fra live- eller importert lyd."
+        },
+        {
+          "step": "02",
+          "title": "Sekvensgenerering",
+          "description": "Genererer cues, overganger og intensitetskurver mappet til musikkstrukturen."
+        },
+        {
+          "step": "03",
+          "title": "Live avspilling",
+          "description": "Kjører sekvenser med sanntidsjusteringer. Rekkverk bevarer timing og sammenheng."
+        }
+      ]
+    },
+    "engineering": {
+      "eyebrow": "Ingeniørfokus",
+      "title": "Bygget for stabilitet",
+      "description": "Målt i pilotutplasseringer på tvers av flere venue-typer. Optimalisert for lav latency, repeterbar output og oppetid.",
+      "points": [
+        "Lav-latens DMX-output med jitter-demping",
+        "Deterministisk sekvensgenerering",
+        "Robust feilhåndtering og recovery",
+        "Sanntidsovervåkning av ytelse"
+      ]
+    },
+    "runtimeGuarantees": {
+      "title": "Runtime-garantier",
+      "items": [
+        {
+          "title": "Deterministisk kjøring",
+          "description": "Lys-output følger en forutsigbar, ramme-konsistent kjøremodell. Ingen adaptive heuristikker under avspilling."
+        },
+        {
+          "title": "Begrenset latensbane",
+          "description": "Kontrollsignaler følger en fast pipeline fra scheduler til output uten ubegrenset buffering eller timing-drift."
+        },
+        {
+          "title": "Eksplisitte feiltilstander",
+          "description": "Feil vises som kjente tilstander, ikke stille degradering. Systemet feiler synlig og kan hente seg inn."
+        },
+        {
+          "title": "Sesjonsbundet kontroll",
+          "description": "Alle handlinger er knyttet til autentiserte sesjoner med tydelig eierskap og livsløp."
+        },
+        {
+          "title": "Repeterbar show-adferd",
+          "description": "Identiske input gir identisk lysoutput på tvers av kjøringer, venues og enheter."
+        }
+      ],
+      "helper": "Ingen prosenter, ingen pilotmålinger — kun runtime-reglene systemet følger."
+    },
+    "applications": {
+      "eyebrow": "Bruksområder",
+      "title": "Bygget for profesjonell bruk",
+      "cards": [
+        {
+          "title": "Klubber og venues",
+          "description": "Konsistente show med minimale bemanningskrav"
+        },
+        {
+          "title": "Mobile oppsett",
+          "description": "Rask utrulling for turneer og arrangementer"
+        },
+        {
+          "title": "Små scener",
+          "description": "Profesjonell automatisering uten dedikert lysoperatør"
+        }
+      ],
+      "cta": "Se detaljerte bruksområder"
+    },
+    "cta": {
+      "title": "Bli med i pilotprogrammet",
+      "description": "Begrensede plasser for tidlig tilgang. Vi jobber med utvalgte venues for å finjustere plattformen.",
+      "button": "Søk pilottilgang"
+    }
+  },
+  "about": {
+    "metadata": {
+      "title": "Om Y-Link",
+      "description": "AI-drevet DMX-kontroller for musikkdrevne venues. Hvorfor den finnes, hvem den er for, og hvordan den virker."
+    },
+    "breadcrumb": "Om",
+    "hero": {
+      "label": "Om",
+      "title": "AI-drevet DMX-kontroller",
+      "subtitle": "for musikkstyrte venues",
+      "body": "Y-Link lager lyssekvenser automatisk fra musikk – med presis timing, rekkverk og operatørkontroll. Bygget for klubber, små scener og mobile oppsett som trenger forutsigbare show.",
+      "secondary": "Slik fungerer det"
+    },
+    "why": {
+      "title": "Hvorfor Y-Link",
+      "points": [
+        "Mindre bemanning, høyere tempo.",
+        "Show som treffer hver gang – ikke tilfeldige effekter.",
+        "Raskt oppsett for små venues og mobile rigger."
+      ],
+      "note": "Målet er at solide lyssekvenser skal være standard, ikke et sideprosjekt."
+    },
+    "how": {
+      "title": "Slik fungerer det",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Lyd inn",
+          "body": "Importer spillelister eller bruk live-lyd. Systemet henter tempo, fraser og energi."
+        },
+        {
+          "step": "02",
+          "title": "Planlagte sekvenser",
+          "body": "AI bygger cues, overganger og rekkverk som følger musikken og riggen din."
+        },
+        {
+          "step": "03",
+          "title": "Live med kontroll",
+          "body": "Operatør kan overstyre mens systemet bevarer struktur og timing-stabilitet."
+        }
+      ]
+    },
+    "who": {
+      "title": "Hvem det passer for",
+      "audiences": ["Klubb/Venue", "Små scener", "Utleie/arrangement", "Mobile rigger", "Operatører som sparer tid"],
+      "ctaPrefix": "Se detaljer i",
+      "ctaUseCases": "bruksområder",
+      "ctaConnector": "eller les",
+      "ctaHow": "hvordan systemet fungerer"
+    },
+    "cta": {
+      "title": "Vil du være tidlig?",
+      "description": "Meld interesse for piloten. Vi kontakter et begrenset antall først."
+    }
+  },
+  "technical": {
+    "metadata": {
+      "title": "Teknisk oversikt",
+      "description": "Hvordan Y-Link analyserer lyd, planlegger cues, budsjetterer latency og leverer sikker DMX-output."
+    },
+    "breadcrumb": "Teknisk",
+    "hero": {
+      "label": "Teknisk",
+      "title": "AI-basert DMX med lav latency, forutsigbar avspilling og sikkerhet",
+      "body": "Y-Link analyserer lyd, genererer cues og leverer DMX innen strenge tidskrav. Runtime er tunet for stabil latency og tydelige overstyringer som holder showet synkronisert."
+    },
+    "pipeline": {
+      "title": "Pipeline",
+      "items": [
+        "Lydanalyse for tempo, fraser, energi og endringer.",
+        "Planner bygger cues, overganger og rekkverk per rigg.",
+        "Output valideres mot latency-budsjett og sikkerhetsgrenser."
+      ]
+    },
+    "safety": {
+      "title": "Sikkerhet og kontroll",
+      "body": "Operatører har låser for intensitet, blackout-regler og mulighet til å overstyre. Rekkverk hindrer tilfeldige hopp selv ved live-justeringer.",
+      "latencyGuide": "Guide for latency og jitter",
+      "pilot": "Bli med i piloten"
+    }
+  },
+  "pilot": {
+    "metadata": {
+      "title": "Pilotprogram",
+      "description": "Valider stabilitet, timing og brukervennlighet i ekte venues gjennom en kontrollert, tidsbegrenset pilot."
+    },
+    "breadcrumb": "Pilot",
+    "hero": {
+      "badge": "Begrensede plasser",
+      "title": "Pilotprogram",
+      "subtitle": "Kontrollert utrulling i ekte venues",
+      "body": "Formålet er å validere stabilitet, timing og brukervennlighet i ekte show, med strukturert teknisk og operasjonell feedback. Dette er en kontrollert pilot, ikke en åpen beta.",
+      "cta": "Søk pilottilgang"
+    },
+    "whatIs": {
+      "title": "Hva piloten er",
+      "items": [
+        "Validere stabilitet, timing og drift i ekte venue-miljøer.",
+        "Samle strukturert teknisk og operasjonell feedback.",
+        "Kontrollert pilot med få partnere – ikke en åpen beta.",
+        "Tidsbegrenset periode: omtrent 4–8 uker.",
+        "Y1-hardware lånes ut, eies av Y-Link og returneres etter piloten."
+      ]
+    },
+    "whatNot": {
+      "title": "Hva den ikke er",
+      "items": ["Ikke et ferdig kommersielt produkt.", "Ingen gratis hardware-giveaway.", "Ingen full produksjonsdekning – fokuset er pilotverifisering."]
+    },
+    "partnersGet": {
+      "title": "Hva pilotpartnere får",
+      "items": [
+        "Midlertidig lån av Y1-hardware (pilot-/pre-produksjonsenhet)",
+        "Full tilgang til Y-Link Studio under pilotperioden",
+        "Musikkreaktivt AI-lys med deterministisk avspilling",
+        "Hjelp til oppsett og direkte dialog med teamet",
+        "Løpende programvareoppdateringer gjennom piloten"
+      ]
+    },
+    "expectations": {
+      "title": "Hva vi forventer",
+      "items": [
+        "Bruk i faktiske show eller arrangementer",
+        "Tilbakemelding på stabilitet, timing og show-kvalitet",
+        "Vilje til korte feedback-samtaler",
+        "Valgfritt: samtykke til anonym pilotcase"
+      ]
+    },
+    "cta": {
+      "title": "Klar for å bli pilotpartner?",
+      "body": "Én kontaktperson, rask feedback og oppdateringer gjennom hele pilotperioden.",
+      "primary": "Søk nå",
+      "secondary": "Se hvordan systemet fungerer"
+    }
+  },
+  "faq": {
+    "metadata": {
+      "title": "FAQ",
+      "description": "Vanlige spørsmål om Y-Link, den AI-drevne DMX-kontrolleren, pilotprogrammet og e-postpreferanser."
+    },
+    "breadcrumb": "FAQ",
+    "hero": {
+      "label": "Support",
+      "title": "Ofte stilte spørsmål",
+      "body": "Få klarhet i hva som automatiseres, hvordan operatører beholder kontrollen, og hvordan du melder deg på eller av."
+    },
+    "items": [
+      {
+        "q": "Hva automatiserer AI-en?",
+        "a": "Kontrolleren analyserer lyd for tempo, fraser og energi. Den bygger cues, overganger og rekkverk som følger låten uten manuell programmering."
+      },
+      {
+        "q": "Kan operatører fortsatt styre riggen?",
+        "a": "Ja. Operatører kan godkjenne looks, låse intensitet, øve seksjoner og overstyre automasjon. Målet er forutsigbar avspilling med menneskelig kontroll."
+      },
+      {
+        "q": "Hvordan håndteres latency?",
+        "a": "Hvert steg har et budsjett, og avspilling valideres før output. Runtime er tunet for lav jitter i klubber og mindre venues."
+      },
+      {
+        "q": "Hvilke lamper og univers støttes?",
+        "a": "Vi retter oss mot vanlige DMX-univers med profiler for klubber og små venues. Univers-planlegging og metningssjekker kjøres før avspilling."
+      },
+      {
+        "q": "Hvordan blir jeg med i piloten eller forhåndsbestiller?",
+        "a": "Bruk skjemaet på forsiden eller pilotsiden. Piloten er tidsbegrenset (ca. 4–8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
+      },
+      {
+        "q": "Hvordan avslutter jeg e-poster?",
+        "a": "Hver e-post har en avmeldingslenke. Du kan også besøke /unsubscribe?token=<din-token> for å fjerne adressen umiddelbart."
+      }
+    ]
+  },
+  "privacy": {
+    "metadata": {
+      "title": "Personvern",
+      "description": "Hvordan Y-Link håndterer kontaktdata for piloter, forhåndsinteresse og oppdateringer."
+    },
+    "breadcrumb": "Personvern",
+    "hero": {
+      "label": "Personvern",
+      "title": "Slik håndterer vi data"
+    },
+    "body": [
+      "Vi samler navn (valgfritt), e-post og valgt interesse slik at vi kan sende Y-Link-oppdateringer, koordinere pilottilgang eller følge opp forhåndsinteresse.",
+      "Data lagres sikkert i Supabase. E-poster inneholder en avmeldingslenke som stopper videre kommunikasjon umiddelbart. Vi selger eller deler ikke kontaktinformasjon med tredjeparter.",
+      "For å slette data, send en e-post til hello@y-link.no så fjerner vi oppføringen."
+    ],
+    "email": "hello@y-link.no"
+  },
+  "access": {
+    "metadata": {
+      "title": "Pilottilgang",
+      "description": "Innlogging med invitasjon for godkjente pilotdeltakere."
+    },
+    "hero": {
+      "label": "Pilottilgang",
+      "title": "Logg inn med invitasjon",
+      "body": "Kun godkjente piloter. Krever e-post registrert hos oss og gyldig invitasjonskode. Ingen passord eller konto nødvendig."
+    },
+    "form": {
+      "emailLabel": "E-post",
+      "emailPlaceholder": "pilot@domene.no",
+      "codeLabel": "Invitasjonskode",
+      "codePlaceholder": "Kode fra Y-Link",
+      "submit": "Få tilgang"
+    },
+    "footer": {
+      "questions": "Spørsmål?",
+      "pilotLink": "Les om pilotprogrammet"
+    },
+    "loading": "Laster..."
+  },
+  "unsubscribe": {
+    "metadata": {
+      "title": "Avslutt e-poster",
+      "description": "Meld deg av oppdateringer fra Y-Link."
+    },
+    "hero": {
+      "label": "E-postpreferanser",
+      "title": "Avslutt abonnement"
+    },
+    "messages": {
+      "invalid": "Lenken er ikke gyldig.",
+      "error": "Noe gikk galt. Prøv igjen senere.",
+      "expired": "Lenken er utløpt eller allerede brukt.",
+      "success": "Du er meldt av Y-Link-eposter."
+    },
+    "cta": {
+      "question": "Meldt av ved en feil?",
+      "link": "Registrer deg igjen på forsiden"
+    }
+  },
+  "aiDmx": {
+    "metadata": {
+      "title": "AI DMX-kontroller",
+      "description": "Y-Link gjør lyd om til forutsigbart, musikkstyrt lys med lav latency og rekkverk."
+    },
+    "breadcrumb": "AI DMX-kontroller",
+    "hero": {
+      "label": "Plattform",
+      "title": "AI DMX-kontroller",
+      "subtitle": "for musikkreaktivt lys",
+      "body": "Y-Link gjør lyd om til lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og operatørkontroll gjør showet forutsigbart i stedet for tilfeldig.",
+      "tags": ["AI DMX-kontroller", "Musikkreaktiv", "Lav latency"]
+    },
+    "how": {
+      "title": "Slik fungerer det",
+      "steps": [
+        { "step": "01", "title": "Lydinn", "body": "Last opp musikk eller bruk live-lyd. Systemet fanger tempo, fraser og energi." },
+        { "step": "02", "title": "Planlegging", "body": "AI planlegger cues, overganger og sikkerhetsgrenser tilpasset riggen din." },
+        { "step": "03", "title": "Deterministisk avspilling", "body": "Signaler tidssettes og overvåkes før output. Latency-budsjett håndheves live." }
+      ]
+    },
+    "who": {
+      "title": "Hvem det er for",
+      "items": [
+        "Klubber og barer som vil ha musikkreaktivt lys uten manuell programmering.",
+        "Små scener og installasjoner med lite bemanning men timingkrav.",
+        "Mobile rigger som trenger rask rigging og forutsigbar avspilling.",
+        "Operatører som vil ha rekkverk og mulighet til å overstyre når som helst."
+      ],
+      "club": "bruk for klubber",
+      "smallVenue": "automatisering i små venues"
+    },
+    "setup": {
+      "title": "Krav til oppsett",
+      "items": [
+        "Lydopplasting eller live-feed",
+        "Fixture-liste og universer for planlegging og sikkerhet",
+        "Nettverk for oppdateringer og fjernmonitorering",
+        "Operatørgrensesnitt (desktop eller iPad)"
+      ],
+      "note": "Timing og metning valideres før show slik at øving matcher live."
+    },
+    "cta": {
+      "title": "Neste steg",
+      "body": "Trenger du musikkreaktivt lys med forutsigbar timing? Bli med i piloten, så dokumenterer vi latency i riggen din og finjusterer rekkverkene.",
+      "primary": "Søk pilot",
+      "secondary": "Les om latency og jitter"
+    }
+  }
+}

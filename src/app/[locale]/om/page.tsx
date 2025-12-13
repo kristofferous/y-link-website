@@ -1,46 +1,63 @@
-import Link from "next/link"
-import type { Metadata } from "next"
-import { Breadcrumbs } from "@/components/Breadcrumbs"
-import { InterestCtaButton } from "@/components/InterestCtaButton"
+import Link from "next/link";
+import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { InterestCtaButton } from "@/components/InterestCtaButton";
+import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
+import { prefixLocale } from "@/lib/i18n/routing";
 
-export const metadata: Metadata = {
-  title: "Om Y-Link",
-  description:
-    "AI-drevet DMX-kontroller for musikkdrevne venues. Se hvorfor, hvem det passer for, og hvordan det fungerer.",
-  alternates: {
-    canonical: "/om",
-  },
+type AboutPageProps = {
+  params: { locale: AppLocale };
+};
+
+export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
+  const locale = normalizeLocale(params.locale);
+  const dictionary = await getDictionary(locale);
+
+  return {
+    title: dictionary.about.metadata.title,
+    description: dictionary.about.metadata.description,
+    alternates: {
+      canonical: prefixLocale(locale, "/om"),
+    },
+  };
 }
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: AboutPageProps) {
+  const locale = normalizeLocale(params.locale);
+  const dictionary = await getDictionary(locale);
+  const { about, actions, navigation } = dictionary;
+
   return (
     <main>
       <section className="section-spacing">
         <div className="container-custom">
-          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "About" }]} className="mb-8" />
+          <Breadcrumbs
+            items={[
+              { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
+              { label: about.breadcrumb },
+            ]}
+            className="mb-8"
+          />
           <div className="mx-auto max-w-4xl space-y-6">
-            <p className="text-label text-muted-foreground">About</p>
+            <p className="text-label text-muted-foreground">{about.hero.label}</p>
             <h1 className="text-display text-foreground">
-              AI-Powered DMX Controller
+              {about.hero.title}
               <br />
-              <span className="text-muted-foreground">for Music-Driven Venues</span>
+              <span className="text-muted-foreground">{about.hero.subtitle}</span>
             </h1>
-            <p className="text-body-lg text-muted-foreground prose-constrained">
-              Y-Link generates lighting sequences automatically from music - with precise timing, guardrails, and
-              operator control. Made for clubs, small stages, and mobile setups that need predictable shows.
-            </p>
+            <p className="text-body-lg text-muted-foreground prose-constrained">{about.hero.body}</p>
             <div className="flex flex-wrap items-center gap-4">
               <InterestCtaButton
                 context="about-hero"
                 className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Express Interest
+                {actions.expressInterest}
               </InterestCtaButton>
               <a
                 href="#how"
                 className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
               >
-                How it works
+                {about.hero.secondary}
               </a>
             </div>
           </div>
@@ -51,22 +68,16 @@ export default function AboutPage() {
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
           <div className="rounded-lg border border-border/40 bg-card p-8 md:p-12">
-            <h2 className="text-heading mb-6 text-foreground">Why Y-Link</h2>
+            <h2 className="text-heading mb-6 text-foreground">{about.why.title}</h2>
             <div className="grid gap-6 md:grid-cols-3">
-              {[
-                "Less staffing, higher tempo.",
-                "Shows that land every time - not random effects.",
-                "Fast setup for small venues and mobile rigs.",
-              ].map((item) => (
+              {about.why.points.map((item) => (
                 <div key={item} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                   <p className="text-body text-muted-foreground">{item}</p>
                 </div>
               ))}
             </div>
-            <p className="mt-6 text-sm text-muted-foreground">
-              The goal is to make solid lighting sequences the standard, not a side project.
-            </p>
+            <p className="mt-6 text-sm text-muted-foreground">{about.why.note}</p>
           </div>
         </div>
       </section>
@@ -74,25 +85,9 @@ export default function AboutPage() {
       {/* How It Works */}
       <section className="section-spacing border-t border-border/40" id="how">
         <div className="container-custom">
-          <h2 className="text-heading mb-8 text-foreground">How It Works</h2>
+          <h2 className="text-heading mb-8 text-foreground">{about.how.title}</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                step: "01",
-                title: "Audio In",
-                body: "Import playlists or use live audio. The system extracts tempo, phrases, and energy.",
-              },
-              {
-                step: "02",
-                title: "Planned Sequences",
-                body: "AI builds cues, transitions, and guardrails that follow the music and your rig.",
-              },
-              {
-                step: "03",
-                title: "Live with Control",
-                body: "Operator can override while the system maintains structure and timing stability.",
-              },
-            ].map((item) => (
+            {about.how.steps.map((item) => (
               <div key={item.title} className="rounded-lg border border-border/40 bg-card p-6">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md border border-border/40 bg-background font-mono text-sm font-semibold text-foreground">
                   {item.step}
@@ -108,22 +103,28 @@ export default function AboutPage() {
       {/* Who It's For */}
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
-          <h2 className="text-heading mb-8 text-foreground">Who It's For</h2>
+          <h2 className="text-heading mb-8 text-foreground">{about.who.title}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {["Club/Venue", "Small Stages", "Rental/Event", "Mobile Rigs", "Operators Saving Time"].map((item) => (
+            {about.who.audiences.map((item) => (
               <div key={item} className="rounded-lg border border-border/40 bg-card px-5 py-4">
                 <p className="text-body font-medium text-foreground">{item}</p>
               </div>
             ))}
           </div>
           <p className="mt-6 text-sm text-muted-foreground">
-            See details in{" "}
-            <Link href="/use-cases" className="text-foreground underline underline-offset-4 hover:opacity-80">
-              use cases
+            {about.who.ctaPrefix}{" "}
+            <Link
+              href={prefixLocale(locale, "/use-cases")}
+              className="text-foreground underline underline-offset-4 hover:opacity-80"
+            >
+              {about.who.ctaUseCases}
             </Link>{" "}
-            or read{" "}
-            <Link href="/ai-dmx-controller" className="text-foreground underline underline-offset-4 hover:opacity-80">
-              how the system works
+            {about.who.ctaConnector}{" "}
+            <Link
+              href={prefixLocale(locale, "/ai-dmx-controller")}
+              className="text-foreground underline underline-offset-4 hover:opacity-80"
+            >
+              {about.who.ctaHow}
             </Link>
             .
           </p>
@@ -135,20 +136,18 @@ export default function AboutPage() {
         <div className="container-custom">
           <div className="rounded-xl border border-border/40 bg-card p-8 md:p-12">
             <div className="mx-auto max-w-2xl space-y-6 text-center">
-              <h2 className="text-heading text-foreground">Want to Be Early?</h2>
-              <p className="text-body text-muted-foreground">
-                Express interest for the pilot. We contact a limited number first.
-              </p>
+              <h2 className="text-heading text-foreground">{about.cta.title}</h2>
+              <p className="text-body text-muted-foreground">{about.cta.description}</p>
               <InterestCtaButton
                 context="about-cta"
                 className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Express Interest
+                {actions.expressInterest}
               </InterestCtaButton>
             </div>
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }
