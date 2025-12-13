@@ -1,62 +1,78 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next"
+import Link from "next/link"
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "DMX-universer og skalering",
-  description: "Slik planlegger du universer og skalerer riggen uten å miste timing.",
+  title: "DMX Universes and Scaling",
+  description: "How to plan universes and scale the rig without losing timing.",
   alternates: {
     canonical: "/guides/dmx-universes",
   },
-};
+}
 
 export default function DMXUniversesPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Guider", href: "/guides" },
-            { label: "Universer og skalering" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Guides", href: "/guides" },
+              { label: "Universes and Scaling" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Guide</p>
+            <h1 className="text-heading-lg text-foreground">DMX Universes and Scaling</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Good universe planning ensures AI-generated signals maintain timing even as the rig grows.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Guide</p>
-          <h1 className="text-3xl font-bold text-neutral-950">DMX-universer og skalering</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            God universplanlegging sikrer at AI-genererte signaler holder timing selv når riggen vokser.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl space-y-8">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Distribute the Load</h2>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Keep universes under safe utilization; avoid pushing to 512 on busy shows.",
+                  "Distribute power consumption and cable routes to minimize noise and loss.",
+                  "Plan reserved universes for temporary fixtures.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Fordel lasten</h2>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            <li>Hold universer under trygg utnyttelse; unngå å presse mot 512 på hektiske show.</li>
-            <li>Fordel strømforbruk og kabelveier for å minimere støy og tap.</li>
-            <li>Planlegg reserverte universer for midlertidige fixtures.</li>
-          </ul>
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Skalering</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Når du legger til universer, sørg for at kontrolleren og nodene støtter synkron klokke og overvåkning av
-            latency. Y-Link håndhever timing per univers, men trenger korrekt topologi.
-          </p>
-          <p className="text-sm text-neutral-800">
-            Les videre om{" "}
-            <Link href="/guides/dmx-latency-jitter" className="underline underline-offset-4 hover:text-neutral-900">
-              latency og jitter
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Scaling</h2>
+              <p className="text-body text-muted-foreground">
+                When adding universes, ensure the controller and nodes support synchronous clock and latency monitoring.
+                Y-Link enforces timing per universe, but needs correct topology.
+              </p>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Read more about{" "}
+                <Link
+                  href="/guides/dmx-latency-jitter"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  latency and jitter
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

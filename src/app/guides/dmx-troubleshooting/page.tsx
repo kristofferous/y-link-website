@@ -1,63 +1,84 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next"
+import Link from "next/link"
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "Feilsøking i DMX",
-  description: "Vanlige feil i DMX-rigger og hvordan du løser dem når AI driver lysløpene.",
+  title: "DMX Troubleshooting",
+  description: "Common errors in DMX rigs and how to solve them when AI drives the light sequences.",
   alternates: {
     canonical: "/guides/dmx-troubleshooting",
   },
-};
+}
 
 export default function DMXTroubleshootingPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Guider", href: "/guides" },
-            { label: "Feilsøking" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }, { label: "Guides", href: "/guides" }, { label: "Troubleshooting" }]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Guide</p>
+            <h1 className="text-heading-lg text-foreground">DMX Troubleshooting</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Typical problems and quick actions to keep the show stable.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Guide</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Feilsøking i DMX</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Typiske problemer og raske tiltak for å holde showet stabilt.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl space-y-8">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Common Errors</h2>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Signal drops: check cables, termination, and nodes.",
+                  "Wrong mapping: verify patch and addressing.",
+                  "Timing glitches: look for network load and node health.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Vanlige feil</h2>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            <li>Drops i signal: sjekk kabler, terminering og noder.</li>
-            <li>Feil mapping: verifiser patch og adressering.</li>
-            <li>Timingglipp: se etter nettverkslast og nodehelse.</li>
-          </ul>
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Rask sjekkliste</h2>
-          <ol className="list-decimal space-y-2 pl-5 text-base leading-7 text-neutral-800">
-            <li>Bekreft univers- og adressetildeling.</li>
-            <li>Sjekk at guardrails og sikkerhetsgrenser er aktive.</li>
-            <li>Restart noder ved feiltilstand, logg hendelsen.</li>
-          </ol>
-          <p className="text-sm text-neutral-800">
-            Trenger du grunnleggende? Start med{" "}
-            <Link href="/guides/dmx-basics" className="underline underline-offset-4 hover:text-neutral-900">
-              DMX-grunnlag
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Quick Checklist</h2>
+              <ol className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Confirm universe and address assignment.",
+                  "Check that guardrails and safety limits are active.",
+                  "Restart nodes on fault condition, log the event.",
+                ].map((item, index) => (
+                  <li key={item} className="flex gap-4">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/40 bg-accent text-sm font-semibold text-foreground">
+                      {index + 1}
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Need basics? Start with{" "}
+                <Link
+                  href="/guides/dmx-basics"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  DMX Basics
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

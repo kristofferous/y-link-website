@@ -1,69 +1,68 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "Bruksscenarier",
-  description: "Se hvordan Y-Link passer for klubber, små scener og team som vil automatisere lys uten å miste kontroll.",
+  description:
+    "Se hvordan Y-Link passer for klubber, små scener og team som vil automatisere lys uten å miste kontroll.",
   alternates: {
     canonical: "/use-cases",
   },
-};
+}
 
 const useCases = [
   {
-    title: "Musikkreaktivt DMX-lys for klubber",
+    title: "Music-Reactive DMX for Clubs",
     href: "/use-cases/music-reactive-dmx-clubs",
-    detail: "Hold dansegulvet synkronisert med lydkilden med forutsigbar timing.",
+    detail: "Keep the dance floor synchronized with the audio source with predictable timing.",
   },
   {
-    title: "Automatisert DMX for små scener",
+    title: "Automated DMX for Small Venues",
     href: "/use-cases/automated-dmx-small-venues",
-    detail: "Mindre manuell programmering, samme uttrykk kveld etter kveld.",
+    detail: "Less manual programming, same expression night after night.",
   },
   {
-    title: "Beat-synket lys uten programmering",
+    title: "Beat-Synced Lighting Without Programming",
     href: "/use-cases/beat-synced-lighting-without-programming",
-    detail: "Last opp låter, verifiser timing og gå live raskt med guardrails.",
+    detail: "Upload tracks, verify timing, and go live quickly with guardrails.",
   },
-];
+]
 
 export default function UseCasesPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Bruksscenarier" },
-          ]}
-        />
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Bruk</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Hvor Y-Link passer best</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Musikkreaktiv automasjon, lav latency og mulighet for operatør-override gjør Y-Link egnet der bemanningen er
-            slank og timing er kritisk.
-          </p>
-        </header>
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Use Cases" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Applications</p>
+            <h1 className="text-heading-lg text-foreground">Where Y-Link Fits Best</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Music-reactive automation, low latency, and operator override make Y-Link suitable where staffing is lean
+              and timing is critical.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <SectionCard className="grid gap-6 md:grid-cols-3">
-          {useCases.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="group space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)] transition hover:-translate-y-1 hover:shadow-[0_16px_40px_-28px_rgba(0,0,0,0.35)]"
-            >
-              <p className="text-sm font-semibold text-neutral-900 group-hover:text-neutral-950">{item.title}</p>
-              <p className="text-sm leading-6 text-neutral-800">{item.detail}</p>
-              <span className="text-xs font-semibold uppercase tracking-wide text-neutral-700">Les mer →</span>
-            </Link>
-          ))}
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-6 md:grid-cols-3">
+            {useCases.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-lg border border-border/40 bg-card p-6 transition-colors hover:bg-accent"
+              >
+                <h2 className="text-title mb-3 text-foreground">{item.title}</h2>
+                <p className="text-body mb-4 text-muted-foreground">{item.detail}</p>
+                <span className="text-label text-muted-foreground group-hover:text-foreground">Read more →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

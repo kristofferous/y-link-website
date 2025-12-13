@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { InterestCtaButton } from "@/components/InterestCtaButton";
-import { InterestSignup } from "@/components/InterestSignup";
-import { PageShell } from "@/components/PageShell";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
+import { InterestCtaButton } from "@/components/InterestCtaButton"
 
 export const metadata: Metadata = {
   title: "Pilotprogram",
@@ -12,118 +10,170 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/pilot",
   },
-};
+}
 
 export default function PilotPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-12">
-        <header className="section-block space-y-4">
-          <Breadcrumbs
-            items={[
-              { label: "Hjem", href: "/" },
-              { label: "Pilot" },
-            ]}
-          />
-          <p className="label-text text-sm text-neutral-800">Pilot</p>
-          <h1 className="heading-max text-3xl font-bold text-neutral-950 clamp-2">
-            Pilot: kontrollert utrulling i ekte venues
-          </h1>
-          <p className="content-max text-base leading-7 text-neutral-800 clamp-3">
-            Formålet er å validere stabilitet, timing og brukervennlighet i reelle show, med strukturert teknisk og
-            operasjonell tilbakemelding. Dette er en kontrollert pilot, ikke et åpent beta-giveaway.
-          </p>
-        </header>
-
-        <div className="section-block">
-          <InterestSignup
-            variant="hero"
-            title="Meld interesse – vi tar kontakt"
-            description="Pilotinvitasjon og oppdateringer. Legg igjen e-post, så følger vi opp."
-            contextSource="pilot-hero"
-          />
-        </div>
-
-        <div className="section-block grid gap-6 rounded-3xl bg-white p-6 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.35)] ring-1 ring-neutral-200 md:grid-cols-2">
-          <div className="space-y-3">
-            <p className="label-text text-xs font-semibold text-neutral-700 uppercase">Hva piloten er</p>
-            <h2 className="heading-max text-xl font-semibold text-neutral-900 clamp-2">Formål</h2>
-            <ul className="space-y-2 text-base leading-7 text-neutral-800">
-              <li>Validere stabilitet, timing og drift i ekte venue-miljøer.</li>
-              <li>Samle strukturert teknisk og operasjonell feedback.</li>
-              <li>Kontrollert pilot med få partnere – ikke en åpen beta.</li>
-            </ul>
-            <h3 className="text-sm font-semibold text-neutral-900">Struktur og rammer</h3>
-            <ul className="space-y-2 text-sm leading-6 text-neutral-800">
-              <li>Tidsbegrenset periode: ca. 4–8 uker.</li>
-              <li>Begrenset antall partnere (kurert gruppe).</li>
-              <li>Y1-hardware lånes ut, er Y-Link eiendom og returneres etter pilot.</li>
-              <li>Ikke dekket av full produksjons-SLA.</li>
-            </ul>
-          </div>
-          <div className="space-y-3 rounded-2xl bg-neutral-50 p-5 ring-1 ring-neutral-200">
-            <h2 className="heading-max text-xl font-semibold text-neutral-900 clamp-2">Dette er ikke</h2>
-            <ul className="space-y-2 text-base leading-7 text-neutral-800">
-              <li>Ikke et ferdig kommersielt produkt.</li>
-              <li>Ikke en gratis hardware-giveaway.</li>
-              <li>Ikke full produksjonsdekning – fokus er på pilotverifisering.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="section-block grid gap-6 rounded-3xl bg-white p-6 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.35)] ring-1 ring-neutral-200 md:grid-cols-2">
-          <div className="space-y-3">
-            <h2 className="heading-max text-xl font-semibold text-neutral-900 clamp-2">Hva pilotpartnere får</h2>
-            <ul className="space-y-2 text-base leading-7 text-neutral-800">
-              <li>Midlertidig lån av Y1-hardware (pilot-/pre-produksjonsenhet).</li>
-              <li>Full tilgang til Y-Link Studio i pilotperioden.</li>
-              <li>Musikkreaktiv AI-belysning med deterministisk avspilling.</li>
-              <li>Oppsettshjelp og direkte dialog med teamet.</li>
-              <li>Løpende programvareoppdateringer gjennom piloten.</li>
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <h2 className="heading-max text-xl font-semibold text-neutral-900 clamp-2">Hva vi forventer</h2>
-            <ul className="space-y-2 text-base leading-7 text-neutral-800">
-              <li>Bruk i ekte show eller arrangementer.</li>
-              <li>Tilbakemelding på stabilitet, timing og showkvalitet.</li>
-              <li>Vilje til korte tilbakemeldingsøkter.</li>
-              <li>Valgfritt: samtykke til anonymt pilotcase.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="section-block space-y-4 rounded-3xl bg-neutral-50 p-6 ring-1 ring-neutral-200">
-          <h2 className="heading-max text-xl font-semibold text-neutral-900 clamp-2">Oppsummert omfang</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Piloten er tidsavgrenset, kurert og fokusert på måling av stabilitet og timing. Hardware lånes ut og
-            returneres. Partnerne får tett oppfølging, men dette er ikke et ferdig produkt eller gratis utstyr.
-          </p>
-          <div className="flex flex-wrap gap-3 text-sm font-semibold text-neutral-900">
-            <Link href="/ai-dmx-controller" className="underline underline-offset-4 hover:text-neutral-700">
-              Se hvordan systemet fungerer
-            </Link>
-            <Link href="/use-cases" className="underline underline-offset-4 hover:text-neutral-700">
-              Bruksscenarier
-            </Link>
-          </div>
-        </div>
-
-        <div className="section-block">
-          <div className="flex flex-col gap-3 rounded-3xl bg-neutral-900 p-6 text-white shadow-[0_16px_50px_-36px_rgba(0,0,0,0.5)] ring-1 ring-neutral-800">
-            <h2 className="heading-max text-xl font-semibold text-white clamp-2">Klar til å bli pilotpartner?</h2>
-            <p className="text-sm text-white/80">
-              Én kontaktflate, raske tilbakemeldinger og oppdateringer gjennom pilotperioden.
+    <main>
+      {/* Hero */}
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Pilot" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border/40 bg-accent px-4 py-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              <span className="text-label text-muted-foreground">Limited Slots</span>
+            </div>
+            <h1 className="text-display text-foreground">
+              Pilot Program
+              <br />
+              <span className="text-muted-foreground">Controlled Rollout in Real Venues</span>
+            </h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              The purpose is to validate stability, timing, and usability in real shows, with structured technical and
+              operational feedback. This is a controlled pilot, not an open beta giveaway.
             </p>
             <InterestCtaButton
-              context="pilot-footer"
-              className="inline-flex w-fit items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white"
+              context="pilot-hero"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              Meld interesse
+              Apply for Pilot Access
             </InterestCtaButton>
           </div>
         </div>
-      </div>
-    </PageShell>
-  );
+      </section>
+
+      {/* What It Is / What It Isn't */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-6 text-foreground">What the Pilot Is</h2>
+              <ul className="space-y-4 text-body text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Validate stability, timing, and operation in real venue environments.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Collect structured technical and operational feedback.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Controlled pilot with few partners - not an open beta.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Time-limited period: approximately 4-8 weeks.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Y1 hardware loaned out, Y-Link property, returned after pilot.
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-lg border border-border/40 bg-accent p-8">
+              <h2 className="text-heading mb-6 text-foreground">What It Is Not</h2>
+              <ul className="space-y-4 text-body text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                  Not a finished commercial product.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                  Not a free hardware giveaway.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                  Not full production coverage - focus is on pilot verification.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What Partners Get / What We Expect */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="space-y-6">
+              <h2 className="text-heading text-foreground">What Pilot Partners Get</h2>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Temporary loan of Y1 hardware (pilot/pre-production unit)",
+                  "Full access to Y-Link Studio during pilot period",
+                  "Music-reactive AI lighting with deterministic playback",
+                  "Setup assistance and direct dialogue with the team",
+                  "Ongoing software updates throughout the pilot",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                      <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-6">
+              <h2 className="text-heading text-foreground">What We Expect</h2>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Use in real shows or events",
+                  "Feedback on stability, timing, and show quality",
+                  "Willingness for short feedback sessions",
+                  "Optional: consent for anonymous pilot case study",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                      <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="rounded-xl border border-border/40 bg-card p-8 md:p-12">
+            <div className="mx-auto max-w-2xl space-y-6 text-center">
+              <h2 className="text-heading text-foreground">Ready to Become a Pilot Partner?</h2>
+              <p className="text-body text-muted-foreground">
+                One point of contact, quick feedback, and updates throughout the pilot period.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <InterestCtaButton
+                  context="pilot-footer"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  Apply Now
+                </InterestCtaButton>
+                <Link
+                  href="/ai-dmx-controller"
+                  className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  See how the system works
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

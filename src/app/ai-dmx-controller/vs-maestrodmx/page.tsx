@@ -1,78 +1,97 @@
-import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import type { Metadata } from "next"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "Y-Link vs MaestroDMX",
-  description: "Kort sammenligning av Y-Link og MaestroDMX for musikkreaktivt lys.",
+  description: "Brief comparison of Y-Link and MaestroDMX for music-reactive lighting.",
   alternates: {
     canonical: "/ai-dmx-controller/vs-maestrodmx",
   },
-};
+}
 
 const comparison = [
   {
-    label: "Fokus",
-    ylink: "AI-planlagte lysløp med guardrails og lav latency.",
-    maestro: "Audioanalyse og automasjon for DJ-sett.",
+    label: "Focus",
+    ylink: "AI-planned light sequences with guardrails and low latency.",
+    maestro: "Audio analysis and automation for DJ sets.",
   },
   {
-    label: "Operatørkontroll",
-    ylink: "Godkjenninger, låser og overstyring uten å miste struktur.",
-    maestro: "DJ-orientert workflow med mer manuell styring.",
+    label: "Operator Control",
+    ylink: "Approvals, locks, and override without losing structure.",
+    maestro: "DJ-oriented workflow with more manual control.",
   },
   {
-    label: "Passer best for",
-    ylink: "Klubber/små scener med liten bemanning som trenger forutsigbarhet.",
-    maestro: "DJ-fokuserte rom som vil trigge lys direkte fra musikken.",
+    label: "Best For",
+    ylink: "Clubs/small venues with minimal staffing needing predictability.",
+    maestro: "DJ-focused rooms wanting to trigger lights directly from music.",
   },
-];
+]
 
 export default function VsMaestroPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "AI DMX-kontroller", href: "/ai-dmx-controller" },
-            { label: "Y-Link vs MaestroDMX" },
-          ]}
-        />
-
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Sammenligning</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Y-Link vs MaestroDMX</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            To ulike tilnærminger til musikkreaktivt lys. Slik skiller de seg.
-          </p>
-        </header>
-
-        <SectionCard className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-[1fr_1fr_1fr]">
-            <div className="text-sm font-semibold text-neutral-700">Kriterium</div>
-            <div className="text-sm font-semibold text-neutral-700">Y-Link</div>
-            <div className="text-sm font-semibold text-neutral-700">MaestroDMX</div>
-            {comparison.map((row) => (
-              <>
-                <div key={`${row.label}-label`} className="rounded-2xl bg-neutral-50 p-3 text-sm font-semibold text-neutral-900">
-                  {row.label}
-                </div>
-                <div className="rounded-2xl bg-white p-3 text-sm text-neutral-800 ring-1 ring-neutral-200">{row.ylink}</div>
-                <div className="rounded-2xl bg-white p-3 text-sm text-neutral-800 ring-1 ring-neutral-200">{row.maestro}</div>
-              </>
-            ))}
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "AI DMX Controller", href: "/ai-dmx-controller" },
+              { label: "Y-Link vs MaestroDMX" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Comparison</p>
+            <h1 className="text-heading-lg text-foreground">Y-Link vs MaestroDMX</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Two different approaches to music-reactive lighting. Here's how they differ.
+            </p>
           </div>
-          <p className="text-sm text-neutral-800">
-            For detaljer om Y-Link, se hovedsiden for{" "}
-            <a href="/ai-dmx-controller" className="underline underline-offset-4 hover:text-neutral-900">
-              AI DMX-kontrolleren
-            </a>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+        </div>
+      </section>
+
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-4xl">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="text-label font-semibold text-muted-foreground">Criterion</div>
+                <div className="text-label font-semibold text-muted-foreground">Y-Link</div>
+                <div className="text-label font-semibold text-muted-foreground">MaestroDMX</div>
+                {comparison.map((row, index) => (
+                  <>
+                    <div
+                      key={`${row.label}-label-${index}`}
+                      className="rounded-lg bg-accent p-4 text-sm font-semibold text-foreground"
+                    >
+                      {row.label}
+                    </div>
+                    <div
+                      key={`${row.label}-ylink-${index}`}
+                      className="rounded-lg border border-border/40 bg-background p-4 text-sm text-muted-foreground"
+                    >
+                      {row.ylink}
+                    </div>
+                    <div
+                      key={`${row.label}-maestro-${index}`}
+                      className="rounded-lg border border-border/40 bg-background p-4 text-sm text-muted-foreground"
+                    >
+                      {row.maestro}
+                    </div>
+                  </>
+                ))}
+              </div>
+              <p className="mt-6 text-sm text-muted-foreground">
+                For details on Y-Link, see the main page for the{" "}
+                <a href="/ai-dmx-controller" className="text-foreground underline underline-offset-4 hover:opacity-80">
+                  AI DMX Controller
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

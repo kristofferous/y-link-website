@@ -1,96 +1,109 @@
-import Link from "next/link";
-import type { Metadata } from "next";
+import Link from "next/link"
+import type { Metadata } from "next"
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "Alternativer til AI DMX-kontrolleren",
-  description:
-    "Sammenlign Y-Link med andre musikkreaktive og AI-drevne lysløsninger for å velge riktig verktøy.",
+  title: "Alternatives to AI DMX Controller",
+  description: "Compare Y-Link with other music-reactive and AI-driven lighting solutions.",
   alternates: {
     canonical: "/ai-dmx-controller/alternatives",
   },
-};
+}
 
 const options = [
   {
     name: "Y-Link",
-    focus: "AI-drevet, musikkreaktivt DMX med lav latency og guardrails for operatør.",
-    bestFor: "Klubber, små scener og mobile rigs med liten bemanning.",
+    focus: "AI-driven, music-reactive DMX with low latency and operator guardrails.",
+    bestFor: "Clubs, small venues, and mobile rigs with minimal staffing.",
   },
   {
     name: "MaestroDMX",
-    focus: "Lydanalyse og lysautomasjon for DJ-sett.",
-    bestFor: "DJ-fokuserte oppsett der musikkcues styrer scenene.",
+    focus: "Audio analysis and lighting automation for DJ sets.",
+    bestFor: "DJ-focused setups where music cues drive the scenes.",
   },
   {
     name: "Lightkey (sound active)",
-    focus: "Manuell programmering + lydtriggere på macOS.",
-    bestFor: "Operatører som vil ha dyp manuell kontroll med enkel lydrespons.",
+    focus: "Manual programming + audio triggers on macOS.",
+    bestFor: "Operators wanting deep manual control with simple audio response.",
   },
   {
-    name: "Onyx + tilleggsmoduler",
-    focus: "Full konsoll med valgfrie lydtriggere.",
-    bestFor: "Større rigger med dedikerte LD-er som likevel vil følge musikk.",
+    name: "Onyx + add-on modules",
+    focus: "Full console with optional audio triggers.",
+    bestFor: "Larger rigs with dedicated LDs who still want to follow music.",
   },
-];
+]
 
 const selectionCriteria = [
-  "Latency og jitter under full last.",
-  "Hvor tydelig guardrails er for operatør.",
-  "Hvor raskt riggdata kan patches og valideres.",
-  "Mulighet til å overstyre live uten at automasjon bryter sammen.",
-];
+  "Latency and jitter under full load.",
+  "How clear guardrails are for the operator.",
+  "How quickly rig data can be patched and validated.",
+  "Ability to override live without automation breaking down.",
+]
 
 export default function AlternativesPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "AI DMX-kontroller", href: "/ai-dmx-controller" },
-            { label: "Alternativer" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "AI DMX Controller", href: "/ai-dmx-controller" },
+              { label: "Alternatives" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Comparison</p>
+            <h1 className="text-heading-lg text-foreground">Alternatives to Y-Link</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Use this overview to evaluate whether you need AI automation with guardrails, or a more traditional
+              console with audio triggers.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Sammenligning</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Alternativer til Y-Link</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Bruk denne oversikten til å vurdere om du trenger AI-automasjon med guardrails, eller en mer tradisjonell
-            konsoll med lydtriggere.
-          </p>
-        </header>
-
-        <SectionCard className="grid gap-6 md:grid-cols-2">
-          {options.map((opt) => (
-            <div key={opt.name} className="space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]">
-              <p className="text-sm font-semibold text-neutral-900">{opt.name}</p>
-              <p className="text-sm leading-6 text-neutral-800">{opt.focus}</p>
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-700">{opt.bestFor}</p>
-            </div>
-          ))}
-        </SectionCard>
-
-        <SectionCard className="space-y-3">
-          <h2 className="text-xl font-semibold text-neutral-900">Hva du bør vurdere</h2>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            {selectionCriteria.map((item) => (
-              <li key={item}>{item}</li>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-6 md:grid-cols-2">
+            {options.map((opt) => (
+              <div key={opt.name} className="rounded-lg border border-border/40 bg-card p-6 space-y-3">
+                <p className="text-title text-foreground">{opt.name}</p>
+                <p className="text-body text-muted-foreground">{opt.focus}</p>
+                <p className="text-label text-muted-foreground">{opt.bestFor}</p>
+              </div>
             ))}
-          </ul>
-          <p className="text-sm text-neutral-800">
-            Se også{" "}
-            <Link href="/ai-dmx-controller/vs-maestrodmx" className="underline underline-offset-4 hover:text-neutral-900">
-              Y-Link vs MaestroDMX
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl rounded-lg border border-border/40 bg-card p-8">
+            <h2 className="text-heading mb-6 text-foreground">What to Consider</h2>
+            <ul className="space-y-3 text-body text-muted-foreground">
+              {selectionCriteria.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm text-muted-foreground">
+              See also{" "}
+              <Link
+                href="/ai-dmx-controller/vs-maestrodmx"
+                className="text-foreground underline underline-offset-4 hover:opacity-80"
+              >
+                Y-Link vs MaestroDMX
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

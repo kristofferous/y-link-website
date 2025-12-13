@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "Musikkreaktivt DMX-lys for klubber",
@@ -11,96 +8,115 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/use-cases/music-reactive-dmx-clubs",
   },
-};
+}
 
 export default function MusicReactiveClubsPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Bruksscenarier", href: "/use-cases" },
-            { label: "Musikkreaktive klubber" },
-          ]}
-        />
-
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Bruksscenario</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Musikkreaktivt DMX-lys for klubber</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Lever et stramt, musikkstyrt show uten å programmere hver låt for hånd. Y-Link analyserer lyd og styrer DMX
-            med lav latency, slik at operatøren kan følge rommet i stedet for konsollen.
-          </p>
-        </header>
-
-        <SectionCard className="grid gap-6 md:grid-cols-2">
-          {[
-            {
-              title: "Lydstyrte cues",
-              body: "Last opp spillelister eller bruk en live-miks. Kontrolleren følger tempo, frasering og energi.",
-            },
-            {
-              title: "Forutsigbar timing",
-              body: "Latency-budsjett overvåkes. Ingen overraskelser når rommet fylles og lasten endres.",
-            },
-            {
-              title: "Guardrails for operatør",
-              body: "Grenser for intensitet, blackout-regler og godkjenninger holder riggen trygg.",
-            },
-            {
-              title: "Raske bytter",
-              body: "Repertoar kan øves, cues låses og spillelister byttes raskt mellom DJs.",
-            },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]"
-            >
-              <h2 className="text-base font-semibold text-neutral-900">{item.title}</h2>
-              <p className="text-sm leading-6 text-neutral-800">{item.body}</p>
-            </div>
-          ))}
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Slik setter du opp i klubb</h2>
-          <ol className="list-decimal space-y-2 pl-5 text-base leading-7 text-neutral-800">
-            <li>Del fixture-liste, universoppsett og rombegrensninger.</li>
-            <li>Last opp en start-spilleliste eller koble live lyd.</li>
-            <li>Kjør preflight for timing, saturering og sikkerhetsgrenser.</li>
-            <li>Øv deler, lås viktige looks og sett operatør-override.</li>
-            <li>Gå live med overvåkning; juster intensitet eller looks ved behov.</li>
-          </ol>
-          <p className="text-sm text-neutral-800">
-            Trenger du mer dybde? Les{" "}
-            <Link href="/ai-dmx-controller" className="underline underline-offset-4 hover:text-neutral-900">
-              hovedsiden for AI DMX-kontrolleren
-            </Link>{" "}
-            eller{" "}
-            <Link href="/ai-dmx-controller/alternatives" className="underline underline-offset-4 hover:text-neutral-900">
-              sammenlign alternativer
-            </Link>
-            .
-          </p>
-        </SectionCard>
-
-        <SectionCard className="space-y-3">
-          <h2 className="text-xl font-semibold text-neutral-900">Neste steg</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Hvis du trenger musikkreaktivt lys med forutsigbar timing, bli med i piloten. Vi validerer timing i ditt rom
-            og justerer guardrails til riggen din.
-          </p>
-          <div className="flex flex-wrap gap-3 text-sm text-neutral-900">
-            <Link href="/pilot" className="rounded-full bg-neutral-900 px-3 py-2 font-semibold text-white hover:bg-neutral-800">
-              Søk pilot
-            </Link>
-            <Link href="/guides/dmx-latency-jitter" className="font-semibold underline underline-offset-4 hover:text-neutral-700">
-              Les guiden om latency og jitter
-            </Link>
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Hjem", href: "/" },
+              { label: "Use Cases", href: "/use-cases" },
+              { label: "Music-Reactive Clubs" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Use Case</p>
+            <h1 className="text-heading-lg text-foreground">Music-Reactive DMX Lighting for Clubs</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Deliver a tight, music-driven show without programming each track by hand. Y-Link analyzes audio and
+              controls DMX with low latency, so the operator can follow the room instead of the console.
+            </p>
           </div>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+        </div>
+      </section>
+
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: "Audio-Driven Cues",
+                body: "Upload playlists or use a live mix. The controller follows tempo, phrasing, and energy.",
+              },
+              {
+                title: "Predictable Timing",
+                body: "Latency budget is monitored. No surprises when the room fills and load changes.",
+              },
+              {
+                title: "Guardrails for Operators",
+                body: "Intensity limits, blackout rules, and approvals keep the rig safe.",
+              },
+              {
+                title: "Quick Switches",
+                body: "Repertoire can be rehearsed, cues locked, and playlists swapped quickly between DJs.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-lg border border-border/40 bg-card p-6">
+                <h2 className="text-title mb-3 text-foreground">{item.title}</h2>
+                <p className="text-body text-muted-foreground">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-6 text-foreground">How to Set Up in a Club</h2>
+              <ol className="space-y-4 text-body text-muted-foreground">
+                {[
+                  "Share fixture list, universe setup, and room constraints.",
+                  "Upload a starter playlist or connect live audio.",
+                  "Run preflight for timing, saturation, and safety limits.",
+                  "Rehearse sections, lock important looks, and set operator override.",
+                  "Go live with monitoring; adjust intensity or looks as needed.",
+                ].map((item, index) => (
+                  <li key={item} className="flex gap-4">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/40 bg-accent text-sm font-semibold text-foreground">
+                      {index + 1}
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="rounded-xl border border-border/40 bg-card p-8 md:p-12">
+            <div className="mx-auto max-w-2xl space-y-6 text-center">
+              <h2 className="text-heading text-foreground">Next Steps</h2>
+              <p className="text-body text-muted-foreground">
+                If you need music-reactive lighting with predictable timing, join the pilot. We validate timing in your
+                room and adjust guardrails to your rig.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  href="/pilot"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  Apply for Pilot
+                </Link>
+                <Link
+                  href="/guides/dmx-latency-jitter"
+                  className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  Read the latency and jitter guide
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

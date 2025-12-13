@@ -1,90 +1,104 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next"
+import Link from "next/link"
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "Automatisert DMX for små scener",
-  description: "Reduser manuell programmering og få stabile show for små venues med Y-Link.",
+  title: "Automated DMX for Small Venues",
+  description: "Reduce manual programming and get stable shows for small venues with Y-Link.",
   alternates: {
     canonical: "/use-cases/automated-dmx-small-venues",
   },
-};
+}
 
 export default function AutomatedSmallVenuesPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Bruksscenarier", href: "/use-cases" },
-            { label: "Automatisert DMX" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Use Cases", href: "/use-cases" },
+              { label: "Automated DMX" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Use Case</p>
+            <h1 className="text-heading-lg text-foreground">Automated DMX for Small Venues</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Small venues need quick setups and predictable operation. Y-Link builds light sequences from music, keeps
+              timing stable, and lets operators adjust without breaking automation.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Bruksscenario</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Automatisert DMX for små scener</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Små venues trenger raske oppsett og forutsigbar drift. Y-Link bygger lysløp fra musikken, holder timing
-            stabil og lar operatører justere uten å bryte automasjonen.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: "Quick Setup",
+                body: "Import playlists, add rig data, and run preflight in minutes.",
+              },
+              {
+                title: "Stable Shows",
+                body: "Low latency and guardrails ensure the expression holds, even with minimal staffing.",
+              },
+              {
+                title: "Override When You Want",
+                body: "Operator can dim, change looks, or lock sections without automation collapsing.",
+              },
+              {
+                title: "Low Maintenance",
+                body: "Planning controls saturation and safety limits before show start.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-lg border border-border/40 bg-card p-6">
+                <h2 className="text-title mb-3 text-foreground">{item.title}</h2>
+                <p className="text-body text-muted-foreground">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <SectionCard className="grid gap-6 md:grid-cols-2">
-          {[
-            {
-              title: "Raskt oppsett",
-              body: "Importer spillelister, legg inn riggdata, og kjør preflight på minutter.",
-            },
-            {
-              title: "Stabile show",
-              body: "Lav latency og guardrails gjør at uttrykket holder seg, også med enkel bemanning.",
-            },
-            {
-              title: "Overstyring når du vil",
-              body: "Operatør kan dempe, endre look eller låse deler uten at automatikken kollapser.",
-            },
-            {
-              title: "Lite vedlikehold",
-              body: "Planlegging kontrollerer saturering og sikkerhetsgrenser før showstart.",
-            },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]"
-            >
-              <h2 className="text-base font-semibold text-neutral-900">{item.title}</h2>
-              <p className="text-sm leading-6 text-neutral-800">{item.body}</p>
-            </div>
-          ))}
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Slik bruker du Y-Link</h2>
-          <ol className="list-decimal space-y-2 pl-5 text-base leading-7 text-neutral-800">
-            <li>Send fixture-liste og universer.</li>
-            <li>Koble til lydkilde og legg inn energinivåer.</li>
-            <li>Valider timing og sikkerhetsgrenser.</li>
-            <li>Definer hvor operatør kan overstyre.</li>
-            <li>Kjør show med monitorering aktivert.</li>
-          </ol>
-          <p className="text-sm text-neutral-800">
-            Les mer om{" "}
-            <Link href="/ai-dmx-controller" className="underline underline-offset-4 hover:text-neutral-900">
-              AI DMX-kontrolleren
-            </Link>{" "}
-            eller{" "}
-            <Link href="/pilot" className="underline underline-offset-4 hover:text-neutral-900">
-              søk pilot
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl rounded-lg border border-border/40 bg-card p-8">
+            <h2 className="text-heading mb-6 text-foreground">How to Use Y-Link</h2>
+            <ol className="space-y-4 text-body text-muted-foreground">
+              {[
+                "Send fixture list and universes.",
+                "Connect audio source and set energy levels.",
+                "Validate timing and safety limits.",
+                "Define where operator can override.",
+                "Run show with monitoring enabled.",
+              ].map((item, index) => (
+                <li key={item} className="flex gap-4">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/40 bg-accent text-sm font-semibold text-foreground">
+                    {index + 1}
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-6 text-sm text-muted-foreground">
+              Read more about the{" "}
+              <Link href="/ai-dmx-controller" className="text-foreground underline underline-offset-4 hover:opacity-80">
+                AI DMX Controller
+              </Link>{" "}
+              or{" "}
+              <Link href="/pilot" className="text-foreground underline underline-offset-4 hover:opacity-80">
+                apply for pilot
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

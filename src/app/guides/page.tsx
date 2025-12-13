@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "DMX-guider",
@@ -11,51 +8,57 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/guides",
   },
-};
+}
 
 const guides = [
-  { title: "DMX-grunnlag", href: "/guides/dmx-basics" },
-  { title: "Adresseering av fixtures", href: "/guides/dmx-addressing" },
-  { title: "Universer og skalering", href: "/guides/dmx-universes" },
-  { title: "Latency og jitter", href: "/guides/dmx-latency-jitter" },
-  { title: "Best practices", href: "/guides/dmx-best-practices" },
-  { title: "Feilsøking", href: "/guides/dmx-troubleshooting" },
-];
+  { title: "DMX Basics", href: "/guides/dmx-basics" },
+  { title: "Fixture Addressing", href: "/guides/dmx-addressing" },
+  { title: "Universes and Scaling", href: "/guides/dmx-universes" },
+  { title: "Latency and Jitter", href: "/guides/dmx-latency-jitter" },
+  { title: "Best Practices", href: "/guides/dmx-best-practices" },
+  { title: "Troubleshooting", href: "/guides/dmx-troubleshooting" },
+]
 
 export default function GuidesPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Guider" },
-          ]}
-        />
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Guider</p>
-          <h1 className="text-3xl font-bold text-neutral-950">DMX-guider for AI-styrt kontroll</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Bygg et solid fundament slik at AI-basert DMX-automasjon lander sikkert i rommet ditt. Hver guide peker tilbake
-            til hovedsiden for AI DMX-kontrolleren for mer kontekst.
-          </p>
-        </header>
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Guides" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Resources</p>
+            <h1 className="text-heading-lg text-foreground">DMX Guides for AI-Controlled Lighting</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Build a solid foundation so AI-based DMX automation lands safely in your space. Each guide links back to
+              the main AI DMX controller page for context.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <SectionCard className="grid gap-6 md:grid-cols-3">
-          {guides.map((guide) => (
-            <Link
-              key={guide.href}
-              href={guide.href}
-              className="group space-y-3 rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)] transition hover:-translate-y-1 hover:shadow-[0_14px_40px_-26px_rgba(0,0,0,0.35)]"
-            >
-              <p className="text-sm font-semibold text-neutral-900 group-hover:underline">
-                {guide.title}
-              </p>
-              <p className="label-text text-xs text-neutral-700">Les guide →</p>
-            </Link>
-          ))}
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {guides.map((guide) => (
+              <Link
+                key={guide.href}
+                href={guide.href}
+                className="group flex items-center justify-between rounded-lg border border-border/40 bg-card p-5 transition-colors hover:bg-accent"
+              >
+                <span className="text-body font-medium text-foreground">{guide.title}</span>
+                <svg
+                  className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

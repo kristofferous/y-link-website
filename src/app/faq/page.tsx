@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
-import { StructuredData } from "@/components/StructuredData";
-import { absoluteUrl } from "@/lib/seo";
+import type { Metadata } from "next"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
+import { StructuredData } from "@/components/StructuredData"
+import { absoluteUrl } from "@/lib/seo"
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -11,34 +9,34 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/faq",
   },
-};
+}
 
 const items = [
   {
-    q: "Hva automatiserer AI-en?",
-    a: "Kontrolleren analyserer lyd for tempo, fraser og energi. Den bygger cues, overganger og guardrails som følger låten uten manuell programmering.",
+    q: "What does the AI automate?",
+    a: "The controller analyzes audio for tempo, phrases, and energy. It builds cues, transitions, and guardrails that follow the track without manual programming.",
   },
   {
-    q: "Kan operatører fortsatt styre riggen?",
-    a: "Ja. Operatør kan godkjenne looks, låse intensitet, øve seksjoner og overstyre automasjon. Målet er forutsigbar avspilling med menneskelig kontroll.",
+    q: "Can operators still control the rig?",
+    a: "Yes. Operators can approve looks, lock intensity, rehearse sections, and override automation. The goal is predictable playback with human control.",
   },
   {
-    q: "Hvordan håndteres latency?",
-    a: "Hvert steg budsjettsettes, og avspilling valideres før output. Runtime er tunet for lav jitter i klubber og små scener.",
+    q: "How is latency handled?",
+    a: "Each step is budgeted, and playback is validated before output. Runtime is tuned for low jitter in clubs and small venues.",
   },
   {
-    q: "Hvilke fixtures og universer støttes?",
-    a: "Vi retter oss mot vanlige DMX-universer med profiler for klubber og små venues. Universplanlegging og satureringssjekk kjøres før avspilling.",
+    q: "Which fixtures and universes are supported?",
+    a: "We target common DMX universes with profiles for clubs and small venues. Universe planning and saturation checks run before playback.",
   },
   {
-    q: "Hvordan blir jeg med i pilot eller forhåndsbestilling?",
-    a: "Bruk skjemaet på forsiden eller pilotsiden. Piloten er tidsbegrenset (ca. 4–8 uker), med utlån av Y1-hardware som returneres etterpå. Vi tar inn en liten, kurert gruppe for å teste stabilitet, timing og UX.",
+    q: "How do I join the pilot or pre-order?",
+    a: "Use the form on the homepage or pilot page. The pilot is time-limited (approx. 4-8 weeks), with Y1 hardware loaned and returned afterward. We take in a small, curated group to test stability, timing, and UX.",
   },
   {
-    q: "Hvordan melder jeg meg av e-post?",
-    a: "Hver e-post har en avmeldingslenke. Du kan også besøke /unsubscribe?token=<din-token> for å fjerne adressen umiddelbart.",
+    q: "How do I unsubscribe from emails?",
+    a: "Each email has an unsubscribe link. You can also visit /unsubscribe?token=<your-token> to remove your address immediately.",
   },
-];
+]
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -52,41 +50,37 @@ const faqSchema = {
     },
   })),
   url: absoluteUrl("/faq"),
-};
+}
 
 export default function FAQPage() {
   return (
-    <PageShell>
+    <main>
       <StructuredData data={faqSchema} />
-      <div className="flex flex-col gap-12">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "FAQ" },
-          ]}
-        />
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "FAQ" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Support</p>
+            <h1 className="text-heading-lg text-foreground">Frequently Asked Questions</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Get clarity on what's automated, how operators maintain control, and how to sign up or unsubscribe.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">FAQ</p>
-          <h1 className="text-3xl font-bold text-neutral-950">
-            Svar om AI DMX-kontrolleren og pilotprogrammet
-          </h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Få klarhet i hva som automatiseres, hvordan operatører har kontroll, og hvordan du melder deg på eller av.
-          </p>
-        </header>
-
-        <SectionCard className="space-y-6">
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
           <div className="grid gap-4 md:grid-cols-2">
             {items.map((item) => (
-              <div key={item.q} className="space-y-2 rounded-2xl bg-white p-4 ring-1 ring-neutral-200">
-                <p className="text-sm font-semibold text-neutral-900">{item.q}</p>
-                <p className="text-sm leading-6 text-neutral-800">{item.a}</p>
+              <div key={item.q} className="rounded-lg border border-border/40 bg-card p-6">
+                <h2 className="text-title mb-3 text-foreground">{item.q}</h2>
+                <p className="text-body text-muted-foreground">{item.a}</p>
               </div>
             ))}
           </div>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+        </div>
+      </section>
+    </main>
+  )
 }

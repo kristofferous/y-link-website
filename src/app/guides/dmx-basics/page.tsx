@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "DMX-grunnlag",
@@ -11,56 +8,71 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/guides/dmx-basics",
   },
-};
+}
 
 export default function DMXBasicsPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Guider", href: "/guides" },
-            { label: "DMX-grunnlag" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[{ label: "Hjem", href: "/" }, { label: "Guides", href: "/guides" }, { label: "DMX Basics" }]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Guide</p>
+            <h1 className="text-heading-lg text-foreground">DMX Basics</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              A brief introduction to DMX so your fixture planning aligns with AI-generated cues from the Y-Link
+              controller.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Guide</p>
-          <h1 className="text-3xl font-bold text-neutral-950">DMX-grunnlag</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            En kort innføring i DMX slik at fixture-planleggingen din passer med AI-genererte cues fra Y-Link-kontrolleren.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl space-y-12">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Signal and Universe</h2>
+              <p className="text-body mb-6 text-muted-foreground">
+                DMX512 sends 512 channel values per universe. Each fixture uses channels based on the selected mode.
+                Predictable automation requires clear mapping of fixtures to universes and overview of channel usage.
+              </p>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Map all fixtures with address and channel footprint.",
+                  "Keep universes under safe utilization to avoid timing issues.",
+                  "Document cabling, splitters, and nodes.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Signal og univers</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            DMX512 sender 512 kanalverdier per univers. Hver fixture bruker kanaler basert på valgt modus. Forutsigbar
-            automasjon krever tydelig mapping av fixtures til universer og oversikt over kanalbruk.
-          </p>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            <li>Kartlegg alle fixtures med adresse og kanalfotavtrykk.</li>
-            <li>Hold universer under trygg utnyttelse for å unngå timing-problemer.</li>
-            <li>Dokumenter kabling, splittere og noder.</li>
-          </ul>
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Fixture-moduser</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Velg moduser som balanserer kontroll mot kanaltall. Høye moduser gir mer kontroll, men bruker flere kanaler.
-            AI-planleggeren trenger korrekt patch for å unngå saturering.
-          </p>
-          <p className="text-sm text-neutral-800">
-            Fortsett med{" "}
-            <Link href="/guides/dmx-addressing" className="underline underline-offset-4 hover:text-neutral-900">
-              adressering av fixtures
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Fixture Modes</h2>
+              <p className="text-body mb-4 text-muted-foreground">
+                Choose modes that balance control against channel count. Higher modes give more control but use more
+                channels. The AI planner needs correct patch to avoid saturation.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Continue with{" "}
+                <Link
+                  href="/guides/dmx-addressing"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  fixture addressing
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

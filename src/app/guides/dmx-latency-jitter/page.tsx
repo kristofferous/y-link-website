@@ -1,63 +1,79 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next"
+import Link from "next/link"
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "Latency og jitter i DMX",
-  description: "Hvordan måle og kontrollere latency og jitter i en AI-styrt DMX-rigg.",
+  title: "Latency and Jitter in DMX",
+  description: "How to measure and control latency and jitter in an AI-controlled DMX rig.",
   alternates: {
     canonical: "/guides/dmx-latency-jitter",
   },
-};
+}
 
 export default function DMXLatencyJitterPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-10">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Guider", href: "/guides" },
-            { label: "Latency og jitter" },
-          ]}
-        />
+    <main>
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Guides", href: "/guides" },
+              { label: "Latency and Jitter" },
+            ]}
+            className="mb-8"
+          />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Guide</p>
+            <h1 className="text-heading-lg text-foreground">Latency and Jitter in DMX</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Timing is the core value in music-reactive lighting. Here's how we measure, budget, and monitor latency
+              and jitter.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Guide</p>
-          <h1 className="text-3xl font-bold text-neutral-950">Latency og jitter i DMX</h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Timing er kjerneverdien i musikkreaktivt lys. Her er hvordan vi måler, budsjettsetter og overvåker latency og
-            jitter.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl space-y-8">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Measurement</h2>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                {[
+                  "Measure end-to-end latency with known test audio and sensor on light.",
+                  "Look for jitter (variation) between cues and output.",
+                  "Log under full load, not just in an empty room.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Måling</h2>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            <li>Mål ende-til-ende-latency med kjent testlyd og sensor på lys.</li>
-            <li>Se etter jitter (variasjon) mellom cues og output.</li>
-            <li>Logg under full belastning, ikke bare i tomt rom.</li>
-          </ul>
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Kontroll</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Y-Link budsjettsetter hvert steg og overvåker drift. Oppdages avvik, strammes output eller operatør varsles.
-            Hold nettverk og noder stabile for best resultat.
-          </p>
-          <p className="text-sm text-neutral-800">
-            Relatert lesing:{" "}
-            <Link href="/guides/dmx-best-practices" className="underline underline-offset-4 hover:text-neutral-900">
-              beste praksis
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-4 text-foreground">Control</h2>
+              <p className="text-body text-muted-foreground">
+                Y-Link budgets each step and monitors drift. If deviations are detected, output is tightened or the
+                operator is notified. Keep network and nodes stable for best results.
+              </p>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Related reading:{" "}
+                <Link
+                  href="/guides/dmx-best-practices"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  best practices
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

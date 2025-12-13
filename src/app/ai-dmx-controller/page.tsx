@@ -1,9 +1,6 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
+import Link from "next/link"
+import type { Metadata } from "next"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
 
 export const metadata: Metadata = {
   title: "AI DMX-kontroller",
@@ -12,117 +9,193 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/ai-dmx-controller",
   },
-};
+}
 
 export default function AIDMXControllerPage() {
   return (
-    <PageShell>
-      <div className="flex flex-col gap-12">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "AI DMX-kontroller" },
-          ]}
-        />
-
-        <header className="space-y-4">
-          <p className="label-text text-sm text-neutral-800">Produkt</p>
-          <h1 className="text-4xl font-bold leading-tight text-neutral-950 sm:text-5xl">
-            AI DMX-kontroller for musikkreaktivt lys
-          </h1>
-          <p className="max-w-4xl text-lg leading-8 text-neutral-800">
-            Y-Link konverterer lyd til lysløp som følger tempo, frasering og energi. Lav latency, guardrails og
-            operatørkontroll gjør at showet er forutsigbart, ikke tilfeldig.
-          </p>
-          <div className="flex flex-wrap gap-3 text-sm text-neutral-800">
-            <span className="rounded-full bg-neutral-900 px-3 py-1 text-white">AI DMX-kontroller</span>
-            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-neutral-200">Musikkreaktiv</span>
-            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-neutral-200">Lav latency</span>
+    <main>
+      {/* Header Section */}
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "AI DMX-kontroller" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Platform</p>
+            <h1 className="text-display text-foreground">
+              AI DMX Controller
+              <br />
+              <span className="text-muted-foreground">for Music-Reactive Lighting</span>
+            </h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Y-Link converts audio to lighting sequences that follow tempo, phrasing, and energy. Low latency,
+              guardrails, and operator control ensure your show is predictable, not random.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <span className="rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground">
+                AI DMX Controller
+              </span>
+              <span className="rounded-full border border-border px-4 py-1.5 text-sm font-medium text-foreground">
+                Music Reactive
+              </span>
+              <span className="rounded-full border border-border px-4 py-1.5 text-sm font-medium text-foreground">
+                Low Latency
+              </span>
+            </div>
           </div>
-        </header>
+        </div>
+      </section>
 
-        <SectionCard className="space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-xl font-semibold text-neutral-950">Hvordan det fungerer</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-neutral-200 to-transparent" />
+      {/* How It Works */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="mb-12 flex items-center gap-4">
+            <h2 className="text-heading text-foreground">How It Works</h2>
+            <div className="h-px flex-1 bg-border/40" />
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                title: "Lyd inn",
-                body: "Last opp musikk eller bruk live lyd. Systemet fanger tempo, fraser og energi.",
+                step: "01",
+                title: "Audio Input",
+                body: "Upload music or use live audio. The system captures tempo, phrases, and energy.",
               },
               {
-                title: "Planlegging",
-                body: "AI planlegger cues, overganger og sikkerhetsgrenser tilpasset riggen din.",
+                step: "02",
+                title: "Planning",
+                body: "AI plans cues, transitions, and safety limits tailored to your rig.",
               },
               {
-                title: "Deterministisk avspilling",
-                body: "Signaler tidssettes og overvåkes før output. Latency-budsjett håndheves live.",
+                step: "03",
+                title: "Deterministic Playback",
+                body: "Signals are timed and monitored before output. Latency budget enforced live.",
               },
             ].map((item) => (
-              <div
-                key={item.title}
-                className="space-y-2 rounded-2xl border border-neutral-200/80 bg-white px-4 py-4 shadow-[0_8px_30px_-24px_rgba(0,0,0,0.3)]"
-              >
-                <h3 className="text-base font-semibold text-neutral-900">{item.title}</h3>
-                <p className="text-sm leading-6 text-neutral-800">{item.body}</p>
+              <div key={item.title} className="rounded-lg border border-border/40 bg-card p-6">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md border border-border/40 bg-background font-mono text-sm font-semibold text-foreground">
+                  {item.step}
+                </div>
+                <h3 className="text-title mb-2 text-foreground">{item.title}</h3>
+                <p className="text-body text-muted-foreground">{item.body}</p>
               </div>
             ))}
           </div>
-        </SectionCard>
+        </div>
+      </section>
 
-        <SectionCard className="grid gap-8 md:grid-cols-2 md:items-start">
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-neutral-900">Hvem det er for</h2>
-            <ul className="space-y-2 text-base leading-7 text-neutral-800">
-              <li>Klubber og barer som vil ha musikkreaktivt lys uten manuell programmering.</li>
-              <li>Små scener og installasjoner med liten bemanning men krav til timing.</li>
-              <li>Mobile rigs som trenger raske load-ins og forutsigbar avspilling.</li>
-              <li>Operatører som vil ha guardrails og mulighet til å overstyre når som helst.</li>
-            </ul>
-            <p className="text-sm text-neutral-800">
-              Se også{" "}
-              <Link href="/use-cases/music-reactive-dmx-clubs" className="underline underline-offset-4 hover:text-neutral-800">
-                bruk i klubb
-              </Link>{" "}
-              eller{" "}
-              <Link href="/use-cases/automated-dmx-small-venues" className="underline underline-offset-4 hover:text-neutral-800">
-                automatisering for små scener
-              </Link>
-              .
-            </p>
-          </div>
-          <div className="space-y-4 rounded-2xl border border-neutral-200/80 bg-gradient-to-br from-white via-white to-[#f3f4fb] p-6">
-            <h3 className="text-base font-semibold text-neutral-900">Oppsett og krav</h3>
-            <ul className="space-y-2 text-sm leading-6 text-neutral-800">
-              <li>Lydopplasting eller live feed.</li>
-              <li>Fixture-liste og univers for planlegging og sikkerhet.</li>
-              <li>Nettverk for oppdateringer og fjernovervåkning.</li>
-              <li>Operatørflate (desktop eller iPad) for godkjenninger og overstyring.</li>
-            </ul>
-            <p className="text-sm leading-6 text-neutral-800">
-              Timing og saturering valideres før show slik at øving matcher live.
-            </p>
-          </div>
-        </SectionCard>
+      {/* Who It's For */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div className="space-y-6">
+              <h2 className="text-heading text-foreground">Who It's For</h2>
+              <ul className="space-y-4 text-body text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Clubs and bars wanting music-reactive lighting without manual programming.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Small stages and installations with minimal staffing but timing requirements.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Mobile rigs needing fast load-ins and predictable playback.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Operators wanting guardrails and the ability to override at any time.
+                </li>
+              </ul>
+              <p className="text-sm text-muted-foreground">
+                See also{" "}
+                <Link
+                  href="/use-cases/music-reactive-dmx-clubs"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  club use case
+                </Link>{" "}
+                or{" "}
+                <Link
+                  href="/use-cases/automated-dmx-small-venues"
+                  className="text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  small venue automation
+                </Link>
+                .
+              </p>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Neste steg</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Trenger du musikkreaktivt lys med forutsigbar timing? Bli med i piloten, så dokumenterer vi latency i din
-            rigg og finjusterer guardrails.
-          </p>
-          <div className="flex flex-wrap gap-3 text-sm text-neutral-900">
-            <Link href="/pilot" className="rounded-full bg-neutral-900 px-3 py-2 font-semibold text-white hover:bg-neutral-800">
-              Søk pilot
-            </Link>
-            <Link href="/guides/dmx-latency-jitter" className="font-semibold underline underline-offset-4 hover:text-neutral-700">
-              Les om latency og jitter
-            </Link>
+            <div className="rounded-lg border border-border/40 bg-card p-6">
+              <h3 className="text-title mb-4 text-foreground">Setup Requirements</h3>
+              <ul className="space-y-3 text-body text-muted-foreground">
+                <li className="flex items-start gap-3">
+                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                    <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Audio upload or live feed
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                    <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Fixture list and universes for planning and safety
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                    <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Network for updates and remote monitoring
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-border/40 bg-accent">
+                    <svg className="h-3 w-3 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Operator interface (desktop or iPad)
+                </li>
+              </ul>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Timing and saturation validated before show so rehearsal matches live.
+              </p>
+            </div>
           </div>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="rounded-xl border border-border/40 bg-card p-8 md:p-12">
+            <div className="mx-auto max-w-2xl space-y-6 text-center">
+              <h2 className="text-heading text-foreground">Next Steps</h2>
+              <p className="text-body text-muted-foreground">
+                Need music-reactive lighting with predictable timing? Join the pilot, and we'll document latency in your
+                rig and fine-tune guardrails.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  href="/pilot"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  Apply for Pilot
+                </Link>
+                <Link
+                  href="/guides/dmx-latency-jitter"
+                  className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  Read about latency and jitter
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }

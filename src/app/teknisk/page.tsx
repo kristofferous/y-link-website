@@ -1,19 +1,16 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { PageShell } from "@/components/PageShell";
-import { SectionCard } from "@/components/SectionCard";
-import { StructuredData } from "@/components/StructuredData";
-import { absoluteUrl } from "@/lib/seo";
+import Link from "next/link"
+import type { Metadata } from "next"
+import { Breadcrumbs } from "@/components/Breadcrumbs"
+import { StructuredData } from "@/components/StructuredData"
+import { absoluteUrl } from "@/lib/seo"
 
 export const metadata: Metadata = {
   title: "Teknisk oversikt",
-  description:
-    "Hvordan Y-Link analyserer lyd, genererer cues, håndterer latency-budsjett og leverer sikkert DMX.",
+  description: "Hvordan Y-Link analyserer lyd, genererer cues, håndterer latency-budsjett og leverer sikkert DMX.",
   alternates: {
     canonical: "/teknisk",
   },
-};
+}
 
 const techSchema = {
   "@context": "https://schema.org",
@@ -27,65 +24,74 @@ const techSchema = {
     name: "Y-Link",
     url: absoluteUrl("/"),
   },
-  keywords: [
-    "AI DMX-kontroller",
-    "musikkreaktivt lys",
-    "DMX latency",
-    "DMX stabilitet",
-  ],
-};
+  keywords: ["AI DMX-kontroller", "musikkreaktivt lys", "DMX latency", "DMX stabilitet"],
+}
 
 export default function TechnicalPage() {
   return (
-    <PageShell>
+    <main>
       <StructuredData data={techSchema} />
-      <div className="flex flex-col gap-12">
-        <Breadcrumbs
-          items={[
-            { label: "Hjem", href: "/" },
-            { label: "Teknisk" },
-          ]}
-        />
+      <section className="section-spacing">
+        <div className="container-custom">
+          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Technical" }]} className="mb-8" />
+          <div className="mx-auto max-w-4xl space-y-6">
+            <p className="text-label text-muted-foreground">Technical</p>
+            <h1 className="text-heading-lg text-foreground">
+              AI-Based DMX with Low Latency, Predictable Playback, and Safety
+            </h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">
+              Y-Link analyzes audio, generates cues, and delivers DMX within strict time requirements. Runtime is tuned
+              for stable latency and clear overrides, keeping the show synchronized.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <header className="space-y-3">
-          <p className="label-text text-sm text-neutral-800">Teknisk</p>
-          <h1 className="text-3xl font-bold text-neutral-950">
-            AI-basert DMX med lav latency, forutsigbar avspilling og trygghet
-          </h1>
-          <p className="max-w-3xl text-base leading-7 text-neutral-800">
-            Y-Link analyserer lyd, genererer cues og leverer DMX innen stramme tidskrav. Runtime er tunet for stabil
-            latency og tydelige overstyringer, slik at showet holder seg synkronisert.
-          </p>
-        </header>
+      <section className="section-spacing border-t border-border/40">
+        <div className="container-custom">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-6 text-foreground">Pipeline</h2>
+              <ul className="space-y-4 text-body text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Audio analysis for tempo, phrases, energy, and changes.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Planner builds cues, transitions, and guardrails per rig.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Output validated against latency budget and safety limits.
+                </li>
+              </ul>
+            </div>
 
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Pipeline</h2>
-          <ul className="space-y-2 text-base leading-7 text-neutral-800">
-            <li>Lydanalyse for tempo, fraser, energi og endringer.</li>
-            <li>Planlegger bygger cues, overganger og guardrails per rigg.</li>
-            <li>Output valideres mot latency-budsjett og sikkerhetsgrenser.</li>
-          </ul>
-        </SectionCard>
-
-        <SectionCard className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Sikkerhet og kontroll</h2>
-          <p className="text-base leading-7 text-neutral-800">
-            Operatører har låser for intensitet, blackout-regler og mulighet til å overstyre. Guardrails hindrer
-            tilfeldige hopp selv når det justeres live.
-          </p>
-          <p className="text-sm text-neutral-800">
-            Les mer om{" "}
-            <Link href="/guides/dmx-latency-jitter" className="underline underline-offset-4 hover:text-neutral-900">
-              latency og jitter
-            </Link>{" "}
-            eller{" "}
-            <Link href="/pilot" className="underline underline-offset-4 hover:text-neutral-900">
-              bli med i pilot
-            </Link>
-            .
-          </p>
-        </SectionCard>
-      </div>
-    </PageShell>
-  );
+            <div className="rounded-lg border border-border/40 bg-card p-8">
+              <h2 className="text-heading mb-6 text-foreground">Safety and Control</h2>
+              <p className="text-body mb-4 text-muted-foreground">
+                Operators have locks for intensity, blackout rules, and ability to override. Guardrails prevent random
+                jumps even when adjusting live.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href="/guides/dmx-latency-jitter"
+                  className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  Latency and jitter guide
+                </Link>
+                <Link
+                  href="/pilot"
+                  className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  Join the pilot
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }
