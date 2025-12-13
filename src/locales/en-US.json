@@ -484,5 +484,368 @@
       "primary": "Apply for Pilot",
       "secondary": "Read about latency and jitter"
     }
+  },
+  "useCases": {
+    "metadata": {
+      "title": "Use Cases",
+      "description": "See where Y-Link fits: clubs, small venues, and teams that want automation without losing control."
+    },
+    "breadcrumb": "Use Cases",
+    "hero": {
+      "label": "Applications",
+      "title": "Where Y-Link Fits Best",
+      "body": "Music-reactive automation, low latency, and operator override make Y-Link suitable where staffing is lean and timing is critical."
+    },
+    "cards": [
+      {
+        "title": "Music-Reactive DMX for Clubs",
+        "href": "/use-cases/music-reactive-dmx-clubs",
+        "detail": "Keep the dance floor synchronized with the audio source with predictable timing."
+      },
+      {
+        "title": "Automated DMX for Small Venues",
+        "href": "/use-cases/automated-dmx-small-venues",
+        "detail": "Less manual programming, same expression night after night."
+      },
+      {
+        "title": "Beat-Synced Lighting Without Programming",
+        "href": "/use-cases/beat-synced-lighting-without-programming",
+        "detail": "Upload tracks, verify timing, and go live quickly with guardrails."
+      }
+    ],
+    "readMore": "Read more →",
+    "musicReactive": {
+      "metadata": {
+        "title": "Music-Reactive DMX Lighting for Clubs",
+        "description": "Keep club lighting synced to every track with Y-Link."
+      },
+      "breadcrumb": "Music-Reactive Clubs",
+      "hero": {
+        "label": "Use Case",
+        "title": "Music-Reactive DMX Lighting for Clubs",
+        "body": "Deliver a tight, music-driven show without programming each track by hand. Y-Link analyzes audio and controls DMX with low latency, so the operator can follow the room instead of the console."
+      },
+      "features": [
+        { "title": "Audio-Driven Cues", "body": "Upload playlists or use a live mix. The controller follows tempo, phrasing, and energy." },
+        { "title": "Predictable Timing", "body": "Latency budget is monitored. No surprises when the room fills and load changes." },
+        { "title": "Guardrails for Operators", "body": "Intensity limits, blackout rules, and approvals keep the rig safe." },
+        { "title": "Quick Switches", "body": "Repertoire can be rehearsed, cues locked, and playlists swapped quickly between DJs." }
+      ],
+      "stepsTitle": "How to Set Up in a Club",
+      "steps": [
+        "Share fixture list, universe setup, and room constraints.",
+        "Upload a starter playlist or connect live audio.",
+        "Run preflight for timing, saturation, and safety limits.",
+        "Rehearse sections, lock important looks, and set operator override.",
+        "Go live with monitoring; adjust intensity or looks as needed."
+      ],
+      "cta": {
+        "title": "Next Steps",
+        "body": "If you need music-reactive lighting with predictable timing, join the pilot. We validate timing in your room and adjust guardrails to your rig.",
+        "primary": "Apply for Pilot",
+        "secondary": "Read the latency and jitter guide"
+      }
+    },
+    "smallVenues": {
+      "metadata": {
+        "title": "Automated DMX for Small Venues",
+        "description": "Reduce manual programming and get stable shows for small venues with Y-Link."
+      },
+      "breadcrumb": "Automated DMX",
+      "hero": {
+        "label": "Use Case",
+        "title": "Automated DMX for Small Venues",
+        "body": "Small venues need quick setups and predictable operation. Y-Link builds light sequences from music, keeps timing stable, and lets operators adjust without breaking automation."
+      },
+      "features": [
+        { "title": "Quick Setup", "body": "Import playlists, add rig data, and run preflight in minutes." },
+        { "title": "Stable Shows", "body": "Low latency and guardrails ensure the expression holds, even with minimal staffing." },
+        { "title": "Override When You Want", "body": "Operator can dim, change looks, or lock sections without automation collapsing." },
+        { "title": "Low Maintenance", "body": "Planning controls saturation and safety limits before show start." }
+      ],
+      "stepsTitle": "How to Use Y-Link",
+      "steps": [
+        "Send fixture list and universes.",
+        "Connect audio source and set energy levels.",
+        "Validate timing and safety limits.",
+        "Define where operator can override.",
+        "Run show with monitoring enabled."
+      ],
+      "cta": {
+        "prefix": "Read more about the",
+        "aiDmx": "AI DMX Controller",
+        "connector": "or",
+        "pilot": "apply for pilot"
+      }
+    },
+    "beatSynced": {
+      "metadata": {
+        "title": "Beat-Synced Lighting Without Programming",
+        "description": "Upload tracks, validate timing, and run shows quickly with Y-Link and guardrails."
+      },
+      "breadcrumb": "Beat-Synced Lighting",
+      "hero": {
+        "label": "Use Case",
+        "title": "Beat-Synced Lighting Without Programming",
+        "body": "Y-Link analyzes tempo, phrases, and energy in your tracks, generates light sequences, and locks timing before output. Skip manual programming but still override live."
+      },
+      "features": [
+        { "title": "Upload or Live Feed", "body": "Import playlists or connect live audio. The system extracts structure automatically." },
+        { "title": "Preflight Before Show", "body": "Timing, jitter, and saturation are checked before output. Guardrails are set per rig." },
+        { "title": "Live Adjustment", "body": "Change intensity and looks without losing locked timing." },
+        { "title": "Quick Execution", "body": "Ready for show without building cue-by-cue, but still with control surfaces for operator." }
+      ],
+      "stepsTitle": "Start Quickly",
+      "steps": [
+        "Share rig data and universes.",
+        "Upload tracks or connect audio source.",
+        "Run preflight and lock timing.",
+        "Mark where operator can override.",
+        "Go live with monitoring."
+      ],
+      "cta": {
+        "moreInfo": "More info?",
+        "howItWorks": "how the system works",
+        "pilot": "apply for pilot"
+      }
+    }
+  },
+  "guides": {
+    "metadata": {
+      "title": "DMX Guides",
+      "description": "Guides that build DMX fundamentals and support AI-driven, music-reactive control."
+    },
+    "breadcrumb": "Guides",
+    "hero": {
+      "label": "Resources",
+      "title": "DMX Guides for AI-Controlled Lighting",
+      "body": "Build a solid foundation so AI-based DMX automation lands safely in your space. Each guide links back to the main AI DMX controller page for context."
+    },
+    "list": [
+      { "title": "DMX Basics", "href": "/guides/dmx-basics" },
+      { "title": "Fixture Addressing", "href": "/guides/dmx-addressing" },
+      { "title": "Universes and Scaling", "href": "/guides/dmx-universes" },
+      { "title": "Latency and Jitter", "href": "/guides/dmx-latency-jitter" },
+      { "title": "Best Practices", "href": "/guides/dmx-best-practices" },
+      { "title": "Troubleshooting", "href": "/guides/dmx-troubleshooting" }
+    ],
+    "dmxBasics": {
+      "metadata": { "title": "DMX Basics", "description": "Understand DMX signals, universes, and fixtures as a foundation for AI-driven light." },
+      "breadcrumb": "DMX Basics",
+      "hero": {
+        "label": "Guide",
+        "title": "DMX Basics",
+        "body": "A brief introduction to DMX so your fixture planning aligns with AI-generated cues from the Y-Link controller."
+      },
+      "sections": {
+        "signal": {
+          "title": "Signal and Universe",
+          "body": "DMX512 sends 512 channel values per universe. Each fixture uses channels based on the selected mode. Predictable automation requires clear mapping of fixtures to universes and overview of channel usage.",
+          "items": [
+            "Map all fixtures with address and channel footprint.",
+            "Keep universes under safe utilization to avoid timing issues.",
+            "Document cabling, splitters, and nodes."
+          ]
+        },
+        "modes": {
+          "title": "Fixture Modes",
+          "body": "Choose modes that balance control against channel count. Higher modes give more control but use more channels. The AI planner needs correct patch to avoid saturation.",
+          "linkLabel": "fixture addressing"
+        }
+      }
+    },
+    "dmxAddressing": {
+      "metadata": { "title": "Fixture Addressing", "description": "Learn to address fixtures correctly for stable AI-driven light sequences." },
+      "breadcrumb": "Addressing",
+      "hero": {
+        "label": "Guide",
+        "title": "Fixture Addressing",
+        "body": "Correct addressing ensures AI-planned cues hit the right channel every time."
+      },
+      "plan": {
+        "title": "Plan Your Patch",
+        "items": [
+          "Keep an updated patch list with start address and mode.",
+          "Group similar fixtures for tidy universes.",
+          "Avoid overlap by reserving buffer zones where rigs change often."
+        ]
+      },
+      "validate": {
+        "title": "Validate Against Controller",
+        "body": "Y-Link checks the patch before show. Mismatches between patch and actual rig can cause wrong mapping and timing drift.",
+        "linkLabel": "universes and scaling"
+      }
+    },
+    "dmxUniverses": {
+      "metadata": { "title": "DMX Universes and Scaling", "description": "How to plan universes and scale the rig without losing timing." },
+      "breadcrumb": "Universes and Scaling",
+      "hero": {
+        "label": "Guide",
+        "title": "DMX Universes and Scaling",
+        "body": "Good universe planning ensures AI-generated signals maintain timing even as the rig grows."
+      },
+      "distribute": {
+        "title": "Distribute the Load",
+        "items": [
+          "Keep universes under safe utilization; avoid pushing to 512 on busy shows.",
+          "Distribute power consumption and cable routes to minimize noise and loss.",
+          "Plan reserved universes for temporary fixtures."
+        ]
+      },
+      "scaling": {
+        "title": "Scaling",
+        "body": "When adding universes, ensure the controller and nodes support synchronous clock and latency monitoring. Y-Link enforces timing per universe, but needs correct topology.",
+        "linkLabel": "latency and jitter"
+      }
+    },
+    "dmxLatency": {
+      "metadata": { "title": "Latency and Jitter in DMX", "description": "How to measure and control latency and jitter in an AI-controlled DMX rig." },
+      "breadcrumb": "Latency and Jitter",
+      "hero": {
+        "label": "Guide",
+        "title": "Latency and Jitter in DMX",
+        "body": "Timing is the core value in music-reactive lighting. Here's how we measure, budget, and monitor latency and jitter."
+      },
+      "measurement": {
+        "title": "Measurement",
+        "items": [
+          "Measure end-to-end latency with known test audio and sensor on light.",
+          "Look for jitter (variation) between cues and output.",
+          "Log under full load, not just in an empty room."
+        ]
+      },
+      "control": {
+        "title": "Control",
+        "body": "Y-Link budgets each step and monitors drift. If deviations are detected, output is tightened or the operator is notified. Keep network and nodes stable for best results.",
+        "linkLabel": "best practices"
+      }
+    },
+    "dmxBest": {
+      "metadata": { "title": "DMX Best Practices", "description": "Practical tips for stable DMX rigs when AI controls the light sequences." },
+      "breadcrumb": "Best Practices",
+      "hero": {
+        "label": "Guide",
+        "title": "DMX Best Practices",
+        "body": "Routines that keep timing stable and guardrails effective when AI controls the lights."
+      },
+      "before": {
+        "title": "Before Show",
+        "items": [
+          "Verify patch and universes against the rig.",
+          "Run preflight on latency, jitter, and saturation.",
+          "Define operator override and emergency procedures."
+        ]
+      },
+      "during": {
+        "title": "During Show",
+        "items": [
+          "Keep network and nodes under observation.",
+          "Use guardrails instead of manual jumps when possible.",
+          "Log deviations for later adjustment."
+        ],
+        "linkLabel": "troubleshooting"
+      }
+    },
+    "dmxTroubleshooting": {
+      "metadata": { "title": "DMX Troubleshooting", "description": "Common errors in DMX rigs and how to solve them when AI drives the light sequences." },
+      "breadcrumb": "Troubleshooting",
+      "hero": {
+        "label": "Guide",
+        "title": "DMX Troubleshooting",
+        "body": "Typical problems and quick actions to keep the show stable."
+      },
+      "errors": {
+        "title": "Common Errors",
+        "items": [
+          "Signal drops: check cables, termination, and nodes.",
+          "Wrong mapping: verify patch and addressing.",
+          "Timing glitches: look for network load and node health."
+        ]
+      },
+      "checklist": {
+        "title": "Quick Checklist",
+        "items": [
+          "Confirm universe and address assignment.",
+          "Check that guardrails and safety limits are active.",
+          "Restart nodes on fault condition, log the event."
+        ],
+        "linkLabel": "DMX Basics"
+      }
+    }
+  },
+  "aiDmxAlternatives": {
+    "metadata": {
+      "title": "Alternatives to AI DMX Controller",
+      "description": "Compare Y-Link with other music-reactive and AI-driven lighting solutions."
+    },
+    "breadcrumb": "Alternatives",
+    "hero": {
+      "label": "Comparison",
+      "title": "Alternatives to Y-Link",
+      "body": "Use this overview to evaluate whether you need AI automation with guardrails, or a more traditional console with audio triggers."
+    },
+    "options": [
+      { "name": "Y-Link", "focus": "AI-driven, music-reactive DMX with low latency and operator guardrails.", "bestFor": "Clubs, small venues, and mobile rigs with minimal staffing." },
+      { "name": "MaestroDMX", "focus": "Audio analysis and lighting automation for DJ sets.", "bestFor": "DJ-focused setups where music cues drive the scenes." },
+      { "name": "Lightkey (sound active)", "focus": "Manual programming + audio triggers on macOS.", "bestFor": "Operators wanting deep manual control with simple audio response." },
+      { "name": "Onyx + add-on modules", "focus": "Full console with optional audio triggers.", "bestFor": "Larger rigs with dedicated LDs who still want to follow music." }
+    ],
+    "consider": {
+      "title": "What to Consider",
+      "items": [
+        "Latency and jitter under full load.",
+        "How clear guardrails are for the operator.",
+        "How quickly rig data can be patched and validated.",
+        "Ability to override live without automation breaking down."
+      ],
+      "linkLabel": "Y-Link vs MaestroDMX"
+    }
+  },
+  "aiDmxVsMaestro": {
+    "metadata": {
+      "title": "Y-Link vs MaestroDMX",
+      "description": "Brief comparison of Y-Link and MaestroDMX for music-reactive lighting."
+    },
+    "breadcrumb": "Y-Link vs MaestroDMX",
+    "hero": {
+      "label": "Comparison",
+      "title": "Y-Link vs MaestroDMX",
+      "body": "Two different approaches to music-reactive lighting. Here's how they differ."
+    },
+    "comparison": [
+      { "label": "Focus", "ylink": "AI-planned light sequences with guardrails and low latency.", "maestro": "Audio analysis and automation for DJ sets." },
+      { "label": "Operator Control", "ylink": "Approvals, locks, and override without losing structure.", "maestro": "DJ-oriented workflow with more manual control." },
+      { "label": "Best For", "ylink": "Clubs/small venues with minimal staffing needing predictability.", "maestro": "DJ-focused rooms wanting to trigger lights directly from music." }
+    ],
+    "cta": {
+      "prefix": "For details on Y-Link, see the main page for the",
+      "link": "AI DMX Controller"
+    }
+  },
+  "studio": {
+    "download": {
+      "metadata": {
+        "title": "Y-Link Studio Download",
+        "description": "Download Y-Link Studio if your pilot access is active."
+      },
+      "breadcrumb": "Download",
+      "access": {
+        "label": "Download",
+        "title": "Access Not Active",
+        "body": "Your access is not active or has expired. Contact Y-Link if you believe this is an error.",
+        "back": "Back to access page"
+      },
+      "active": {
+        "label": "Download",
+        "title": "Y-Link Studio",
+        "body": "Access verified. Download is delivered via protected endpoint. No direct links are exposed.",
+        "button": "Download (placeholder)",
+        "pilotType": "Your pilot type:",
+        "expires": "Access expires:",
+        "unknown": "unknown",
+        "noExpiry": "no expiration date"
+      },
+      "logout": "Log out"
+    }
   }
 }

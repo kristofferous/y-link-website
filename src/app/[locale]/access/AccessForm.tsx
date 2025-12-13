@@ -30,6 +30,7 @@ export function AccessForm() {
             <div className="rounded-xl border border-border/40 bg-card p-6">
               <form action={formAction} className="space-y-5">
                 <input type="hidden" name="redirectTo" value={redirectTo} />
+                <input type="hidden" name="locale" value={locale} />
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-foreground" htmlFor="email">
                     {access.form.emailLabel}

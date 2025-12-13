@@ -41,12 +41,13 @@ async function handleUnsubscribe(token: string | undefined): Promise<Unsubscribe
 }
 
 type UnsubscribePageProps = {
-  params: { locale: AppLocale };
+  params: Promise<{ locale: AppLocale }>;
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: UnsubscribePageProps): Promise<Metadata> {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
 
   return {
@@ -60,7 +61,8 @@ export async function generateMetadata({ params }: UnsubscribePageProps): Promis
 }
 
 export default async function UnsubscribePage({ params, searchParams }: UnsubscribePageProps) {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { unsubscribe, navigation } = dictionary;
   const tokenParam = searchParams?.token;

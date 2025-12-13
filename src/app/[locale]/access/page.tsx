@@ -5,11 +5,12 @@ import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/confi
 import { prefixLocale } from "@/lib/i18n/routing";
 
 type AccessPageProps = {
-  params: { locale: AppLocale };
+  params: Promise<{ locale: AppLocale }>;
 };
 
 export async function generateMetadata({ params }: AccessPageProps): Promise<Metadata> {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
 
   return {
@@ -22,7 +23,8 @@ export async function generateMetadata({ params }: AccessPageProps): Promise<Met
 }
 
 export default async function AccessPage({ params }: AccessPageProps) {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
 
   return (

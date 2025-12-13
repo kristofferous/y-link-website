@@ -7,11 +7,12 @@ import { prefixLocale } from "@/lib/i18n/routing";
 import { absoluteUrl, buildBreadcrumbSchema } from "@/lib/seo";
 
 type TechnicalPageProps = {
-  params: { locale: AppLocale };
+  params: Promise<{ locale: AppLocale }>;
 };
 
 export async function generateMetadata({ params }: TechnicalPageProps): Promise<Metadata> {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
 
   return {
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: TechnicalPageProps): Promise<
 }
 
 export default async function TechnicalPage({ params }: TechnicalPageProps) {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { technical, navigation } = dictionary;
   const breadcrumbs = [

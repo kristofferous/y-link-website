@@ -1,5 +1,3 @@
-"use server";
-
 import { type AppLocale, type Dictionary, defaultLocale } from "./config";
 
 function getPathSegments(key: string) {
@@ -8,11 +6,11 @@ function getPathSegments(key: string) {
 
 function lookup(dictionary: Dictionary, key: string): string {
   const segments = getPathSegments(key);
-  let current: any = dictionary;
+  let current: unknown = dictionary;
 
   for (const segment of segments) {
-    if (current && typeof current === "object" && segment in current) {
-      current = current[segment];
+    if (current && typeof current === "object" && segment in (current as Record<string, unknown>)) {
+      current = (current as Record<string, unknown>)[segment];
     } else {
       throw new Error(`Missing translation key "${key}"`);
     }

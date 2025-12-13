@@ -29,7 +29,9 @@ export async function accessAction(_prev: ActionState, formData: FormData): Prom
   return redirect(redirectTo);
 }
 
-export async function logoutAction() {
+export async function logoutAction(formData?: FormData) {
   await clearSessionCookie();
-  redirect("/access");
+  const localeValue = formData?.get("locale");
+  const locale = normalize(localeValue as string) || "nb";
+  redirect(`/${locale}/access`);
 }

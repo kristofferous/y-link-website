@@ -6,11 +6,12 @@ import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/confi
 import { prefixLocale } from "@/lib/i18n/routing";
 
 type PrivacyPageProps = {
-  params: { locale: AppLocale };
+  params: Promise<{ locale: AppLocale }>;
 };
 
 export async function generateMetadata({ params }: PrivacyPageProps): Promise<Metadata> {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
 
   return {
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }: PrivacyPageProps): Promise<Me
 }
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { privacy, navigation } = dictionary;
 

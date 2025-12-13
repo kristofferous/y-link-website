@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const localesDir = join(process.cwd(), "locales");
+const localesDir = join(process.cwd(), "src", "locales");
 const nb = JSON.parse(readFileSync(join(localesDir, "nb-NO.json"), "utf8"));
 const en = JSON.parse(readFileSync(join(localesDir, "en-US.json"), "utf8"));
 

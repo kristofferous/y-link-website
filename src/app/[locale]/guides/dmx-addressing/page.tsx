@@ -1,31 +1,48 @@
-import type { Metadata } from "next"
-import Link from "next/link"
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
+import { prefixLocale } from "@/lib/i18n/routing";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs"
+type PageProps = { params: Promise<{ locale: AppLocale }> };
 
-export const metadata: Metadata = {
-  title: "Fixture Addressing",
-  description: "Learn to address fixtures correctly for stable AI-driven light sequences.",
-  alternates: {
-    canonical: "/guides/dmx-addressing",
-  },
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
+  const dictionary = await getDictionary(locale);
+  const meta = dictionary.guides.dmxAddressing.metadata;
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: prefixLocale(locale, "/guides/dmx-addressing"),
+    },
+  };
 }
 
-export default function DMXAddressingPage() {
+export default async function DMXAddressingPage({ params }: PageProps) {
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
+  const dictionary = await getDictionary(locale);
+  const { guides, navigation } = dictionary;
+  const page = guides.dmxAddressing;
+
   return (
     <main>
       <section className="section-spacing">
         <div className="container-custom">
           <Breadcrumbs
-            items={[{ label: "Home", href: "/" }, { label: "Guides", href: "/guides" }, { label: "Addressing" }]}
+            items={[
+              { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
+              { label: guides.breadcrumb, href: prefixLocale(locale, "/guides") },
+              { label: page.breadcrumb },
+            ]}
             className="mb-8"
           />
           <div className="mx-auto max-w-4xl space-y-6">
-            <p className="text-label text-muted-foreground">Guide</p>
-            <h1 className="text-heading-lg text-foreground">Fixture Addressing</h1>
-            <p className="text-body-lg text-muted-foreground prose-constrained">
-              Correct addressing ensures AI-planned cues hit the right channel every time.
-            </p>
+            <p className="text-label text-muted-foreground">{page.hero.label}</p>
+            <h1 className="text-heading-lg text-foreground">{page.hero.title}</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">{page.hero.body}</p>
           </div>
         </div>
       </section>
@@ -34,13 +51,9 @@ export default function DMXAddressingPage() {
         <div className="container-custom">
           <div className="mx-auto max-w-3xl space-y-8">
             <div className="rounded-lg border border-border/40 bg-card p-8">
-              <h2 className="text-heading mb-4 text-foreground">Plan Your Patch</h2>
+              <h2 className="text-heading mb-4 text-foreground">{page.plan.title}</h2>
               <ul className="space-y-3 text-body text-muted-foreground">
-                {[
-                  "Keep an updated patch list with start address and mode.",
-                  "Group similar fixtures for tidy universes.",
-                  "Avoid overlap by reserving buffer zones where rigs change often.",
-                ].map((item) => (
+                {page.plan.items.map((item) => (
                   <li key={item} className="flex gap-3">
                     <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                     {item}
@@ -50,18 +63,14 @@ export default function DMXAddressingPage() {
             </div>
 
             <div className="rounded-lg border border-border/40 bg-card p-8">
-              <h2 className="text-heading mb-4 text-foreground">Validate Against Controller</h2>
-              <p className="text-body text-muted-foreground">
-                Y-Link checks the patch before show. Mismatches between patch and actual rig can cause wrong mapping and
-                timing drift.
-              </p>
+              <h2 className="text-heading mb-4 text-foreground">{page.validate.title}</h2>
+              <p className="text-body text-muted-foreground">{page.validate.body}</p>
               <p className="mt-4 text-sm text-muted-foreground">
-                Continue with{" "}
                 <Link
-                  href="/guides/dmx-universes"
+                  href={prefixLocale(locale, "/guides/dmx-universes")}
                   className="text-foreground underline underline-offset-4 hover:opacity-80"
                 >
-                  universes and scaling
+                  {page.validate.linkLabel}
                 </Link>
                 .
               </p>
@@ -70,5 +79,5 @@ export default function DMXAddressingPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

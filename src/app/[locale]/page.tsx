@@ -6,11 +6,12 @@ import { prefixLocale } from "@/lib/i18n/routing";
 export default async function Home({
   params,
 }: {
-  params: {
+  params: Promise<{
     locale: AppLocale;
-  };
+  }>;
 }) {
-  const locale = normalizeLocale(params.locale);
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { home, actions } = dictionary;
 

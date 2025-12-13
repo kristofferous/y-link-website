@@ -1,37 +1,45 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { Breadcrumbs } from "@/components/Breadcrumbs"
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
+import { prefixLocale } from "@/lib/i18n/routing";
 
-export const metadata: Metadata = {
-  title: "DMX-guider",
-  description: "Guider som bygger DMX-grunnlag og støtter AI-drevet, musikkreaktiv kontroll.",
-  alternates: {
-    canonical: "/guides",
-  },
+type GuidesPageProps = { params: Promise<{ locale: AppLocale }> };
+
+export async function generateMetadata({ params }: GuidesPageProps): Promise<Metadata> {
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
+  const dictionary = await getDictionary(locale);
+  return {
+    title: dictionary.guides.metadata.title,
+    description: dictionary.guides.metadata.description,
+    alternates: {
+      canonical: prefixLocale(locale, "/guides"),
+    },
+  };
 }
 
-const guides = [
-  { title: "DMX Basics", href: "/guides/dmx-basics" },
-  { title: "Fixture Addressing", href: "/guides/dmx-addressing" },
-  { title: "Universes and Scaling", href: "/guides/dmx-universes" },
-  { title: "Latency and Jitter", href: "/guides/dmx-latency-jitter" },
-  { title: "Best Practices", href: "/guides/dmx-best-practices" },
-  { title: "Troubleshooting", href: "/guides/dmx-troubleshooting" },
-]
+export default async function GuidesPage({ params }: GuidesPageProps) {
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
+  const dictionary = await getDictionary(locale);
+  const { guides, navigation } = dictionary;
 
-export default function GuidesPage() {
   return (
     <main>
       <section className="section-spacing">
         <div className="container-custom">
-          <Breadcrumbs items={[{ label: "Hjem", href: "/" }, { label: "Guides" }]} className="mb-8" />
+          <Breadcrumbs
+            items={[
+              { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
+              { label: guides.breadcrumb },
+            ]}
+            className="mb-8"
+          />
           <div className="mx-auto max-w-4xl space-y-6">
-            <p className="text-label text-muted-foreground">Resources</p>
-            <h1 className="text-heading-lg text-foreground">DMX Guides for AI-Controlled Lighting</h1>
-            <p className="text-body-lg text-muted-foreground prose-constrained">
-              Build a solid foundation so AI-based DMX automation lands safely in your space. Each guide links back to
-              the main AI DMX controller page for context.
-            </p>
+            <p className="text-label text-muted-foreground">{guides.hero.label}</p>
+            <h1 className="text-heading-lg text-foreground">{guides.hero.title}</h1>
+            <p className="text-body-lg text-muted-foreground prose-constrained">{guides.hero.body}</p>
           </div>
         </div>
       </section>
@@ -39,10 +47,10 @@ export default function GuidesPage() {
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {guides.map((guide) => (
+            {guides.list.map((guide) => (
               <Link
                 key={guide.href}
-                href={guide.href}
+                href={prefixLocale(locale, guide.href)}
                 className="group flex items-center justify-between rounded-lg border border-border/40 bg-card p-5 transition-colors hover:bg-accent"
               >
                 <span className="text-body font-medium text-foreground">{guide.title}</span>
@@ -60,5 +68,5 @@ export default function GuidesPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }
