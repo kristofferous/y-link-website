@@ -11,7 +11,15 @@ export async function validatePilotAccessByEmail(emailRaw: string): Promise<Pilo
   if (!email) {
     return { ok: false, reason: "missing-email" };
   }
-  const supabase = createServiceClient();
+
+  let supabase;
+  try {
+    supabase = createServiceClient();
+  } catch (error) {
+    console.error("[validatePilotAccessByEmail] Supabase config error", error);
+    return { ok: false, reason: "not-found" };
+  }
+
   const { data, error } = await supabase
     .from("pilot_users")
     .select("pilot_type, expires_at, is_active")
@@ -41,7 +49,13 @@ export async function validateInviteAndPilot(emailRaw: string, codeRaw: string):
     return { ok: false, reason: "invalid" };
   }
 
-  const supabase = createServiceClient();
+  let supabase;
+  try {
+    supabase = createServiceClient();
+  } catch (error) {
+    console.error("[validateInviteAndPilot] Supabase config error", error);
+    return { ok: false, reason: "invalid" };
+  }
   const { data: invite, error } = await supabase
     .from("invite_codes")
     .select("id, pilot_type, max_uses, used_count, expires_at")
