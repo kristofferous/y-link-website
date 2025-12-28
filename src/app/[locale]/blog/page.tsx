@@ -38,6 +38,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const { items, total, page: currentPage, pageSize } = await fetchBlogList(locale, page, PAGE_SIZE);
   const totalPages = Math.ceil(total / pageSize);
 
+  console.log("[blog] locale", locale, "page", currentPage, "total", total, "items", items.length, items);
+
   if (totalPages > 0 && currentPage > totalPages) {
     notFound();
   }
