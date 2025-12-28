@@ -329,6 +329,7 @@ export async function fetchBlogList(
     .range(from, to);
 
   if (error || !data) {
+    console.log("[blog] list error", error);
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
@@ -405,6 +406,7 @@ export async function fetchGuideList(
   const { data, error, count } = guideResponse;
 
   if (error || !data) {
+    console.log("[guides] list error", error);
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 

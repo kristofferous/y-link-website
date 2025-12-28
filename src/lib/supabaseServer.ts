@@ -26,6 +26,14 @@ function getServiceRoleKey() {
 export function createServiceClient(): ServiceClient {
   const supabaseUrl = getSupabaseUrl();
   const supabaseServiceRoleKey = getServiceRoleKey();
+  if (process.env.NODE_ENV !== "production") {
+    console.log("[supabase] service client", {
+      hasUrl: Boolean(process.env.SUPABASE_URL),
+      hasSecretKey: Boolean(process.env.SUPABASE_SECRET_KEY),
+      hasLegacyKey: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+      usingSecretKey: supabaseServiceRoleKey === process.env.SUPABASE_SECRET_KEY,
+    });
+  }
 
   return createClient(supabaseUrl, supabaseServiceRoleKey, {
     auth: {
