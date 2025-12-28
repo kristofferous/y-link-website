@@ -1,83 +1,74 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { notFound } from "next/navigation";
+import { GuideArticle } from "@/components/GuideArticle";
+import { fetchGuideBySlug } from "@/lib/blogGuides";
+import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ locale: AppLocale }> };
+
+const GUIDE_SLUG = "dmx-universes";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
-  const dictionary = await getDictionary(locale);
-  const meta = dictionary.guides.dmxUniverses.metadata;
+  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+
+  if (!post) return {};
+
+  const title = post.translation.seo_title ?? post.translation.title;
+  const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
+  const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+
   return {
-    title: meta.title,
-    description: meta.description,
+    title,
+    description,
     alternates: {
-      canonical: prefixLocale(locale, "/guides/dmx-universes"),
+      canonical: prefixLocale(locale, `/guides/${post.translation.slug}`),
+    },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: post.translation.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
   };
 }
 
-export default async function DMXUniversesPage({ params }: PageProps) {
+export default async function GuideStaticPage({ params }: PageProps) {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const { guides, navigation } = dictionary;
-  const page = guides.dmxUniverses;
+  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+
+  if (!post) notFound();
+  const label = dictionary.guides.articleLabel ?? "Guide";
 
   return (
-    <main>
-      <section className="section-spacing">
-        <div className="container-custom">
-          <Breadcrumbs
-            items={[
-              { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: guides.breadcrumb, href: prefixLocale(locale, "/guides") },
-              { label: page.breadcrumb },
-            ]}
-            className="mb-8"
-          />
-          <div className="mx-auto max-w-4xl space-y-6">
-            <p className="text-label text-muted-foreground">{page.hero.label}</p>
-            <h1 className="text-heading-lg text-foreground">{page.hero.title}</h1>
-            <p className="text-body-lg text-muted-foreground prose-constrained">{page.hero.body}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section-spacing border-t border-border/40">
-        <div className="container-custom">
-          <div className="mx-auto max-w-3xl space-y-8">
-            <div className="rounded-lg border border-border/40 bg-card p-8">
-              <h2 className="text-heading mb-4 text-foreground">{page.distribute.title}</h2>
-              <ul className="space-y-3 text-body text-muted-foreground">
-                {page.distribute.items.map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-lg border border-border/40 bg-card p-8">
-              <h2 className="text-heading mb-4 text-foreground">{page.scaling.title}</h2>
-              <p className="text-body text-muted-foreground">{page.scaling.body}</p>
-              <p className="mt-4 text-sm text-muted-foreground">
-                <Link
-                  href={prefixLocale(locale, "/guides/dmx-latency-jitter")}
-                  className="text-foreground underline underline-offset-4 hover:opacity-80"
-                >
-                  {page.scaling.linkLabel}
-                </Link>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <GuideArticle
+      locale={locale}
+      post={post}
+      label={label}
+      breadcrumbs={[
+        { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
+        { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
+        { label: post.translation.title },
+      ]}
+    />
   );
 }

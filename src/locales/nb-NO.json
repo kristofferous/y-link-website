@@ -616,6 +616,7 @@
       "description": "Guider som bygger DMX-grunnlag og støtter AI-drevet, musikkreaktiv kontroll."
     },
     "breadcrumb": "Guider",
+    "articleLabel": "Guide",
     "hero": {
       "label": "Ressurser",
       "title": "DMX-guider for AI-styrt lys",
@@ -772,6 +773,9 @@
         "linkLabel": "DMX-grunnlag"
       }
     }
+  },
+  "blog": {
+    "breadcrumb": "Blogg"
   },
   "aiDmxAlternatives": {
     "metadata": {

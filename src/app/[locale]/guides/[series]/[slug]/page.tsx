@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { GuideArticle } from "@/components/GuideArticle";
-import { fetchGuideBySlug } from "@/lib/blogGuides";
-import { buildDescription } from "@/lib/contentUtils";
+import { fetchGuideInSeries, fetchGuideSeries } from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { buildDescription } from "@/lib/contentUtils";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
-type PageProps = { params: Promise<{ locale: AppLocale }> };
-
-const GUIDE_SLUG = "dmx-best-practices";
+type PageProps = { params: Promise<{ locale: AppLocale; series: string; slug: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale: localeParam } = await params;
+  const { locale: localeParam, series: seriesSlug, slug } = await params;
   const locale = normalizeLocale(localeParam);
-  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+  const series = await fetchGuideSeries(locale, seriesSlug);
+  if (!series) return {};
 
+  const post = await fetchGuideInSeries(locale, series.id, slug);
   if (!post) return {};
 
   const title = post.translation.seo_title ?? post.translation.title;
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     alternates: {
-      canonical: prefixLocale(locale, `/guides/${post.translation.slug}`),
+      canonical: prefixLocale(locale, `/guides/${series.slug}/${post.translation.slug}`),
     },
     openGraph: {
       type: "article",
@@ -50,13 +50,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function GuideStaticPage({ params }: PageProps) {
-  const { locale: localeParam } = await params;
+export default async function GuideSeriesPage({ params }: PageProps) {
+  const { locale: localeParam, series: seriesSlug, slug } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+  const series = await fetchGuideSeries(locale, seriesSlug);
 
+  if (!series) notFound();
+
+  const post = await fetchGuideInSeries(locale, series.id, slug);
   if (!post) notFound();
+
   const label = dictionary.guides.articleLabel ?? "Guide";
 
   return (
@@ -64,9 +68,11 @@ export default async function GuideStaticPage({ params }: PageProps) {
       locale={locale}
       post={post}
       label={label}
+      seriesName={series.name}
       breadcrumbs={[
         { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
         { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
+        { label: series.name },
         { label: post.translation.title },
       ]}
     />

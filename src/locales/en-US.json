@@ -616,6 +616,7 @@
       "description": "Guides that build DMX fundamentals and support AI-driven, music-reactive control."
     },
     "breadcrumb": "Guides",
+    "articleLabel": "Guide",
     "hero": {
       "label": "Resources",
       "title": "DMX Guides for AI-Controlled Lighting",
@@ -772,6 +773,9 @@
         "linkLabel": "DMX Basics"
       }
     }
+  },
+  "blog": {
+    "breadcrumb": "Blog"
   },
   "aiDmxAlternatives": {
     "metadata": {

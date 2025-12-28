@@ -2,19 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { GuideArticle } from "@/components/GuideArticle";
 import { fetchGuideBySlug } from "@/lib/blogGuides";
-import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { buildDescription } from "@/lib/contentUtils";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
-type PageProps = { params: Promise<{ locale: AppLocale }> };
-
-const GUIDE_SLUG = "dmx-best-practices";
+type PageProps = { params: Promise<{ locale: AppLocale; slug: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale: localeParam } = await params;
+  const { locale: localeParam, slug } = await params;
   const locale = normalizeLocale(localeParam);
-  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+  const post = await fetchGuideBySlug(locale, slug);
 
   if (!post) return {};
 
@@ -50,11 +48,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function GuideStaticPage({ params }: PageProps) {
-  const { locale: localeParam } = await params;
+export default async function GuidePage({ params }: PageProps) {
+  const { locale: localeParam, slug } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const post = await fetchGuideBySlug(locale, GUIDE_SLUG);
+  const post = await fetchGuideBySlug(locale, slug);
 
   if (!post) notFound();
   const label = dictionary.guides.articleLabel ?? "Guide";
