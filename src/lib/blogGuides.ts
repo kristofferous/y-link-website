@@ -161,8 +161,8 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
     )
     .eq("category", "blog")
     .or(eligibilityFilter(nowValue))
-    .eq("slug", slug, { foreignTable: "blog_post_translations" })
-    .eq("locale", locale, { foreignTable: "blog_post_translations" })
+    .eq("slug", slug, { foreignTable: "translations" })
+    .eq("locale", locale, { foreignTable: "translations" })
     .maybeSingle();
 
   if (error || !data) return null;
@@ -205,8 +205,8 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
     .eq("category", "guide")
     .or(eligibilityFilter(nowValue))
     .is("series_id", null)
-    .eq("slug", slug, { foreignTable: "blog_post_translations" })
-    .eq("locale", locale, { foreignTable: "blog_post_translations" })
+    .eq("slug", slug, { foreignTable: "translations" })
+    .eq("locale", locale, { foreignTable: "translations" })
     .maybeSingle();
 
   if (error || !data) return null;
@@ -274,8 +274,8 @@ export async function fetchGuideInSeries(
     .eq("category", "guide")
     .or(eligibilityFilter(nowValue))
     .eq("series_id", seriesId)
-    .eq("slug", slug, { foreignTable: "blog_post_translations" })
-    .eq("locale", locale, { foreignTable: "blog_post_translations" })
+    .eq("slug", slug, { foreignTable: "translations" })
+    .eq("locale", locale, { foreignTable: "translations" })
     .maybeSingle();
 
   if (error || !data) return null;
@@ -324,7 +324,7 @@ export async function fetchBlogList(
     )
     .eq("category", "blog")
     .or(eligibilityFilter(nowValue))
-    .eq("locale", locale, { foreignTable: "blog_post_translations" })
+    .eq("locale", locale, { foreignTable: "translations" })
     .order("published_at", { ascending: false })
     .range(from, to);
 
@@ -391,7 +391,7 @@ export async function fetchGuideList(
       )
       .eq("category", "guide")
       .or(eligibilityFilter(nowValue))
-      .eq("locale", locale, { foreignTable: "blog_post_translations" })
+      .eq("locale", locale, { foreignTable: "translations" })
       .order("published_at", { ascending: false })
       .range(from, to),
   ]);
