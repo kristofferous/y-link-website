@@ -5,6 +5,8 @@ import { createServiceClient } from "@/lib/supabaseServer";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 
+export const dynamic = "force-dynamic";
+
 type UnsubscribeStatus = "invalid" | "error" | "expired" | "success";
 
 async function handleUnsubscribe(token: string | undefined): Promise<UnsubscribeStatus> {

@@ -23,6 +23,11 @@ function normalizeInterest(value: string | null): InterestOption | null {
   return interestOptions.find((option) => option === value) ?? null;
 }
 
+function isChecked(value: unknown): boolean {
+  const normalized = typeof value === "string" ? value.toLowerCase() : "";
+  return ["on", "true", "yes", "1"].includes(normalized);
+}
+
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
@@ -61,11 +66,21 @@ export async function subscribeAction(
   const referrer = normalizeString(formData.get("referrer") as string | null);
   const pathname = normalizeString(formData.get("pathname") as string | null);
   const timestamp = normalizeString(formData.get("timestamp") as string | null);
+  const consentVersion =
+    normalizeString(formData.get("consent_version") as string | null) ?? "v1";
+  const consentGiven = isChecked(formData.get("consent"));
 
   if (!email || !isValidEmail(email)) {
     return {
       status: "error",
       message: "Legg inn en gyldig e-postadresse.",
+    };
+  }
+
+  if (!consentGiven) {
+    return {
+      status: "error",
+      message: "Please provide consent before we can register your email.",
     };
   }
 
@@ -79,6 +94,9 @@ export async function subscribeAction(
     referrer,
     pathname,
     timestamp,
+    consent_version: consentVersion,
+    consent_given: consentGiven,
+    consent_at: timestamp,
   };
 
   const basePayload = {

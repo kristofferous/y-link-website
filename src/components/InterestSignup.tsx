@@ -35,6 +35,12 @@ type Tracking = {
   timestamp?: string;
 };
 
+type WindowWithDataLayer = Window & {
+  dataLayer?: Array<Record<string, unknown>>;
+};
+
+const CONSENT_VERSION = "v1";
+
 const initialState: SubscriptionFormState = {
   status: "idle",
   message: "",
@@ -46,8 +52,9 @@ function trackEvent(name: string, detail?: Record<string, unknown>) {
   if (typeof window.dispatchEvent === "function") {
     window.dispatchEvent(new CustomEvent(name, { detail: payload }));
   }
-  if ((window as any).dataLayer) {
-    (window as any).dataLayer.push({ event: name, ...payload });
+  const { dataLayer } = window as WindowWithDataLayer;
+  if (dataLayer) {
+    dataLayer.push({ event: name, ...payload });
   }
   console.debug("[tracking]", payload);
 }
@@ -74,17 +81,17 @@ export function InterestSignup({
 
   const [state, formAction] = useActionState(subscribeAction, initialState);
   const [showDetails, setShowDetails] = useState(false);
-  const [tracking, setTracking] = useState<Tracking>({
-    pathname: "",
-    referrer: "",
-    timestamp: new Date().toISOString(),
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const tracking = useMemo<Tracking>(() => {
+    if (typeof window === "undefined") {
+      return {
+        pathname: "",
+        referrer: "",
+        timestamp: new Date().toISOString(),
+      };
+    }
     const url = new URL(window.location.href);
     const getParam = (key: string) => url.searchParams.get(key) ?? undefined;
-    setTracking({
+    return {
       utm_source: getParam("utm_source"),
       utm_medium: getParam("utm_medium"),
       utm_campaign: getParam("utm_campaign"),
@@ -93,7 +100,7 @@ export function InterestSignup({
       referrer: document.referrer || undefined,
       pathname: window.location.pathname,
       timestamp: new Date().toISOString(),
-    });
+    };
   }, []);
 
   useEffect(() => {
@@ -105,6 +112,7 @@ export function InterestSignup({
   const resolvedCtaLabel = ctaLabel ?? formCopy.primaryCta;
   const resolvedSecondaryHref = localizeHref(locale, secondaryCtaHref);
   const resolvedSecondaryLabel = secondaryCtaLabel ?? formCopy.secondaryCta;
+  const privacyHref = prefixLocale(locale, "/privacy");
 
   const containerClasses = useMemo(() => {
     if (variant === "hero") {
@@ -229,6 +237,26 @@ export function InterestSignup({
       <input type="hidden" name="referrer" value={tracking.referrer ?? ""} />
       <input type="hidden" name="pathname" value={tracking.pathname ?? ""} />
       <input type="hidden" name="timestamp" value={tracking.timestamp ?? ""} />
+      <input type="hidden" name="consent_version" value={CONSENT_VERSION} />
+
+      <div className="rounded-lg border border-border/40 bg-accent/40 px-3 py-3">
+        <label htmlFor={`consent-${variant}-${id ?? ""}`} className="flex items-start gap-3 text-sm text-foreground">
+          <input
+            id={`consent-${variant}-${id ?? ""}`}
+            name="consent"
+            type="checkbox"
+            required
+            className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-2 focus:ring-ring"
+          />
+          <span>
+            I agree to receive product updates and accept the{" "}
+            <Link href={privacyHref} className="underline underline-offset-4 hover:opacity-80">
+              privacy notice
+            </Link>
+            .
+          </span>
+        </label>
+      </div>
 
       <div className="flex flex-col gap-3">
         <button
