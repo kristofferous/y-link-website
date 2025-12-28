@@ -6,21 +6,21 @@ import clsx from "clsx";
 type Preference = "necessary" | "analytics";
 
 export function TrackingPreferences() {
-  const [visible, setVisible] = useState(false);
-  const [preference, setPreference] = useState<Preference>("necessary");
+  const [visible, setVisible] = useState(true);
+  const [preference, setPreference] = useState<Preference>(() => {
+    if (typeof window === "undefined") return "necessary";
+    const stored = localStorage.getItem("va-consent");
+    return stored === "analytics" ? "analytics" : "necessary";
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = localStorage.getItem("va-consent");
-    const pref: Preference = stored === "analytics" ? "analytics" : "necessary";
-    setPreference(pref);
-    if (pref === "necessary") {
+    if (preference === "necessary") {
       localStorage.setItem("va-disable", "1");
     } else {
       localStorage.removeItem("va-disable");
     }
-    setVisible(true);
-  }, []);
+  }, [preference]);
 
   const handleSave = () => {
     if (typeof window === "undefined") return;

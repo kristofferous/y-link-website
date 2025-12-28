@@ -66,7 +66,7 @@ export default async function UnsubscribePage({ params, searchParams }: Unsubscr
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const { unsubscribe, navigation } = dictionary;
+  const { unsubscribe } = dictionary;
   const tokenParam = searchParams?.token;
   const token = typeof tokenParam === "string" ? tokenParam : Array.isArray(tokenParam) ? tokenParam[0] : undefined;
 

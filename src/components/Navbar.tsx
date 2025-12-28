@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
-import { prefixLocale, stripLocaleFromPath } from "@/lib/i18n/routing";
+import { prefixLocale } from "@/lib/i18n/routing";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 export function Navbar() {
@@ -15,18 +15,12 @@ export function Navbar() {
   const { locale, dictionary } = useTranslations();
   const { navigation } = dictionary;
 
-  const currentPath = useMemo(() => stripLocaleFromPath(pathname ?? "/").path, [pathname]);
-
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);

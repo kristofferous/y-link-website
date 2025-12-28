@@ -1,37 +1,30 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+
+type Theme = "dark" | "light";
+
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") {
+    return "dark";
+  }
+  const stored = localStorage.getItem("theme");
+  return stored === "light" ? "light" : "dark";
+}
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark")
-  const [mounted, setMounted] = useState(false)
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
   useEffect(() => {
-    setMounted(true)
-    const stored = localStorage.getItem("theme") as "dark" | "light" | null
-    const initial = stored ?? "dark"
-    setTheme(initial)
-    document.documentElement.classList.toggle("dark", initial === "dark")
-  }, [])
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   const toggle = () => {
-    const next = theme === "dark" ? "light" : "dark"
-    setTheme(next)
-    localStorage.setItem("theme", next)
-    document.documentElement.classList.toggle("dark", next === "dark")
-  }
-
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground"
-        aria-label="Toggle theme"
-      >
-        <span className="sr-only">Toggle theme</span>
-      </button>
-    )
-  }
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+    document.documentElement.classList.toggle("dark", next === "dark");
+  };
 
   return (
     <button
@@ -60,5 +53,5 @@ export function ThemeToggle() {
         </svg>
       )}
     </button>
-  )
+  );
 }

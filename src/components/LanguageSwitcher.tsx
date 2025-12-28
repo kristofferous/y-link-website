@@ -11,31 +11,26 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   const { locale } = useTranslations();
   const pathname = usePathname();
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const [pendingLocale, setPendingLocale] = useState<AppLocale | null>(null);
 
   const currentPath = useMemo(() => stripLocaleFromPath(pathname ?? "/").path, [pathname]);
 
-  const handleChange = (nextLocale: AppLocale) => {
-    const target = prefixLocale(nextLocale, currentPath);
-    document.cookie = `${localeCookieName}=${nextLocale}; path=/; max-age=${60 * 60 * 24 * 365}`;
+  useEffect(() => {
+    if (!pendingLocale) return;
+    const target = prefixLocale(pendingLocale, currentPath);
+    document.cookie = `${localeCookieName}=${pendingLocale}; path=/; max-age=${60 * 60 * 24 * 365}`;
     try {
-      localStorage.setItem(localeCookieName, nextLocale);
+      localStorage.setItem(localeCookieName, pendingLocale);
     } catch {
       /* ignore */
     }
-    document.documentElement.setAttribute("lang", nextLocale === "en" ? "en-US" : "nb-NO");
+    document.documentElement.setAttribute("lang", pendingLocale === "en" ? "en-US" : "nb-NO");
     router.push(target);
-  };
+  }, [pendingLocale, currentPath, router]);
 
-  if (!mounted) {
-    return (
-      <div className={clsx("flex items-center gap-2 text-sm text-muted-foreground", className)}>
-        <span className="h-2 w-2 animate-pulse rounded-full bg-muted" />
-      </div>
-    );
-  }
+  const handleChange = (nextLocale: AppLocale) => {
+    setPendingLocale(nextLocale);
+  };
 
   return (
     <div className={clsx("flex items-center gap-2 text-sm", className)}>

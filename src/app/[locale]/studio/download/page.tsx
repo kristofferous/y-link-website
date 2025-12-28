@@ -74,12 +74,13 @@ export default async function DownloadPage({ params }: PageProps) {
 
             <div className="rounded-xl border border-border/40 bg-card p-6 space-y-6">
               <div className="space-y-4">
-                <a
+                <Link
                   href="/api/download"
+                  prefetch={false}
                   className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring"
                 >
                   {copy.active.button}
-                </a>
+                </Link>
                 <p className="text-sm text-muted-foreground">
                   {copy.active.pilotType} {pilot.pilotType ?? copy.active.unknown}. {copy.active.expires}{" "}
                   {pilot.expiresAt ? pilot.expiresAt : copy.active.noExpiry}.

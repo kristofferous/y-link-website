@@ -2,11 +2,7 @@ import "server-only";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-type ServiceClient = SupabaseClient<
-  any,
-  "public",
-  any
->;
+type ServiceClient = SupabaseClient;
 
 function getSupabaseUrl() {
   if (!process.env.SUPABASE_URL) {

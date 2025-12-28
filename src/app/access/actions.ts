@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { validateInviteAndPilot, validatePilotAccessByEmail } from "@/lib/pilotAccess";
+import { validateInviteAndPilot } from "@/lib/pilotAccess";
 import { setSessionCookie, clearSessionCookie } from "@/lib/session";
 
 type ActionState = { status: "idle" | "error"; message?: string };
