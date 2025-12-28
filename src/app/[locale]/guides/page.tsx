@@ -38,8 +38,6 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
   const { items, total, page: currentPage, pageSize } = await fetchGuideList(locale, page, PAGE_SIZE);
   const totalPages = Math.ceil(total / pageSize);
 
-  console.log("[guides] locale", locale, "page", currentPage, "total", total, "items", items.length, items);
-
   if (totalPages > 0 && currentPage > totalPages) {
     notFound();
   }

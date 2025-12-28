@@ -13,11 +13,14 @@ function getSupabaseUrl() {
 }
 
 function getServiceRoleKey() {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
+  const legacyKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secretKey = process.env.SUPABASE_SECRET_KEY;
+
+  if (!legacyKey && !secretKey) {
+    throw new Error("Missing SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY) environment variable");
   }
 
-  return process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return secretKey ?? legacyKey;
 }
 
 export function createServiceClient(): ServiceClient {

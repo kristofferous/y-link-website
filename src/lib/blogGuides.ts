@@ -328,9 +328,7 @@ export async function fetchBlogList(
     .order("published_at", { ascending: false })
     .range(from, to);
 
-  console.log("[blog] query result", { error, count, rows: data?.length ?? 0 });
   if (error || !data) {
-    console.log("[blog] query error", error);
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
@@ -405,10 +403,8 @@ export async function fetchGuideList(
   }
 
   const { data, error, count } = guideResponse;
-  console.log("[guides] query result", { error, count, rows: data?.length ?? 0 });
 
   if (error || !data) {
-    console.log("[guides] query error", error);
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
