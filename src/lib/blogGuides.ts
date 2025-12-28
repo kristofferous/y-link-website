@@ -3,7 +3,8 @@ import "server-only";
 import { createServiceClient } from "@/lib/supabaseServer";
 import { type AppLocale } from "@/lib/i18n/config";
 
-const publishCutoff = () => new Date().toISOString().slice(0, 10);
+const nowIso = () => new Date().toISOString();
+const todayDate = () => new Date().toISOString().slice(0, 10);
 
 const PAGE_SIZE_FALLBACK = 9;
 
@@ -12,6 +13,7 @@ type BlogPostRow = {
   category: "blog" | "guide";
   status: "draft" | "published" | "scheduled";
   published_at: string | null;
+  scheduled_at: string | null;
   reading_time: string | null;
   takeaway: string | null;
   featured_image_url: string | null;
@@ -78,8 +80,54 @@ function toRange(page: number, pageSize = PAGE_SIZE_FALLBACK) {
   return { from, to, page: safePage, pageSize: safePageSize };
 }
 
+function isScheduledDue(post: BlogPostRow, now: Date) {
+  if (post.status !== "scheduled" || !post.scheduled_at) return false;
+  return new Date(post.scheduled_at) <= now;
+}
+
+function publishedAtFromSchedule(scheduledAt: string | null) {
+  if (!scheduledAt) return todayDate();
+  const date = new Date(scheduledAt);
+  if (Number.isNaN(date.getTime())) return todayDate();
+  return date.toISOString().slice(0, 10);
+}
+
+async function promoteScheduledPostIfDue(
+  supabase: ReturnType<typeof createServiceClient>,
+  post: BlogPostRow,
+  now: Date,
+): Promise<BlogPostRow> {
+  if (!isScheduledDue(post, now)) return post;
+
+  const published_at = post.published_at ?? publishedAtFromSchedule(post.scheduled_at);
+  const { error } = await supabase
+    .from("blog_posts")
+    .update({ status: "published", published_at })
+    .eq("id", post.id);
+
+  if (error) return post;
+
+  return { ...post, status: "published", published_at };
+}
+
+async function promoteScheduledPostsIfDue(
+  supabase: ReturnType<typeof createServiceClient>,
+  posts: BlogPostRow[],
+  now: Date,
+) {
+  const duePosts = posts.filter((post) => isScheduledDue(post, now));
+  if (duePosts.length === 0) return posts;
+
+  const updates = await Promise.all(duePosts.map((post) => promoteScheduledPostIfDue(supabase, post, now)));
+  const updatedById = new Map(updates.map((post) => [post.id, post]));
+
+  return posts.map((post) => updatedById.get(post.id) ?? post);
+}
+
 export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Promise<BlogPost | null> {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { data, error } = await supabase
     .from("blog_post_translations")
     .select(
@@ -95,6 +143,7 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
         category,
         status,
         published_at,
+        scheduled_at,
         reading_time,
         takeaway,
         featured_image_url,
@@ -107,16 +156,19 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "blog")
-    .eq("post.status", "published")
-    .lte("post.published_at", publishCutoff())
+    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
     .maybeSingle();
 
   if (error || !data) return null;
-  return mapPost(data);
+  const mapped = mapPost(data);
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
 }
 
 export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise<BlogPost | null> {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { data, error } = await supabase
     .from("blog_post_translations")
     .select(
@@ -132,6 +184,7 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
         category,
         status,
         published_at,
+        scheduled_at,
         reading_time,
         takeaway,
         featured_image_url,
@@ -144,13 +197,14 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "guide")
-    .eq("post.status", "published")
-    .lte("post.published_at", publishCutoff())
+    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
     .is("post.series_id", null)
     .maybeSingle();
 
   if (error || !data) return null;
-  return mapPost(data);
+  const mapped = mapPost(data);
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
 }
 
 export async function fetchGuideSeries(locale: AppLocale, seriesSlug: string): Promise<GuideSeries | null> {
@@ -180,6 +234,8 @@ export async function fetchGuideInSeries(
   slug: string,
 ): Promise<BlogPost | null> {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { data, error } = await supabase
     .from("blog_post_translations")
     .select(
@@ -195,6 +251,7 @@ export async function fetchGuideInSeries(
         category,
         status,
         published_at,
+        scheduled_at,
         reading_time,
         takeaway,
         featured_image_url,
@@ -207,13 +264,14 @@ export async function fetchGuideInSeries(
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "guide")
-    .eq("post.status", "published")
-    .lte("post.published_at", publishCutoff())
+    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
     .eq("post.series_id", seriesId)
     .maybeSingle();
 
   if (error || !data) return null;
-  return mapPost(data);
+  const mapped = mapPost(data);
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
 }
 
 export async function fetchBlogList(
@@ -222,6 +280,8 @@ export async function fetchBlogList(
   pageSize = PAGE_SIZE_FALLBACK,
 ): Promise<PaginatedResult<BlogListItem>> {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { from, to, page: safePage, pageSize: safePageSize } = toRange(page, pageSize);
 
   const { data, error, count } = await supabase
@@ -239,6 +299,7 @@ export async function fetchBlogList(
         category,
         status,
         published_at,
+        scheduled_at,
         reading_time,
         takeaway,
         featured_image_url,
@@ -251,8 +312,7 @@ export async function fetchBlogList(
     )
     .eq("locale", locale)
     .eq("post.category", "blog")
-    .eq("post.status", "published")
-    .lte("post.published_at", publishCutoff())
+    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
     .order("published_at", { ascending: false, foreignTable: "post" })
     .range(from, to);
 
@@ -260,8 +320,16 @@ export async function fetchBlogList(
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
+  const mapped = data.map(mapPost);
+  const updatedPosts = await promoteScheduledPostsIfDue(
+    supabase,
+    mapped.map((item) => item.post),
+    now,
+  );
+  const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
+
   return {
-    items: data.map(mapPost),
+    items: mapped.map((item) => ({ ...item, post: updatedById.get(item.post.id) ?? item.post })),
     total: count ?? data.length,
     page: safePage,
     pageSize: safePageSize,
@@ -274,6 +342,8 @@ export async function fetchGuideList(
   pageSize = PAGE_SIZE_FALLBACK,
 ): Promise<PaginatedResult<GuideListItem>> {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { from, to, page: safePage, pageSize: safePageSize } = toRange(page, pageSize);
 
   const [seriesTranslations, guideResponse] = await Promise.all([
@@ -293,6 +363,7 @@ export async function fetchGuideList(
           category,
           status,
           published_at,
+          scheduled_at,
           reading_time,
           takeaway,
           featured_image_url,
@@ -305,8 +376,7 @@ export async function fetchGuideList(
       )
       .eq("locale", locale)
       .eq("post.category", "guide")
-      .eq("post.status", "published")
-      .lte("post.published_at", publishCutoff())
+      .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
       .order("published_at", { ascending: false, foreignTable: "post" })
       .range(from, to),
   ]);
@@ -323,12 +393,20 @@ export async function fetchGuideList(
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
-  const items = data
-    .map((row) => {
-      const post = mapPost(row);
-      if (!post.post.series_id) return { ...post, seriesSlug: null };
-      const seriesSlug = seriesSlugById.get(post.post.series_id) ?? null;
-      return { ...post, seriesSlug };
+  const mapped = data.map(mapPost);
+  const updatedPosts = await promoteScheduledPostsIfDue(
+    supabase,
+    mapped.map((item) => item.post),
+    now,
+  );
+  const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
+
+  const items = mapped
+    .map((item) => {
+      const post = updatedById.get(item.post.id) ?? item.post;
+      if (!post.series_id) return { ...item, post, seriesSlug: null };
+      const seriesSlug = seriesSlugById.get(post.series_id) ?? null;
+      return { ...item, post, seriesSlug };
     })
     .filter((item) => (item.post.series_id ? Boolean(item.seriesSlug) : true));
 
@@ -342,6 +420,8 @@ export async function fetchGuideList(
 
 export async function fetchPublishedTranslations() {
   const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
   const { data, error } = await supabase
     .from("blog_post_translations")
     .select(
@@ -349,18 +429,24 @@ export async function fetchPublishedTranslations() {
       slug,
       locale,
       post:blog_posts!inner(
+        id,
         category,
         status,
         published_at,
+        scheduled_at,
         series_id
       )
     `,
     )
-    .eq("post.status", "published")
-    .lte("post.published_at", publishCutoff());
+    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`);
 
   if (error || !data) return [];
-  return data;
+
+  const posts = data.map((row) => row.post);
+  const updatedPosts = await promoteScheduledPostsIfDue(supabase, posts, now);
+  const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
+
+  return data.map((row) => ({ ...row, post: updatedById.get(row.post.id) ?? row.post }));
 }
 
 export async function fetchSeriesTranslations() {

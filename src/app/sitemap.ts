@@ -44,16 +44,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((row) => isLocale(row.locale))
     .map((row) => {
       if (row.post.category === "blog") {
-        return { locale: row.locale, path: `/blog/${row.slug}`, publishedAt: row.post.published_at };
+        return {
+          locale: row.locale,
+          path: `/blog/${row.slug}`,
+          publishedAt: row.post.published_at ?? row.post.scheduled_at,
+        };
       }
 
       if (row.post.category === "guide") {
         if (row.post.series_id) {
           const seriesSlug = seriesSlugByLocale.get(row.post.series_id)?.get(row.locale);
           if (!seriesSlug) return null;
-          return { locale: row.locale, path: `/guides/${seriesSlug}/${row.slug}`, publishedAt: row.post.published_at };
+          return {
+            locale: row.locale,
+            path: `/guides/${seriesSlug}/${row.slug}`,
+            publishedAt: row.post.published_at ?? row.post.scheduled_at,
+          };
         }
-        return { locale: row.locale, path: `/guides/${row.slug}`, publishedAt: row.post.published_at };
+        return {
+          locale: row.locale,
+          path: `/guides/${row.slug}`,
+          publishedAt: row.post.published_at ?? row.post.scheduled_at,
+        };
       }
 
       return null;
