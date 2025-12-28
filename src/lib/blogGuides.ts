@@ -29,6 +29,11 @@ type BlogPostTranslationRow = {
   content_html: string;
   seo_title: string | null;
   seo_description: string | null;
+  locale?: string;
+};
+
+type JoinedPostRow = BlogPostRow & {
+  translations: BlogPostTranslationRow[];
 };
 
 export type BlogPost = {
@@ -58,17 +63,13 @@ export type PaginatedResult<T> = {
   pageSize: number;
 };
 
-function mapPost(row: { post: BlogPostRow } & BlogPostTranslationRow): BlogPost {
+function mapJoined(row: JoinedPostRow): BlogPost | null {
+  const translation = row.translations?.[0];
+  if (!translation) return null;
+  const { translations, ...post } = row;
   return {
-    post: row.post,
-    translation: {
-      slug: row.slug,
-      title: row.title,
-      summary: row.summary,
-      content_html: row.content_html,
-      seo_title: row.seo_title,
-      seo_description: row.seo_description,
-    },
+    post: post as BlogPostRow,
+    translation,
   };
 }
 
@@ -124,43 +125,49 @@ async function promoteScheduledPostsIfDue(
   return posts.map((post) => updatedById.get(post.id) ?? post);
 }
 
+function eligibilityFilter(nowValue: string) {
+  return `status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`;
+}
+
 export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Promise<BlogPost | null> {
   const supabase = createServiceClient();
   const now = new Date();
   const nowValue = nowIso();
   const { data, error } = await supabase
-    .from("blog_post_translations")
+    .from("blog_posts")
     .select(
       `
-      slug,
-      title,
-      summary,
-      content_html,
-      seo_title,
-      seo_description,
-      post:blog_posts!inner(
-        id,
-        category,
-        status,
-        published_at,
-        scheduled_at,
-        reading_time,
-        takeaway,
-        featured_image_url,
-        author_name,
-        series_id,
-        series_order
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
       )
     `,
     )
-    .eq("slug", slug)
-    .eq("locale", locale)
-    .eq("post.category", "blog")
-    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
+    .eq("category", "blog")
+    .or(eligibilityFilter(nowValue))
+    .eq("slug", slug, { foreignTable: "blog_post_translations" })
+    .eq("locale", locale, { foreignTable: "blog_post_translations" })
     .maybeSingle();
 
   if (error || !data) return null;
-  const mapped = mapPost(data);
+  const mapped = mapJoined(data as JoinedPostRow);
+  if (!mapped) return null;
   const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
   return { ...mapped, post: updatedPost };
 }
@@ -170,39 +177,41 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
   const now = new Date();
   const nowValue = nowIso();
   const { data, error } = await supabase
-    .from("blog_post_translations")
+    .from("blog_posts")
     .select(
       `
-      slug,
-      title,
-      summary,
-      content_html,
-      seo_title,
-      seo_description,
-      post:blog_posts!inner(
-        id,
-        category,
-        status,
-        published_at,
-        scheduled_at,
-        reading_time,
-        takeaway,
-        featured_image_url,
-        author_name,
-        series_id,
-        series_order
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
       )
     `,
     )
-    .eq("slug", slug)
-    .eq("locale", locale)
-    .eq("post.category", "guide")
-    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
-    .is("post.series_id", null)
+    .eq("category", "guide")
+    .or(eligibilityFilter(nowValue))
+    .is("series_id", null)
+    .eq("slug", slug, { foreignTable: "blog_post_translations" })
+    .eq("locale", locale, { foreignTable: "blog_post_translations" })
     .maybeSingle();
 
   if (error || !data) return null;
-  const mapped = mapPost(data);
+  const mapped = mapJoined(data as JoinedPostRow);
+  if (!mapped) return null;
   const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
   return { ...mapped, post: updatedPost };
 }
@@ -237,39 +246,41 @@ export async function fetchGuideInSeries(
   const now = new Date();
   const nowValue = nowIso();
   const { data, error } = await supabase
-    .from("blog_post_translations")
+    .from("blog_posts")
     .select(
       `
-      slug,
-      title,
-      summary,
-      content_html,
-      seo_title,
-      seo_description,
-      post:blog_posts!inner(
-        id,
-        category,
-        status,
-        published_at,
-        scheduled_at,
-        reading_time,
-        takeaway,
-        featured_image_url,
-        author_name,
-        series_id,
-        series_order
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
       )
     `,
     )
-    .eq("slug", slug)
-    .eq("locale", locale)
-    .eq("post.category", "guide")
-    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
-    .eq("post.series_id", seriesId)
+    .eq("category", "guide")
+    .or(eligibilityFilter(nowValue))
+    .eq("series_id", seriesId)
+    .eq("slug", slug, { foreignTable: "blog_post_translations" })
+    .eq("locale", locale, { foreignTable: "blog_post_translations" })
     .maybeSingle();
 
   if (error || !data) return null;
-  const mapped = mapPost(data);
+  const mapped = mapJoined(data as JoinedPostRow);
+  if (!mapped) return null;
   const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
   return { ...mapped, post: updatedPost };
 }
@@ -285,42 +296,45 @@ export async function fetchBlogList(
   const { from, to, page: safePage, pageSize: safePageSize } = toRange(page, pageSize);
 
   const { data, error, count } = await supabase
-    .from("blog_post_translations")
+    .from("blog_posts")
     .select(
       `
-      slug,
-      title,
-      summary,
-      content_html,
-      seo_title,
-      seo_description,
-      post:blog_posts!inner(
-        id,
-        category,
-        status,
-        published_at,
-        scheduled_at,
-        reading_time,
-        takeaway,
-        featured_image_url,
-        author_name,
-        series_id,
-        series_order
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
       )
     `,
       { count: "exact" },
     )
-    .eq("locale", locale)
-    .eq("post.category", "blog")
-    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
-    .order("published_at", { ascending: false, foreignTable: "post" })
+    .eq("category", "blog")
+    .or(eligibilityFilter(nowValue))
+    .eq("locale", locale, { foreignTable: "blog_post_translations" })
+    .order("published_at", { ascending: false })
     .range(from, to);
 
   if (error || !data) {
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
-  const mapped = data.map(mapPost);
+  const mapped = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
   const updatedPosts = await promoteScheduledPostsIfDue(
     supabase,
     mapped.map((item) => item.post),
@@ -330,7 +344,7 @@ export async function fetchBlogList(
 
   return {
     items: mapped.map((item) => ({ ...item, post: updatedById.get(item.post.id) ?? item.post })),
-    total: count ?? data.length,
+    total: count ?? mapped.length,
     page: safePage,
     pageSize: safePageSize,
   };
@@ -349,35 +363,36 @@ export async function fetchGuideList(
   const [seriesTranslations, guideResponse] = await Promise.all([
     fetchSeriesTranslations(),
     supabase
-      .from("blog_post_translations")
+      .from("blog_posts")
       .select(
         `
-        slug,
-        title,
-        summary,
-        content_html,
-        seo_title,
-        seo_description,
-        post:blog_posts!inner(
-          id,
-          category,
-          status,
-          published_at,
-          scheduled_at,
-          reading_time,
-          takeaway,
-          featured_image_url,
-          author_name,
-          series_id,
-          series_order
+        id,
+        category,
+        status,
+        published_at,
+        scheduled_at,
+        reading_time,
+        takeaway,
+        featured_image_url,
+        author_name,
+        series_id,
+        series_order,
+        translations:blog_post_translations!inner(
+          slug,
+          title,
+          summary,
+          content_html,
+          seo_title,
+          seo_description,
+          locale
         )
       `,
         { count: "exact" },
       )
-      .eq("locale", locale)
-      .eq("post.category", "guide")
-      .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
-      .order("published_at", { ascending: false, foreignTable: "post" })
+      .eq("category", "guide")
+      .or(eligibilityFilter(nowValue))
+      .eq("locale", locale, { foreignTable: "blog_post_translations" })
+      .order("published_at", { ascending: false })
       .range(from, to),
   ]);
 
@@ -393,7 +408,9 @@ export async function fetchGuideList(
     return { items: [], total: 0, page: safePage, pageSize: safePageSize };
   }
 
-  const mapped = data.map(mapPost);
+  const mapped = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
   const updatedPosts = await promoteScheduledPostsIfDue(
     supabase,
     mapped.map((item) => item.post),
@@ -412,7 +429,7 @@ export async function fetchGuideList(
 
   return {
     items,
-    total: count ?? data.length,
+    total: count ?? mapped.length,
     page: safePage,
     pageSize: safePageSize,
   };
@@ -423,30 +440,41 @@ export async function fetchPublishedTranslations() {
   const now = new Date();
   const nowValue = nowIso();
   const { data, error } = await supabase
-    .from("blog_post_translations")
+    .from("blog_posts")
     .select(
       `
-      slug,
-      locale,
-      post:blog_posts!inner(
-        id,
-        category,
-        status,
-        published_at,
-        scheduled_at,
-        series_id
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      series_id,
+      translations:blog_post_translations!inner(
+        slug,
+        locale
       )
     `,
     )
-    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" });
+    .or(eligibilityFilter(nowValue));
 
   if (error || !data) return [];
 
-  const posts = data.map((row) => row.post);
-  const updatedPosts = await promoteScheduledPostsIfDue(supabase, posts, now);
+  const posts = data.map((row) => row as JoinedPostRow);
+  const updatedPosts = await promoteScheduledPostsIfDue(
+    supabase,
+    posts.map((row) => row as BlogPostRow),
+    now,
+  );
   const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
 
-  return data.map((row) => ({ ...row, post: updatedById.get(row.post.id) ?? row.post }));
+  return posts.flatMap((row) => {
+    const post = updatedById.get(row.id) ?? (row as BlogPostRow);
+    return row.translations.map((translation) => ({
+      slug: translation.slug,
+      locale: translation.locale,
+      post,
+    }));
+  });
 }
 
 export async function fetchSeriesTranslations() {

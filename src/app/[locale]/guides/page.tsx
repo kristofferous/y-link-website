@@ -9,7 +9,7 @@ import { prefixLocale } from "@/lib/i18n/routing";
 
 type GuidesPageProps = {
   params: Promise<{ locale: AppLocale }>;
-  searchParams?: { page?: string };
+  searchParams?: Promise<{ page?: string }>;
 };
 
 const PAGE_SIZE = 9;
@@ -32,7 +32,8 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { guides, navigation } = dictionary;
-  const page = Math.max(1, Number(searchParams?.page ?? "1") || 1);
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const page = Math.max(1, Number(resolvedSearchParams.page ?? "1") || 1);
 
   const { items, total, page: currentPage, pageSize } = await fetchGuideList(locale, page, PAGE_SIZE);
   const totalPages = Math.ceil(total / pageSize);
