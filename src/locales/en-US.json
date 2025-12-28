@@ -11,6 +11,7 @@
       { "label": "Platform", "href": "/ai-dmx-controller" },
       { "label": "Use Cases", "href": "/use-cases" },
       { "label": "Guides", "href": "/guides" },
+      { "label": "Blog", "href": "/blog" },
       { "label": "FAQ", "href": "/faq" }
     ],
     "secondary": [
@@ -49,6 +50,7 @@
       "title": "Resources",
       "links": {
         "guides": "Guides",
+        "blog": "Blog",
         "faq": "FAQ"
       }
     },
@@ -617,6 +619,13 @@
     },
     "breadcrumb": "Guides",
     "articleLabel": "Guide",
+    "readMore": "Read more",
+    "emptyState": "No guides published yet.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageLabel": "Page {current} of {total}"
+    },
     "hero": {
       "label": "Resources",
       "title": "DMX Guides for AI-Controlled Lighting",
@@ -775,7 +784,23 @@
     }
   },
   "blog": {
-    "breadcrumb": "Blog"
+    "metadata": {
+      "title": "Blog",
+      "description": "Updates, field notes, and product insights from the Y-Link team."
+    },
+    "breadcrumb": "Blog",
+    "hero": {
+      "label": "Resources",
+      "title": "Y-Link Blog",
+      "body": "Technical notes, product updates, and lessons from building reliable, music-reactive lighting systems."
+    },
+    "readMore": "Read more",
+    "emptyState": "No posts published yet.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageLabel": "Page {current} of {total}"
+    }
   },
   "aiDmxAlternatives": {
     "metadata": {

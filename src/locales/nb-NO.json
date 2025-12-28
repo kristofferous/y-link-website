@@ -11,6 +11,7 @@
       { "label": "Plattform", "href": "/ai-dmx-controller" },
       { "label": "Bruksområder", "href": "/use-cases" },
       { "label": "Guider", "href": "/guides" },
+      { "label": "Blogg", "href": "/blog" },
       { "label": "FAQ", "href": "/faq" }
     ],
     "secondary": [
@@ -49,6 +50,7 @@
       "title": "Ressurser",
       "links": {
         "guides": "Guider",
+        "blog": "Blogg",
         "faq": "FAQ"
       }
     },
@@ -617,6 +619,13 @@
     },
     "breadcrumb": "Guider",
     "articleLabel": "Guide",
+    "readMore": "Les mer",
+    "emptyState": "Ingen guider publisert ennå.",
+    "pagination": {
+      "previous": "Forrige",
+      "next": "Neste",
+      "pageLabel": "Side {current} av {total}"
+    },
     "hero": {
       "label": "Ressurser",
       "title": "DMX-guider for AI-styrt lys",
@@ -775,7 +784,23 @@
     }
   },
   "blog": {
-    "breadcrumb": "Blogg"
+    "metadata": {
+      "title": "Blogg",
+      "description": "Oppdateringer, feltnotater og produktinnsikt fra Y-Link."
+    },
+    "breadcrumb": "Blogg",
+    "hero": {
+      "label": "Ressurser",
+      "title": "Y-Link-blogg",
+      "body": "Tekniske notater, produktoppdateringer og læring fra arbeidet med stabil, musikkreaktiv lysstyring."
+    },
+    "readMore": "Les mer",
+    "emptyState": "Ingen innlegg publisert ennå.",
+    "pagination": {
+      "previous": "Forrige",
+      "next": "Neste",
+      "pageLabel": "Side {current} av {total}"
+    }
   },
   "aiDmxAlternatives": {
     "metadata": {

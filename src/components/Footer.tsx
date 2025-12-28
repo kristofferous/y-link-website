@@ -68,6 +68,12 @@ export function Footer() {
                   {footer.resources.links.guides}
                 </Link>
                 <Link
+                  href={prefixLocale(locale, "/blog")}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {footer.resources.links.blog}
+                </Link>
+                <Link
                   href={prefixLocale(locale, "/faq")}
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >

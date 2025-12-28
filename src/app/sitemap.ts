@@ -12,6 +12,7 @@ const staticRoutes = [
   "/use-cases/music-reactive-dmx-clubs",
   "/use-cases/automated-dmx-small-venues",
   "/use-cases/beat-synced-lighting-without-programming",
+  "/blog",
   "/guides",
   "/om",
   "/teknisk",
