@@ -156,7 +156,7 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "blog")
-    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
+    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
     .maybeSingle();
 
   if (error || !data) return null;
@@ -197,7 +197,7 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "guide")
-    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
+    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
     .is("post.series_id", null)
     .maybeSingle();
 
@@ -264,7 +264,7 @@ export async function fetchGuideInSeries(
     .eq("slug", slug)
     .eq("locale", locale)
     .eq("post.category", "guide")
-    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
+    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
     .eq("post.series_id", seriesId)
     .maybeSingle();
 
@@ -312,7 +312,7 @@ export async function fetchBlogList(
     )
     .eq("locale", locale)
     .eq("post.category", "blog")
-    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
+    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
     .order("published_at", { ascending: false, foreignTable: "post" })
     .range(from, to);
 
@@ -376,7 +376,7 @@ export async function fetchGuideList(
       )
       .eq("locale", locale)
       .eq("post.category", "guide")
-      .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`)
+      .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" })
       .order("published_at", { ascending: false, foreignTable: "post" })
       .range(from, to),
   ]);
@@ -438,7 +438,7 @@ export async function fetchPublishedTranslations() {
       )
     `,
     )
-    .or(`post.status.eq.published,and(post.status.eq.scheduled,post.scheduled_at.lte.${nowValue})`);
+    .or(`status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`, { foreignTable: "post" });
 
   if (error || !data) return [];
 
