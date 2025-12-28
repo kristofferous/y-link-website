@@ -17,16 +17,46 @@ export function LanguageSwitcher({ className }: { className?: string }) {
 
   useEffect(() => {
     if (!pendingLocale) return;
-    const target = prefixLocale(pendingLocale, currentPath);
-    document.cookie = `${localeCookieName}=${pendingLocale}; path=/; max-age=${60 * 60 * 24 * 365}`;
-    try {
-      localStorage.setItem(localeCookieName, pendingLocale);
-    } catch {
-      /* ignore */
-    }
-    document.documentElement.setAttribute("lang", pendingLocale === "en" ? "en-US" : "nb-NO");
-    router.push(target);
-  }, [pendingLocale, currentPath, router]);
+    let canceled = false;
+
+    const run = async () => {
+      let resolvedPath = currentPath;
+
+      if (currentPath.startsWith("/guides") || currentPath.startsWith("/blog")) {
+        try {
+          const response = await fetch(
+            `/api/locale-route?from=${locale}&to=${pendingLocale}&path=${encodeURIComponent(currentPath)}`,
+          );
+          if (response.ok) {
+            const data = (await response.json()) as { path?: string };
+            if (data?.path) {
+              resolvedPath = data.path;
+            }
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+
+      if (canceled) return;
+
+      const target = prefixLocale(pendingLocale, resolvedPath);
+      document.cookie = `${localeCookieName}=${pendingLocale}; path=/; max-age=${60 * 60 * 24 * 365}`;
+      try {
+        localStorage.setItem(localeCookieName, pendingLocale);
+      } catch {
+        /* ignore */
+      }
+      document.documentElement.setAttribute("lang", pendingLocale === "en" ? "en-US" : "nb-NO");
+      router.push(target);
+    };
+
+    run();
+
+    return () => {
+      canceled = true;
+    };
+  }, [pendingLocale, currentPath, locale, router]);
 
   const handleChange = (nextLocale: AppLocale) => {
     setPendingLocale(nextLocale);
