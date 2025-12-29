@@ -139,6 +139,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
   if (!resolved) notFound();
 
   if (resolved.type === "seriesLanding") {
+    if (!resolved.series) notFound();
     const guides = await fetchGuidesForSeries(locale, resolved.series.id);
     return (
       <main>
@@ -201,8 +202,12 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
     { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
   ];
 
-  if (resolved.type === "seriesGuide" && resolved.series) {
-    breadcrumbs.push({ label: resolved.series.name, href: prefixLocale(locale, `/guides/${resolved.series.slug}`) });
+  if (resolved.type === "seriesGuide") {
+    if (!resolved.series) notFound();
+    breadcrumbs.push({
+      label: resolved.series.name,
+      href: prefixLocale(locale, `/guides/${resolved.series.slug}`),
+    });
   }
 
   breadcrumbs.push({ label: resolved.post.translation.title });
