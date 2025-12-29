@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchBlogPostBySlug } from "@/lib/blogGuides";
+import { fetchBlogPostBySlug, fetchTranslationSlugs } from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
@@ -39,12 +39,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = post.translation.seo_title ?? post.translation.title;
   const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
   const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+  const translationSlugs = await fetchTranslationSlugs(post.post.id);
+  const languageAlternates: Record<string, string> = {};
+  if (translationSlugs.nb) {
+    languageAlternates["nb-NO"] = prefixLocale("nb", `/blog/${translationSlugs.nb}`);
+  }
+  if (translationSlugs.en) {
+    languageAlternates["en-US"] = prefixLocale("en", `/blog/${translationSlugs.en}`);
+  }
 
   return {
     title,
     description,
     alternates: {
       canonical: prefixLocale(locale, `/blog/${post.translation.slug}`),
+      languages: Object.keys(languageAlternates).length > 0 ? languageAlternates : undefined,
     },
     openGraph: {
       type: "article",

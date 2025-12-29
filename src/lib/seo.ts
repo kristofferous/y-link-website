@@ -1,4 +1,4 @@
-const defaultSiteUrl = "https://y-link.no";
+const defaultSiteUrl = "https://www.y-link.no";
 
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? defaultSiteUrl).replace(/\/$/, "");
 

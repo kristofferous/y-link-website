@@ -20,8 +20,15 @@ function resolvePreferredLocale(request: NextRequest): AppLocale {
   return defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const url = request.nextUrl.clone();
+  let shouldRedirect = false;
+
+  if (url.hostname === "y-link.no") {
+    url.hostname = "www.y-link.no";
+    shouldRedirect = true;
+  }
 
   if (
     pathname.startsWith("/_next") ||
@@ -31,19 +38,19 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/og-") ||
     PUBLIC_FILE.test(pathname)
   ) {
-    return NextResponse.next();
+    return shouldRedirect ? NextResponse.redirect(url) : NextResponse.next();
   }
 
   const pathLocale = pathname.split("/")[1];
   if (isSupportedLocale(pathLocale)) {
-    return NextResponse.next();
+    return shouldRedirect ? NextResponse.redirect(url) : NextResponse.next();
   }
 
   const locale = resolvePreferredLocale(request);
-  const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname}`;
+  shouldRedirect = true;
 
-  const response = NextResponse.redirect(url);
+  const response = shouldRedirect ? NextResponse.redirect(url) : NextResponse.next();
   response.cookies.set(localeCookieName, normalizeLocale(locale), { path: "/", maxAge: 60 * 60 * 24 * 365 });
   return response;
 }

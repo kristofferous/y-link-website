@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
     description: dictionary.blog.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/blog"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/blog"),
+        "en-US": prefixLocale("en", "/blog"),
+      },
     },
   };
 }

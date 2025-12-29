@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createServiceClient } from "@/lib/supabaseServer";
-import { type AppLocale } from "@/lib/i18n/config";
+import { locales, type AppLocale } from "@/lib/i18n/config";
 
 const nowIso = () => new Date().toISOString();
 const todayDate = () => new Date().toISOString().slice(0, 10);
@@ -70,6 +70,8 @@ export type PaginatedResult<T> = {
   page: number;
   pageSize: number;
 };
+
+export type LocaleSlugMap = Partial<Record<AppLocale, string>>;
 
 function mapJoined(row: JoinedPostRow): BlogPost | null {
   const translation = row.translations?.[0];
@@ -290,6 +292,42 @@ export async function fetchGuideSeriesList(locale: AppLocale): Promise<GuideSeri
     slug: row.slug,
     description: row.description,
   }));
+}
+
+export async function fetchTranslationSlugs(postId: number): Promise<LocaleSlugMap> {
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from("blog_post_translations")
+    .select("locale, slug")
+    .eq("post_id", postId);
+
+  if (error || !data) return {};
+
+  return data.reduce<LocaleSlugMap>((acc, row) => {
+    const locale = row.locale as AppLocale;
+    if (locales.includes(locale)) {
+      acc[locale] = row.slug;
+    }
+    return acc;
+  }, {});
+}
+
+export async function fetchSeriesTranslationSlugs(seriesId: string): Promise<LocaleSlugMap> {
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from("guide_series_translations")
+    .select("locale, slug")
+    .eq("series_id", seriesId);
+
+  if (error || !data) return {};
+
+  return data.reduce<LocaleSlugMap>((acc, row) => {
+    const locale = row.locale as AppLocale;
+    if (locales.includes(locale)) {
+      acc[locale] = row.slug;
+    }
+    return acc;
+  }, {});
 }
 
 export async function fetchGuideInSeries(

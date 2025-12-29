@@ -9,6 +9,8 @@ import {
   fetchGuideNavItem,
   fetchGuideSeries,
   fetchGuidesForSeries,
+  fetchSeriesTranslationSlugs,
+  fetchTranslationSlugs,
 } from "@/lib/blogGuides";
 import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
@@ -50,11 +52,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (resolved.type === "seriesLanding") {
     const title = resolved.series.seo_title ?? resolved.series.name;
     const description = resolved.series.seo_description ?? resolved.series.description ?? resolved.series.name;
+    const seriesSlugs = await fetchSeriesTranslationSlugs(resolved.series.id);
+    const languageAlternates: Record<string, string> = {};
+    if (seriesSlugs.nb) {
+      languageAlternates["nb-NO"] = prefixLocale("nb", `/guides/${seriesSlugs.nb}`);
+    }
+    if (seriesSlugs.en) {
+      languageAlternates["en-US"] = prefixLocale("en", `/guides/${seriesSlugs.en}`);
+    }
     return {
       title,
       description,
       alternates: {
         canonical: prefixLocale(locale, `/guides/${resolved.series.slug}`),
+        languages: Object.keys(languageAlternates).length > 0 ? languageAlternates : undefined,
       },
     };
   }
@@ -63,6 +74,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = post.translation.seo_title ?? post.translation.title;
   const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
   const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+  const translationSlugs = await fetchTranslationSlugs(post.post.id);
+  const languageAlternates: Record<string, string> = {};
+  if (resolved.type === "seriesGuide") {
+    const seriesSlugs = await fetchSeriesTranslationSlugs(resolved.series.id);
+    if (translationSlugs.nb && seriesSlugs.nb) {
+      languageAlternates["nb-NO"] = prefixLocale("nb", `/guides/${seriesSlugs.nb}/${translationSlugs.nb}`);
+    }
+    if (translationSlugs.en && seriesSlugs.en) {
+      languageAlternates["en-US"] = prefixLocale("en", `/guides/${seriesSlugs.en}/${translationSlugs.en}`);
+    }
+  } else {
+    if (translationSlugs.nb) {
+      languageAlternates["nb-NO"] = prefixLocale("nb", `/guides/${translationSlugs.nb}`);
+    }
+    if (translationSlugs.en) {
+      languageAlternates["en-US"] = prefixLocale("en", `/guides/${translationSlugs.en}`);
+    }
+  }
 
   const canonicalPath =
     resolved.type === "seriesGuide"
@@ -74,6 +103,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: {
       canonical: prefixLocale(locale, canonicalPath),
+      languages: Object.keys(languageAlternates).length > 0 ? languageAlternates : undefined,
     },
     openGraph: {
       type: "article",

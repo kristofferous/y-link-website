@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: GuidesPageProps): Promise<Met
     description: dictionary.guides.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/guides"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/guides"),
+        "en-US": prefixLocale("en", "/guides"),
+      },
     },
   };
 }
