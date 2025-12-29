@@ -28,13 +28,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: A
       template: "%s | Y-Link",
     },
     description: dictionary.meta.description,
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        "nb-NO": "/nb",
-        "en-US": "/en",
-      },
-    },
     openGraph: {
       type: "website",
       siteName: dictionary.meta.siteName ?? "Y-Link",

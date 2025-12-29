@@ -1,15 +1,32 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { InterestCtaButton } from "@/components/InterestCtaButton";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{
-    locale: AppLocale;
-  }>;
-}) {
+type HomePageProps = {
+  params: Promise<{ locale: AppLocale }>;
+};
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale: localeParam } = await params;
+  const locale = normalizeLocale(localeParam);
+  const dictionary = await getDictionary(locale);
+
+  return {
+    title: dictionary.meta.title,
+    description: dictionary.meta.description,
+    alternates: {
+      canonical: prefixLocale(locale, "/"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/"),
+        "en-US": prefixLocale("en", "/"),
+      },
+    },
+  };
+}
+
+export default async function Home({ params }: HomePageProps) {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);

@@ -1,7 +1,7 @@
 # SEO Audit Report – Y-Link (goal: “AI DMX Controller”)
 
 ## Inventory and URL map
-Canonical base: set `NEXT_PUBLIC_SITE_URL` in production (defaults to `https://www.y-link.no`). No pagination/param URLs observed. All pages server-rendered.
+Canonical base: `https://www.y-link.no` (set `NEXT_PUBLIC_SITE_URL` to match in production). No pagination/param URLs observed. All pages server-rendered.
 
 | URL                                                 | Template           | Intent                  | Primary keyword                | Status         |
 |-----------------------------------------------------|--------------------|-------------------------|--------------------------------|----------------|
@@ -30,14 +30,13 @@ Canonical base: set `NEXT_PUBLIC_SITE_URL` in production (defaults to `https://w
 No redirect chains found in code. No orphan templates; nav and internal links reach all key pages. Trailing slash policy: no trailing slash; canonicals set accordingly.
 
 ## Key issues and fixes
-- **Missing crawl directives and sitemap (Critical)** – Added `src/app/robots.ts` and `src/app/sitemap.ts`; robots now references sitemap and host, allowing full crawl while excluding nothing important. Sitemap only lists canonical, indexable URLs.
-- **No canonical strategy (Critical)** – Set `metadataBase` and per-page canonicals; default Open Graph/Twitter metadata added (`src/app/layout.tsx`, `src/lib/seo.ts`). Avoids slash/case duplication and improves share previews (`public/og-default.png`).
+- **Missing crawl directives and sitemap (Critical)** - Added `src/app/robots.ts` and `src/app/sitemap.ts`; robots now references sitemap and host, allowing full crawl while excluding nothing important. Sitemap only lists canonical, indexable URLs.
+- **No canonical strategy (Critical)** - Set `metadataBase` and per-page canonicals; default Open Graph/Twitter metadata added (`src/app/layout.tsx`, `src/lib/seo.ts`); preferred host redirect prevents duplicate host indexing.
 - **No structured data (High)** – Added Organization + WebSite JSON-LD globally; BreadcrumbList emitted on every page; Product/SoftwareApplication + FAQ schema on the pillar (`ai-dmx-controller`) and FAQ page; TechArticle on technical page.
 - **Thin/untargeted content for “AI DMX Controller” (High)** – Rewrote home, about, technical, FAQ, privacy, pilot pages to English with clean copy; created pillar, comparison, use-case, and guide clusters aligned to target queries and internal linking.
 - **Weak internal linking (High)** – Navbar, footer, hubs, and contextual links now connect pillar ↔ use cases ↔ guides, reducing orphan risk and concentrating PageRank.
-- **Missing hreflang alternates (High)** � Added language alternates to localized pages; keep coverage consistent as new routes are added.
-- **Unclear contact/trust signals (Medium)** � Added contact email/location in footer; expanded About with process/experience; privacy copy clarified data use; unsubscribe/access/download set to 
-oindex.
+- **Missing hreflang alternates (High)** - Added hreflang alternates to localized pages (including dynamic guides/blog). Keep coverage consistent as new routes are added.
+- **Unclear contact/trust signals (Medium)** - Added contact email/location in footer; expanded About with process/experience; privacy copy clarified data use; `/unsubscribe`, `/access`, and `/studio/download` set to `noindex`.
 - **Missing E-E-A-T authoring (Medium)** – Added pilot framing, operator safety emphasis, and technical rationale to signal expertise; added TechArticle schema.
 - **Social preview gaps (Low)** – Added `public/og-default.png` and consistent metadata for OG/Twitter.
 
@@ -52,7 +51,7 @@ oindex.
 - Product + SoftwareApplication + FAQ: `src/app/ai-dmx-controller/page.tsx`.
 - FAQPage: `src/app/faq/page.tsx`.
 - TechArticle: `src/app/teknisk/page.tsx`.
-- Robots: `/robots.txt` allows all; `/unsubscribe` marked `noindex` via page metadata.
+- Robots: `/robots.txt` allows all; `/unsubscribe`, `/access`, and `/studio/download` marked `noindex` via page metadata.
 
 ## Content/keyword strategy (implemented)
 - Pillar: `/ai-dmx-controller` targets “AI DMX controller” with how-it-works, safety, setup, FAQs, and comparison links.
@@ -67,7 +66,8 @@ oindex.
 
 ## Open tasks / follow-ups
 - Ensure NEXT_PUBLIC_SITE_URL is set to https://www.y-link.no in production to keep canonicals aligned with the preferred host.
-- Root HTML lang is currently static in src/app/layout.tsx; consider making it locale-aware to avoid incorrect language signals on /en pages.
 - Run Lighthouse/PageSpeed after deploy; capture before/after CWV for / and /ai-dmx-controller and log in Search Console.
 - Add real social preview assets per page if available (hero/demos); current default OG image is shared across pages.
 - If on-site search launches, add WebSite SearchAction schema and a /search route.
+
+
