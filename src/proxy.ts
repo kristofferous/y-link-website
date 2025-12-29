@@ -43,7 +43,9 @@ export function proxy(request: NextRequest) {
 
   const pathLocale = pathname.split("/")[1];
   if (isSupportedLocale(pathLocale)) {
-    return shouldRedirect ? NextResponse.redirect(url) : NextResponse.next();
+    const response = shouldRedirect ? NextResponse.redirect(url) : NextResponse.next();
+    response.cookies.set(localeCookieName, normalizeLocale(pathLocale), { path: "/", maxAge: 60 * 60 * 24 * 365 });
+    return response;
   }
 
   const locale = resolvePreferredLocale(request);
