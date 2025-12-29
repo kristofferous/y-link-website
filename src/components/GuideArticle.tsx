@@ -40,6 +40,7 @@ export function GuideArticle({
   label,
   breadcrumbs,
   seriesName,
+  tags,
   previousGuide,
   nextGuide,
 }: GuideArticleProps) {
