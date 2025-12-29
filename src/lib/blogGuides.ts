@@ -24,6 +24,8 @@ type BlogPostRow = {
   } | null;
   series_id: string | null;
   series_order: number | null;
+  prev_guide_id?: number | null;
+  next_guide_id?: number | null;
 };
 
 type BlogPostTranslationRow = {
@@ -53,6 +55,8 @@ export type GuideSeries = {
   seo_title: string | null;
   seo_description: string | null;
 };
+
+export type GuideSeriesListItem = Pick<GuideSeries, "id" | "name" | "slug" | "description">;
 
 export type BlogListItem = BlogPost;
 
@@ -133,6 +137,22 @@ function eligibilityFilter(nowValue: string) {
   return `status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`;
 }
 
+async function fetchSeriesSlug(
+  supabase: ReturnType<typeof createServiceClient>,
+  seriesId: string,
+  locale: AppLocale,
+) {
+  const { data, error } = await supabase
+    .from("guide_series_translations")
+    .select("slug")
+    .eq("series_id", seriesId)
+    .eq("locale", locale)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return data.slug as string;
+}
+
 export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Promise<BlogPost | null> {
   const supabase = createServiceClient();
   const now = new Date();
@@ -154,6 +174,8 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
         full_name,
         avatar_url
       ),
+      prev_guide_id,
+      next_guide_id,
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -201,6 +223,8 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
         full_name,
         avatar_url
       ),
+      prev_guide_id,
+      next_guide_id,
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -249,6 +273,24 @@ export async function fetchGuideSeries(locale: AppLocale, seriesSlug: string): P
   };
 }
 
+export async function fetchGuideSeriesList(locale: AppLocale): Promise<GuideSeriesListItem[]> {
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from("guide_series_translations")
+    .select("series_id, name, slug, description")
+    .eq("locale", locale)
+    .order("name", { ascending: true });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    id: row.series_id,
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+  }));
+}
+
 export async function fetchGuideInSeries(
   locale: AppLocale,
   seriesId: string,
@@ -274,6 +316,8 @@ export async function fetchGuideInSeries(
         full_name,
         avatar_url
       ),
+      prev_guide_id,
+      next_guide_id,
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -299,6 +343,107 @@ export async function fetchGuideInSeries(
   if (!mapped) return null;
   const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
   return { ...mapped, post: updatedPost };
+}
+
+export async function fetchGuidesForSeries(locale: AppLocale, seriesId: string): Promise<GuideListItem[]> {
+  const supabase = createServiceClient();
+  const now = new Date();
+  const nowValue = nowIso();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(
+      `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+    )
+    .eq("category", "guide")
+    .or(eligibilityFilter(nowValue))
+    .eq("series_id", seriesId)
+    .eq("translations.locale", locale)
+    .order("series_order", { ascending: true })
+    .order("published_at", { ascending: false });
+
+  if (error || !data) return [];
+
+  const mapped = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
+  const updatedPosts = await promoteScheduledPostsIfDue(
+    supabase,
+    mapped.map((item) => item.post),
+    now,
+  );
+  const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
+
+  return mapped.map((item) => ({
+    ...item,
+    post: updatedById.get(item.post.id) ?? item.post,
+    seriesSlug: null,
+  }));
+}
+
+export async function fetchGuideNavItem(locale: AppLocale, postId: number) {
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(
+      `
+      id,
+      category,
+      series_id,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        locale
+      )
+    `,
+    )
+    .eq("id", postId)
+    .eq("category", "guide")
+    .eq("translations.locale", locale)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  const translation = data.translations?.[0];
+  if (!translation) return null;
+
+  let path = `/guides/${translation.slug}`;
+  if (data.series_id) {
+    const seriesSlug = await fetchSeriesSlug(supabase, data.series_id, locale);
+    if (seriesSlug) {
+      path = `/guides/${seriesSlug}/${translation.slug}`;
+    }
+  }
+
+  return {
+    title: translation.title,
+    path,
+  };
 }
 
 export async function fetchBlogList(
@@ -328,6 +473,8 @@ export async function fetchBlogList(
         full_name,
         avatar_url
       ),
+      prev_guide_id,
+      next_guide_id,
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -399,6 +546,8 @@ export async function fetchGuideList(
           full_name,
           avatar_url
         ),
+        prev_guide_id,
+        next_guide_id,
         series_id,
         series_order,
         translations:blog_post_translations!inner(
@@ -415,6 +564,7 @@ export async function fetchGuideList(
       )
       .eq("category", "guide")
       .or(eligibilityFilter(nowValue))
+      .is("series_id", null)
       .eq("translations.locale", locale)
       .order("published_at", { ascending: false })
       .range(from, to),

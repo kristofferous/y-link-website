@@ -620,7 +620,12 @@
     "breadcrumb": "Guides",
     "articleLabel": "Guide",
     "readMore": "Read more",
+    "seriesLabel": "Series",
     "emptyState": "No guides published yet.",
+    "navigation": {
+      "previous": "Previous guide",
+      "next": "Next guide"
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next",

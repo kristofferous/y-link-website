@@ -40,6 +40,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     seriesSlugByLocale.get(series.series_id)?.set(series.locale, series.slug);
   }
 
+  const seriesRoutes = seriesTranslations
+    .filter((row) => isLocale(row.locale))
+    .map((row) => ({
+      locale: row.locale,
+      path: `/guides/${row.slug}`,
+      publishedAt: null,
+    }));
+
   const contentRoutes = publishedTranslations
     .filter((row) => isLocale(row.locale))
     .map((row) => {
@@ -84,7 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  const dynamicEntries = contentRoutes.map((route) => {
+  const dynamicEntries = [...seriesRoutes, ...contentRoutes].map((route) => {
     const localizedPath = `/${route.locale}${route.path}`;
     return {
       url: absoluteUrl(localizedPath),

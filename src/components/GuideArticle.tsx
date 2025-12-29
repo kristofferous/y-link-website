@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { type BlogPost } from "@/lib/blogGuides";
 import { type AppLocale } from "@/lib/i18n/config";
@@ -9,6 +10,8 @@ type GuideArticleProps = {
   label: string;
   breadcrumbs: { label: string; href?: string }[];
   seriesName?: string;
+  previousGuide?: { title: string; href: string; label: string };
+  nextGuide?: { title: string; href: string; label: string };
 };
 
 function formatPublishDate(value: string | null, locale: AppLocale) {
@@ -29,7 +32,15 @@ function getInitials(name: string) {
     .join("");
 }
 
-export function GuideArticle({ locale, post, label, breadcrumbs, seriesName }: GuideArticleProps) {
+export function GuideArticle({
+  locale,
+  post,
+  label,
+  breadcrumbs,
+  seriesName,
+  previousGuide,
+  nextGuide,
+}: GuideArticleProps) {
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
   const authorName = post.post.author?.full_name ?? post.post.author_name;
@@ -83,11 +94,39 @@ export function GuideArticle({ locale, post, label, breadcrumbs, seriesName }: G
         </div>
       </section>
 
-      <section className=" border-t border-border/40">
+      <section className="border-t border-border/40 pt-8 pb-16 md:pb-20 lg:pb-24">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
             <div className="content-html" dangerouslySetInnerHTML={{ __html: post.translation.content_html }} />
           </div>
+          {previousGuide || nextGuide ? (
+            <div className="mx-auto mt-10 grid max-w-3xl gap-4 border-t border-border/40 pt-6 sm:grid-cols-2">
+              {previousGuide ? (
+                <Link
+                  href={previousGuide.href}
+                  className="group rounded-lg border border-border/40 bg-card p-5 transition-colors hover:bg-accent"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                    {previousGuide.label}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">{previousGuide.title}</p>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {nextGuide ? (
+                <Link
+                  href={nextGuide.href}
+                  className="group rounded-lg border border-border/40 bg-card p-5 transition-colors hover:bg-accent"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                    {nextGuide.label}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">{nextGuide.title}</p>
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
     </main>

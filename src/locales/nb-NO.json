@@ -620,7 +620,12 @@
     "breadcrumb": "Guider",
     "articleLabel": "Guide",
     "readMore": "Les mer",
+    "seriesLabel": "Serie",
     "emptyState": "Ingen guider publisert ennå.",
+    "navigation": {
+      "previous": "Forrige guide",
+      "next": "Neste guide"
+    },
     "pagination": {
       "previous": "Forrige",
       "next": "Neste",

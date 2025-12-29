@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="border-t border-border/40">
+      <section className="border-t border-border/40 pt-8 pb-16 md:pb-20 lg:pb-24">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
             <div

@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GuideArticle } from "@/components/GuideArticle";
-import { fetchGuideBySlug, fetchGuideInSeries, fetchGuideSeries } from "@/lib/blogGuides";
+import {
+  fetchGuideBySlug,
+  fetchGuideInSeries,
+  fetchGuideNavItem,
+  fetchGuideSeries,
+  fetchGuidesForSeries,
+} from "@/lib/blogGuides";
 import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
@@ -11,10 +19,13 @@ type PageProps = { params: Promise<{ locale: AppLocale; slug?: string[] }> };
 
 type GuideLookup =
   | { type: "standalone"; post: Awaited<ReturnType<typeof fetchGuideBySlug>> }
-  | { type: "series"; post: Awaited<ReturnType<typeof fetchGuideInSeries>>; series: Awaited<ReturnType<typeof fetchGuideSeries>> };
+  | { type: "seriesGuide"; post: Awaited<ReturnType<typeof fetchGuideInSeries>>; series: Awaited<ReturnType<typeof fetchGuideSeries>> }
+  | { type: "seriesLanding"; series: Awaited<ReturnType<typeof fetchGuideSeries>> };
 
 async function resolveGuide(locale: AppLocale, segments: string[]): Promise<GuideLookup | null> {
   if (segments.length === 1) {
+    const series = await fetchGuideSeries(locale, segments[0]);
+    if (series) return { type: "seriesLanding", series };
     const post = await fetchGuideBySlug(locale, segments[0]);
     return post ? { type: "standalone", post } : null;
   }
@@ -23,7 +34,7 @@ async function resolveGuide(locale: AppLocale, segments: string[]): Promise<Guid
     const series = await fetchGuideSeries(locale, segments[0]);
     if (!series) return null;
     const post = await fetchGuideInSeries(locale, series.id, segments[1]);
-    return post ? { type: "series", post, series } : null;
+    return post ? { type: "seriesGuide", post, series } : null;
   }
 
   return null;
@@ -36,13 +47,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!resolved) return {};
 
+  if (resolved.type === "seriesLanding") {
+    const title = resolved.series.seo_title ?? resolved.series.name;
+    const description = resolved.series.seo_description ?? resolved.series.description ?? resolved.series.name;
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: prefixLocale(locale, `/guides/${resolved.series.slug}`),
+      },
+    };
+  }
+
   const post = resolved.post;
   const title = post.translation.seo_title ?? post.translation.title;
   const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
   const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
 
   const canonicalPath =
-    resolved.type === "series"
+    resolved.type === "seriesGuide"
       ? `/guides/${resolved.series.slug}/${post.translation.slug}`
       : `/guides/${post.translation.slug}`;
 
@@ -82,25 +105,106 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
 
   if (!resolved) notFound();
 
+  if (resolved.type === "seriesLanding") {
+    const guides = await fetchGuidesForSeries(locale, resolved.series.id);
+    return (
+      <main>
+        <section className="section-spacing">
+          <div className="container-custom">
+            <Breadcrumbs
+              items={[
+                { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
+                { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
+                { label: resolved.series.name },
+              ]}
+              className="mb-8"
+            />
+            <div className="mx-auto max-w-4xl space-y-6">
+              <p className="text-label text-muted-foreground">{dictionary.guides.seriesLabel}</p>
+              <h1 className="text-heading-lg text-foreground">{resolved.series.name}</h1>
+              {resolved.series.description ? (
+                <p className="text-body-lg text-muted-foreground prose-constrained">{resolved.series.description}</p>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-spacing border-t border-border/40">
+          <div className="container-custom">
+            {guides.length === 0 ? (
+              <div className="rounded-lg border border-border/40 bg-card p-8 text-muted-foreground">
+                {dictionary.guides.emptyState}
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {guides.map((guide) => (
+                  <article key={`${guide.post.id}-${guide.translation.slug}`} className="rounded-lg border border-border/40 bg-card p-6">
+                    <div className="space-y-4">
+                      <h2 className="text-title text-foreground">{guide.translation.title}</h2>
+                      <p className="text-sm text-muted-foreground">
+                        {buildDescription(guide.translation.summary, guide.translation.content_html, 140)}
+                      </p>
+                      <Link
+                        href={prefixLocale(locale, `/guides/${resolved.series.slug}/${guide.translation.slug}`)}
+                        className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                      >
+                        {dictionary.guides.readMore}
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   const label = dictionary.guides.articleLabel ?? "Guide";
   const breadcrumbs = [
     { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
     { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
   ];
 
-  if (resolved.type === "series" && resolved.series) {
-    breadcrumbs.push({ label: resolved.series.name });
+  if (resolved.type === "seriesGuide" && resolved.series) {
+    breadcrumbs.push({ label: resolved.series.name, href: prefixLocale(locale, `/guides/${resolved.series.slug}`) });
   }
 
   breadcrumbs.push({ label: resolved.post.translation.title });
+
+  const previousGuide = resolved.post.post.prev_guide_id
+    ? await fetchGuideNavItem(locale, resolved.post.post.prev_guide_id)
+    : null;
+  const nextGuide = resolved.post.post.next_guide_id
+    ? await fetchGuideNavItem(locale, resolved.post.post.next_guide_id)
+    : null;
 
   return (
     <GuideArticle
       locale={locale}
       post={resolved.post}
       label={label}
-      seriesName={resolved.type === "series" ? resolved.series.name : undefined}
+      seriesName={resolved.type === "seriesGuide" ? resolved.series.name : undefined}
       breadcrumbs={breadcrumbs}
+      previousGuide={
+        previousGuide
+          ? {
+              title: previousGuide.title,
+              href: prefixLocale(locale, previousGuide.path),
+              label: dictionary.guides.navigation.previous,
+            }
+          : undefined
+      }
+      nextGuide={
+        nextGuide
+          ? {
+              title: nextGuide.title,
+              href: prefixLocale(locale, nextGuide.path),
+              label: dictionary.guides.navigation.next,
+            }
+          : undefined
+      }
     />
   );
 }

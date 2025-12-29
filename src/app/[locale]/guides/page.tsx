@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchGuideList } from "@/lib/blogGuides";
+import { fetchGuideList, fetchGuideSeriesList } from "@/lib/blogGuides";
 import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
@@ -35,7 +35,11 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const page = Math.max(1, Number(resolvedSearchParams.page ?? "1") || 1);
 
-  const { items, total, page: currentPage, pageSize } = await fetchGuideList(locale, page, PAGE_SIZE);
+  const [seriesList, guideList] = await Promise.all([
+    fetchGuideSeriesList(locale),
+    fetchGuideList(locale, page, PAGE_SIZE),
+  ]);
+  const { items, total, page: currentPage, pageSize } = guideList;
   const totalPages = Math.ceil(total / pageSize);
 
   if (totalPages > 0 && currentPage > totalPages) {
@@ -63,17 +67,38 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
 
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
-          {items.length === 0 ? (
+          {seriesList.length === 0 && items.length === 0 ? (
             <div className="rounded-lg border border-border/40 bg-card p-8 text-muted-foreground">
               {guides.emptyState}
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {items.map((guide) => {
-                const href = guide.seriesSlug
-                  ? `/guides/${guide.seriesSlug}/${guide.translation.slug}`
-                  : `/guides/${guide.translation.slug}`;
-                return (
+            <>
+              {seriesList.length > 0 ? (
+                <div className="mb-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {seriesList.map((series) => (
+                    <article key={series.id} className="rounded-lg border border-border/40 bg-card p-6">
+                      <div className="space-y-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                          {guides.seriesLabel}
+                        </p>
+                        <h2 className="text-title text-foreground">{series.name}</h2>
+                        {series.description ? (
+                          <p className="text-sm text-muted-foreground">{series.description}</p>
+                        ) : null}
+                        <Link
+                          href={prefixLocale(locale, `/guides/${series.slug}`)}
+                          className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                        >
+                          {guides.readMore}
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {items.map((guide) => (
                   <article key={`${guide.post.id}-${guide.translation.slug}`} className="rounded-lg border border-border/40 bg-card p-6">
                     <div className="space-y-4">
                       <h2 className="text-title text-foreground">{guide.translation.title}</h2>
@@ -81,16 +106,16 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
                         {buildDescription(guide.translation.summary, guide.translation.content_html, 140)}
                       </p>
                       <Link
-                        href={prefixLocale(locale, href)}
+                        href={prefixLocale(locale, `/guides/${guide.translation.slug}`)}
                         className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
                       >
                         {guides.readMore}
                       </Link>
                     </div>
                   </article>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            </>
           )}
 
           {totalPages > 1 ? (
