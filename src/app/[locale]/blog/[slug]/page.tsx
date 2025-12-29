@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { fetchBlogPostBySlug } from "@/lib/blogGuides";
@@ -101,7 +102,13 @@ export default async function BlogPostPage({ params }: PageProps) {
               {authorName ? (
                 <span className="flex items-center gap-2 text-foreground">
                   {authorAvatar ? (
-                    <img src={authorAvatar} alt={authorName} className="h-8 w-8 rounded-full object-cover" />
+                    <Image
+                      src={authorAvatar}
+                      alt={authorName}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
                   ) : (
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
                       {getInitials(authorName)}
@@ -115,9 +122,11 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
             {post.post.featured_image_url ? (
               <div className="overflow-hidden rounded-2xl border border-border/40 bg-card">
-                <img
+                <Image
                   src={post.post.featured_image_url}
                   alt={post.translation.title}
+                  width={1200}
+                  height={630}
                   className="h-auto w-full object-cover"
                 />
               </div>

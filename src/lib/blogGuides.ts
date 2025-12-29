@@ -75,6 +75,7 @@ function mapJoined(row: JoinedPostRow): BlogPost | null {
   const translation = row.translations?.[0];
   if (!translation) return null;
   const { translations, ...post } = row;
+  void translations;
   return {
     post: post as BlogPostRow,
     translation,
