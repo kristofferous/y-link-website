@@ -1,5 +1,7 @@
 import type React from "react";
+import { cookies } from "next/headers";
 import "./globals.css";
+import { defaultLocale, isSupportedLocale, localeCookieName } from "@/lib/i18n/config";
 
 export const metadata = {
   title: "Y-Link",
@@ -7,8 +9,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const storedLocale = cookies().get(localeCookieName)?.value;
+  const locale = isSupportedLocale(storedLocale) ? storedLocale : defaultLocale;
+  const lang = locale === "en" ? "en-US" : "nb-NO";
+
   return (
-    <html lang="nb" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
