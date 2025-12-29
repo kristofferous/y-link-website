@@ -8,8 +8,9 @@ export const metadata = {
   description: "Y-Link - AI-driven DMX controller",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const storedLocale = cookies().get(localeCookieName)?.value;
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const storedLocale = cookieStore.get(localeCookieName)?.value;
   const locale = isSupportedLocale(storedLocale) ? storedLocale : defaultLocale;
   const lang = locale === "en" ? "en-US" : "nb-NO";
 
