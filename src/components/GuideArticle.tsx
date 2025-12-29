@@ -11,6 +11,7 @@ type GuideArticleProps = {
   label: string;
   breadcrumbs: { label: string; href?: string }[];
   seriesName?: string;
+  tags?: string[];
   previousGuide?: { title: string; href: string; label: string };
   nextGuide?: { title: string; href: string; label: string };
 };
@@ -54,6 +55,18 @@ export function GuideArticle({
           <Breadcrumbs items={breadcrumbs} className="mb-8" />
           <div className="mx-auto max-w-4xl space-y-6">
             <p className="text-label text-muted-foreground">{label}</p>
+            {tags && tags.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-border/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
             <div className="space-y-2">
               {seriesName ? (
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{seriesName}</p>

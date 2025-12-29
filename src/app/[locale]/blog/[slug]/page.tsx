@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchBlogPostBySlug, fetchTranslationSlugs } from "@/lib/blogGuides";
+import { fetchBlogPostBySlug, fetchPostTags, fetchTranslationSlugs } from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = post.translation.seo_title ?? post.translation.title;
   const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
   const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+  const tags = await fetchPostTags(post.post.id);
   const translationSlugs = await fetchTranslationSlugs(post.post.id);
   const languageAlternates: Record<string, string> = {};
   if (translationSlugs.nb) {
@@ -51,6 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    keywords: tags.length > 0 ? tags : undefined,
     alternates: {
       canonical: prefixLocale(locale, `/blog/${post.translation.slug}`),
       languages: Object.keys(languageAlternates).length > 0 ? languageAlternates : undefined,
@@ -85,6 +87,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   if (!post) notFound();
 
+  const tags = await fetchPostTags(post.post.id);
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
   const label = dictionary.blog?.breadcrumb ?? "Blog";
@@ -105,6 +108,18 @@ export default async function BlogPostPage({ params }: PageProps) {
           />
           <div className="mx-auto max-w-4xl space-y-6">
             <p className="text-label text-muted-foreground">{label}</p>
+            {tags.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-border/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
             <h1 className="text-heading-lg text-foreground">{post.translation.title}</h1>
             {summary ? <p className="text-body-lg text-muted-foreground prose-constrained">{summary}</p> : null}
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

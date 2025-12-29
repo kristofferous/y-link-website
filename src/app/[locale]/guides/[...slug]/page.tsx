@@ -9,6 +9,7 @@ import {
   fetchGuideNavItem,
   fetchGuideSeries,
   fetchGuidesForSeries,
+  fetchPostTags,
   fetchSeriesTranslationSlugs,
   fetchTranslationSlugs,
 } from "@/lib/blogGuides";
@@ -74,6 +75,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = post.translation.seo_title ?? post.translation.title;
   const description = post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html);
   const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+  const tags = await fetchPostTags(post.post.id);
   const translationSlugs = await fetchTranslationSlugs(post.post.id);
   const languageAlternates: Record<string, string> = {};
   if (resolved.type === "seriesGuide") {
@@ -101,6 +103,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    keywords: tags.length > 0 ? tags : undefined,
     alternates: {
       canonical: prefixLocale(locale, canonicalPath),
       languages: Object.keys(languageAlternates).length > 0 ? languageAlternates : undefined,
@@ -192,6 +195,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
   }
 
   const label = dictionary.guides.articleLabel ?? "Guide";
+  const tags = await fetchPostTags(resolved.post.post.id);
   const breadcrumbs = [
     { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
     { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
@@ -215,6 +219,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
       locale={locale}
       post={resolved.post}
       label={label}
+      tags={tags}
       seriesName={resolved.type === "seriesGuide" ? resolved.series.name : undefined}
       breadcrumbs={breadcrumbs}
       previousGuide={
