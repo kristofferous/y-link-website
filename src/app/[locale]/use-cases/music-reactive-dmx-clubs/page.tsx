@@ -15,6 +15,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: dictionary.useCases.musicReactive.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/use-cases/music-reactive-dmx-clubs"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/use-cases/music-reactive-dmx-clubs"),
+        "en-US": prefixLocale("en", "/use-cases/music-reactive-dmx-clubs"),
+      },
     },
   };
 }

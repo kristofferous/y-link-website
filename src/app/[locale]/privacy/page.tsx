@@ -19,6 +19,10 @@ export async function generateMetadata({ params }: PrivacyPageProps): Promise<Me
     description: dictionary.privacy.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/privacy"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/privacy"),
+        "en-US": prefixLocale("en", "/privacy"),
+      },
     },
   };
 }

@@ -19,6 +19,10 @@ export async function generateMetadata({ params }: PilotPageProps): Promise<Meta
     description: dictionary.pilot.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/pilot"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/pilot"),
+        "en-US": prefixLocale("en", "/pilot"),
+      },
     },
   };
 }

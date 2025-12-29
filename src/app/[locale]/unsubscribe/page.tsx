@@ -58,6 +58,10 @@ export async function generateMetadata({ params }: UnsubscribePageProps): Promis
     robots: { index: false, follow: false },
     alternates: {
       canonical: prefixLocale(locale, "/unsubscribe"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/unsubscribe"),
+        "en-US": prefixLocale("en", "/unsubscribe"),
+      },
     },
   };
 }

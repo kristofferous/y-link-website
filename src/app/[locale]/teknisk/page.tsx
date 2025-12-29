@@ -20,6 +20,10 @@ export async function generateMetadata({ params }: TechnicalPageProps): Promise<
     description: dictionary.technical.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/teknisk"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/teknisk"),
+        "en-US": prefixLocale("en", "/teknisk"),
+      },
     },
   };
 }

@@ -15,6 +15,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: dictionary.useCases.beatSynced.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/use-cases/beat-synced-lighting-without-programming"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/use-cases/beat-synced-lighting-without-programming"),
+        "en-US": prefixLocale("en", "/use-cases/beat-synced-lighting-without-programming"),
+      },
     },
   };
 }

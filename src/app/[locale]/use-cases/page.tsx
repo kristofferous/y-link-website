@@ -15,6 +15,10 @@ export async function generateMetadata({ params }: UseCasesPageProps): Promise<M
     description: dictionary.useCases.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/use-cases"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/use-cases"),
+        "en-US": prefixLocale("en", "/use-cases"),
+      },
     },
   };
 }

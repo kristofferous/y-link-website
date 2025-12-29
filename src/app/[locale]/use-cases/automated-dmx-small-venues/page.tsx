@@ -15,6 +15,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: dictionary.useCases.smallVenues.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/use-cases/automated-dmx-small-venues"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/use-cases/automated-dmx-small-venues"),
+        "en-US": prefixLocale("en", "/use-cases/automated-dmx-small-venues"),
+      },
     },
   };
 }

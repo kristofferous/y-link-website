@@ -1,31 +1,31 @@
 # SEO Audit Report – Y-Link (goal: “AI DMX Controller”)
 
 ## Inventory and URL map
-Canonical base: set `NEXT_PUBLIC_SITE_URL` in production (defaults to `https://y-link.no`). No pagination/param URLs observed. All pages server-rendered.
+Canonical base: set `NEXT_PUBLIC_SITE_URL` in production (defaults to `https://www.y-link.no`). No pagination/param URLs observed. All pages server-rendered.
 
-| URL | Template | Intent | Primary keyword | Status |
-| --- | --- | --- | --- | --- |
-| / | Home | Brand + overview | ai dmx controller | Keep |
-| /ai-dmx-controller | Pillar landing | Commercial/research | ai dmx controller | Keep (pillar) |
-| /ai-dmx-controller/alternatives | Comparison | Comparison | ai dmx controller alternatives | Keep |
-| /ai-dmx-controller/vs-maestrodmx | Competitor compare | Comparison | y-link vs maestrodmx | Keep |
-| /use-cases | Hub | Navigation | ai dmx use cases | Keep |
-| /use-cases/music-reactive-dmx-clubs | Use case | Commercial | music reactive dmx lighting | Keep |
-| /use-cases/automated-dmx-small-venues | Use case | Commercial | automated dmx small venues | Keep |
-| /use-cases/beat-synced-lighting-without-programming | Use case | Commercial | beat synced lighting | Keep |
-| /guides | Guides hub | Informational | dmx guides | Keep |
-| /guides/dmx-basics | Guide | Informational | dmx basics | Keep |
-| /guides/dmx-addressing | Guide | Informational | dmx addressing | Keep |
-| /guides/dmx-universes | Guide | Informational | dmx universes | Keep |
-| /guides/dmx-latency-jitter | Guide | Informational | dmx latency jitter | Keep |
-| /guides/dmx-best-practices | Guide | Informational | dmx best practices | Keep |
-| /guides/dmx-troubleshooting | Guide | Informational | dmx troubleshooting | Keep |
-| /om | About | Trust/E-E-A-T | about y-link | Keep |
-| /teknisk | Technical | Informational | ai dmx technical | Keep |
-| /faq | FAQ | Support/FAQ rich result | y-link faq | Keep |
-| /pilot | Pilot | Conversion | ai dmx pilot | Keep |
-| /privacy | Legal | Trust | y-link privacy | Keep |
-| /unsubscribe | Utility | Unsubscribe | unsubscribe y-link | Keep (noindex) |
+| URL                                                 | Template           | Intent                  | Primary keyword                | Status         |
+|-----------------------------------------------------|--------------------|-------------------------|--------------------------------|----------------|
+| /                                                   | Home               | Brand + overview        | ai dmx controller              | Keep           |
+| /ai-dmx-controller                                  | Pillar landing     | Commercial/research     | ai dmx controller              | Keep (pillar)  |
+| /ai-dmx-controller/alternatives                     | Comparison         | Comparison              | ai dmx controller alternatives | Keep           |
+| /ai-dmx-controller/vs-maestrodmx                    | Competitor compare | Comparison              | y-link vs maestrodmx           | Keep           |
+| /use-cases                                          | Hub                | Navigation              | ai dmx use cases               | Keep           |
+| /use-cases/music-reactive-dmx-clubs                 | Use case           | Commercial              | music reactive dmx lighting    | Keep           |
+| /use-cases/automated-dmx-small-venues               | Use case           | Commercial              | automated dmx small venues     | Keep           |
+| /use-cases/beat-synced-lighting-without-programming | Use case           | Commercial              | beat synced lighting           | Keep           |
+| /guides                                             | Guides hub         | Informational           | dmx guides                     | Keep           |
+| /guides/dmx-basics                                  | Guide              | Informational           | dmx basics                     | Keep           |
+| /guides/dmx-addressing                              | Guide              | Informational           | dmx addressing                 | Keep           |
+| /guides/dmx-universes                               | Guide              | Informational           | dmx universes                  | Keep           |
+| /guides/dmx-latency-jitter                          | Guide              | Informational           | dmx latency jitter             | Keep           |
+| /guides/dmx-best-practices                          | Guide              | Informational           | dmx best practices             | Keep           |
+| /guides/dmx-troubleshooting                         | Guide              | Informational           | dmx troubleshooting            | Keep           |
+| /om                                                 | About              | Trust/E-E-A-T           | about y-link                   | Keep           |
+| /teknisk                                            | Technical          | Informational           | ai dmx technical               | Keep           |
+| /faq                                                | FAQ                | Support/FAQ rich result | y-link faq                     | Keep           |
+| /pilot                                              | Pilot              | Conversion              | ai dmx pilot                   | Keep           |
+| /privacy                                            | Legal              | Trust                   | y-link privacy                 | Keep           |
+| /unsubscribe                                        | Utility            | Unsubscribe             | unsubscribe y-link             | Keep (noindex) |
 
 No redirect chains found in code. No orphan templates; nav and internal links reach all key pages. Trailing slash policy: no trailing slash; canonicals set accordingly.
 
@@ -35,7 +35,9 @@ No redirect chains found in code. No orphan templates; nav and internal links re
 - **No structured data (High)** – Added Organization + WebSite JSON-LD globally; BreadcrumbList emitted on every page; Product/SoftwareApplication + FAQ schema on the pillar (`ai-dmx-controller`) and FAQ page; TechArticle on technical page.
 - **Thin/untargeted content for “AI DMX Controller” (High)** – Rewrote home, about, technical, FAQ, privacy, pilot pages to English with clean copy; created pillar, comparison, use-case, and guide clusters aligned to target queries and internal linking.
 - **Weak internal linking (High)** – Navbar, footer, hubs, and contextual links now connect pillar ↔ use cases ↔ guides, reducing orphan risk and concentrating PageRank.
-- **Unclear contact/trust signals (Medium)** – Added contact email/location in footer; expanded About with process/experience; privacy copy clarified data use; unsubscribe set to `noindex`.
+- **Missing hreflang alternates (High)** � Added language alternates to localized pages; keep coverage consistent as new routes are added.
+- **Unclear contact/trust signals (Medium)** � Added contact email/location in footer; expanded About with process/experience; privacy copy clarified data use; unsubscribe/access/download set to 
+oindex.
 - **Missing E-E-A-T authoring (Medium)** – Added pilot framing, operator safety emphasis, and technical rationale to signal expertise; added TechArticle schema.
 - **Social preview gaps (Low)** – Added `public/og-default.png` and consistent metadata for OG/Twitter.
 
@@ -64,7 +66,8 @@ No redirect chains found in code. No orphan templates; nav and internal links re
 - Off-site (to execute): publish deep technical write-ups (latency budgets, universe planning), share demo videos/code samples, pursue links from lighting communities, partner venues, integrators, and GitHub/docs citations pointing to `/ai-dmx-controller`.
 
 ## Open tasks / follow-ups
-- Set `NEXT_PUBLIC_SITE_URL` to the live domain; enforce HTTPS + preferred host redirect at the edge (www vs non-www).
-- Run Lighthouse/PageSpeed after deploy; capture before/after CWV for `/` and `/ai-dmx-controller` and log in Search Console.
+- Ensure NEXT_PUBLIC_SITE_URL is set to https://www.y-link.no in production to keep canonicals aligned with the preferred host.
+- Root HTML lang is currently static in src/app/layout.tsx; consider making it locale-aware to avoid incorrect language signals on /en pages.
+- Run Lighthouse/PageSpeed after deploy; capture before/after CWV for / and /ai-dmx-controller and log in Search Console.
 - Add real social preview assets per page if available (hero/demos); current default OG image is shared across pages.
-- If on-site search launches, add WebSite `SearchAction` schema and a `/search` route.
+- If on-site search launches, add WebSite SearchAction schema and a /search route.

@@ -17,8 +17,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: meta.title,
     description: meta.description,
+    robots: {
+      index: false,
+      follow: false,
+    },
     alternates: {
       canonical: prefixLocale(locale, "/studio/download"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/studio/download"),
+        "en-US": prefixLocale("en", "/studio/download"),
+      },
     },
   };
 }

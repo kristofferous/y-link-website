@@ -19,6 +19,10 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
     description: dictionary.about.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/om"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/om"),
+        "en-US": prefixLocale("en", "/om"),
+      },
     },
   };
 }

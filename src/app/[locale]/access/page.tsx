@@ -16,8 +16,16 @@ export async function generateMetadata({ params }: AccessPageProps): Promise<Met
   return {
     title: dictionary.access.metadata.title,
     description: dictionary.access.metadata.description,
+    robots: {
+      index: false,
+      follow: false,
+    },
     alternates: {
       canonical: prefixLocale(locale, "/access"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/access"),
+        "en-US": prefixLocale("en", "/access"),
+      },
     },
   };
 }

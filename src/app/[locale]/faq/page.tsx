@@ -19,6 +19,10 @@ export async function generateMetadata({ params }: FAQPageProps): Promise<Metada
     description: dictionary.faq.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/faq"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/faq"),
+        "en-US": prefixLocale("en", "/faq"),
+      },
     },
   };
 }

@@ -18,6 +18,10 @@ export async function generateMetadata({ params }: AIDMXPageProps): Promise<Meta
     description: dictionary.aiDmx.metadata.description,
     alternates: {
       canonical: prefixLocale(locale, "/ai-dmx-controller"),
+      languages: {
+        "nb-NO": prefixLocale("nb", "/ai-dmx-controller"),
+        "en-US": prefixLocale("en", "/ai-dmx-controller"),
+      },
     },
   };
 }
