@@ -18,6 +18,10 @@ type BlogPostRow = {
   takeaway: string | null;
   featured_image_url: string | null;
   author_name: string | null;
+  author?: {
+    full_name: string | null;
+    avatar_url: string | null;
+  } | null;
   series_id: string | null;
   series_order: number | null;
 };
@@ -146,6 +150,10 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
       takeaway,
       featured_image_url,
       author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -189,6 +197,10 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
       takeaway,
       featured_image_url,
       author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -258,6 +270,10 @@ export async function fetchGuideInSeries(
       takeaway,
       featured_image_url,
       author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -308,6 +324,10 @@ export async function fetchBlogList(
       takeaway,
       featured_image_url,
       author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
       series_id,
       series_order,
       translations:blog_post_translations!inner(
@@ -375,6 +395,10 @@ export async function fetchGuideList(
         takeaway,
         featured_image_url,
         author_name,
+        author:users!blog_posts_author_id_fkey(
+          full_name,
+          avatar_url
+        ),
         series_id,
         series_order,
         translations:blog_post_translations!inner(

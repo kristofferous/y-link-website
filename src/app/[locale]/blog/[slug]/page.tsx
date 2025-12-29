@@ -19,6 +19,15 @@ function formatPublishDate(value: string | null, locale: AppLocale) {
   }).format(new Date(value));
 }
 
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: localeParam, slug } = await params;
   const locale = normalizeLocale(localeParam);
@@ -69,10 +78,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
   const label = dictionary.blog?.breadcrumb ?? "Blog";
+  const authorName = post.post.author?.full_name ?? post.post.author_name;
+  const authorAvatar = post.post.author?.avatar_url ?? null;
 
   return (
     <main>
-      <section className="section-spacing">
+      <section className="section-spacing pb-8 md:pb-12 lg:pb-16">
         <div className="container-custom">
           <Breadcrumbs
             items={[
@@ -87,7 +98,18 @@ export default async function BlogPostPage({ params }: PageProps) {
             <h1 className="text-heading-lg text-foreground">{post.translation.title}</h1>
             {summary ? <p className="text-body-lg text-muted-foreground prose-constrained">{summary}</p> : null}
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              {post.post.author_name ? <span>{post.post.author_name}</span> : null}
+              {authorName ? (
+                <span className="flex items-center gap-2 text-foreground">
+                  {authorAvatar ? (
+                    <img src={authorAvatar} alt={authorName} className="h-8 w-8 rounded-full object-cover" />
+                  ) : (
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                      {getInitials(authorName)}
+                    </span>
+                  )}
+                  <span className="text-sm font-medium">{authorName}</span>
+                </span>
+              ) : null}
               {publishedAt ? <span>{publishedAt}</span> : null}
               {post.post.reading_time ? <span>{post.post.reading_time}</span> : null}
             </div>
@@ -109,7 +131,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-spacing border-t border-border/40">
+      <section className="border-t border-border/40">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
             <div
