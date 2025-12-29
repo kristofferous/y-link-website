@@ -351,6 +351,11 @@
       "title": "Frequently Asked Questions",
       "body": "Get clarity on what's automated, how operators maintain control, and how to sign up or unsubscribe."
     },
+    "search": {
+      "label": "Search",
+      "placeholder": "Search FAQs",
+      "empty": "No matching FAQs."
+    },
     "items": [
       {
         "q": "What does the AI automate?",

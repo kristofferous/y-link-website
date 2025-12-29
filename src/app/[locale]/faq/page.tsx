@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { FaqList } from "@/components/FaqList";
 import { StructuredData } from "@/components/StructuredData";
 import { faqAnswerText, fetchFaqItems } from "@/lib/faq";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
@@ -71,17 +72,12 @@ export default async function FAQPage({ params }: FAQPageProps) {
 
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
-          <div className="grid gap-4 md:grid-cols-2">
-            {items.map((item) => (
-              <div key={item.id} className="rounded-lg border border-border/40 bg-card p-6">
-                <h2 className="text-title mb-3 text-foreground">{item.question}</h2>
-                <div
-                  className="content-html text-body text-muted-foreground"
-                  dangerouslySetInnerHTML={{ __html: item.answerHtml }}
-                />
-              </div>
-            ))}
-          </div>
+          <FaqList
+            items={items}
+            searchLabel={faq.search?.label ?? "Search"}
+            searchPlaceholder={faq.search?.placeholder ?? "Search FAQs"}
+            emptyLabel={faq.search?.empty ?? "No matching FAQs."}
+          />
         </div>
       </section>
     </main>

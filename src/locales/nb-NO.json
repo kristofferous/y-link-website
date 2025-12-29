@@ -351,6 +351,11 @@
       "title": "Ofte stilte spørsmål",
       "body": "Få klarhet i hva som automatiseres, hvordan operatører beholder kontrollen, og hvordan du melder deg på eller av."
     },
+    "search": {
+      "label": "SДk",
+      "placeholder": "SДk i FAQ",
+      "empty": "Ingen treff i FAQ."
+    },
     "items": [
       {
         "q": "Hva automatiserer AI-en?",
