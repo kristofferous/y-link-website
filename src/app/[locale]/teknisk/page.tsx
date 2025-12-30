@@ -35,7 +35,7 @@ export default async function TechnicalPage({ params }: TechnicalPageProps) {
   const { technical, navigation } = dictionary;
   const breadcrumbs = [
     { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-    { label: technical.breadcrumb },
+    { label: technical.breadcrumb, href: prefixLocale(locale, "/teknisk") },
   ];
 
   const techSchema = {

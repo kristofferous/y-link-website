@@ -38,7 +38,7 @@ export default async function AutomatedSmallVenuesPage({ params }: PageProps) {
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
               { label: useCases.breadcrumb, href: prefixLocale(locale, "/use-cases") },
-              { label: page.breadcrumb },
+              { label: page.breadcrumb, href: prefixLocale(locale, "/use-cases/automated-dmx-small-venues") },
             ]}
             className="mb-8"
           />

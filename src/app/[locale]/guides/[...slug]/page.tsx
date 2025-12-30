@@ -149,7 +149,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
               items={[
                 { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
                 { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
-                { label: resolved.series.name },
+                { label: resolved.series.name, href: prefixLocale(locale, `/guides/${resolved.series.slug}`) },
               ]}
               className="mb-8"
             />
@@ -210,7 +210,11 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
     });
   }
 
-  breadcrumbs.push({ label: resolved.post.translation.title });
+  const currentPath =
+    resolved.type === "seriesGuide"
+      ? `/guides/${resolved.series.slug}/${resolved.post.translation.slug}`
+      : `/guides/${resolved.post.translation.slug}`;
+  breadcrumbs.push({ label: resolved.post.translation.title, href: prefixLocale(locale, currentPath) });
 
   const previousGuide = resolved.post.post.prev_guide_id
     ? await fetchGuideNavItem(locale, resolved.post.post.prev_guide_id)

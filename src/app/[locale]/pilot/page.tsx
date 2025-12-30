@@ -41,7 +41,7 @@ export default async function PilotPage({ params }: PilotPageProps) {
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: pilot.breadcrumb },
+              { label: pilot.breadcrumb, href: prefixLocale(locale, "/pilot") },
             ]}
             className="mb-8"
           />

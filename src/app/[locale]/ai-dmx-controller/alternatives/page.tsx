@@ -40,7 +40,7 @@ export default async function AlternativesPage({ params }: PageProps) {
             items={[
               { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
               { label: aiDmx.breadcrumb, href: prefixLocale(locale, "/ai-dmx-controller") },
-              { label: aiDmxAlternatives.breadcrumb },
+              { label: aiDmxAlternatives.breadcrumb, href: prefixLocale(locale, "/ai-dmx-controller/alternatives") },
             ]}
             className="mb-8"
           />

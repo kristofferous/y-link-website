@@ -38,7 +38,7 @@ export default async function MusicReactiveClubsPage({ params }: PageProps) {
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
               { label: useCases.breadcrumb, href: prefixLocale(locale, "/use-cases") },
-              { label: page.breadcrumb },
+              { label: page.breadcrumb, href: prefixLocale(locale, "/use-cases/music-reactive-dmx-clubs") },
             ]}
             className="mb-8"
           />

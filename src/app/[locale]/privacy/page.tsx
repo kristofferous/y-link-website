@@ -38,7 +38,7 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
       <Breadcrumbs
         items={[
           { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-          { label: privacy.breadcrumb },
+          { label: privacy.breadcrumb, href: prefixLocale(locale, "/privacy") },
         ]}
       />
       <SectionCard>

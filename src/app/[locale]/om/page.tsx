@@ -40,7 +40,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: about.breadcrumb },
+              { label: about.breadcrumb, href: prefixLocale(locale, "/om") },
             ]}
             className="mb-8"
           />

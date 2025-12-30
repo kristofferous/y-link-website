@@ -57,7 +57,7 @@ export default async function GuidesPage({ params, searchParams }: GuidesPagePro
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: guides.breadcrumb },
+              { label: guides.breadcrumb, href: prefixLocale(locale, "/guides") },
             ]}
             className="mb-8"
           />

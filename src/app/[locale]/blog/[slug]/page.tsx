@@ -101,8 +101,8 @@ export default async function BlogPostPage({ params }: PageProps) {
           <Breadcrumbs
             items={[
               { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label },
-              { label: post.translation.title },
+              { label, href: prefixLocale(locale, "/blog") },
+              { label: post.translation.title, href: prefixLocale(locale, `/blog/${post.translation.slug}`) },
             ]}
             className="mb-8"
           />

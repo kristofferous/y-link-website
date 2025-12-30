@@ -53,7 +53,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: blog.breadcrumb },
+              { label: blog.breadcrumb, href: prefixLocale(locale, "/blog") },
             ]}
             className="mb-8"
           />

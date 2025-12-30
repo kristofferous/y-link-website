@@ -36,7 +36,7 @@ export default async function UseCasesPage({ params }: UseCasesPageProps) {
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: useCases.breadcrumb },
+              { label: useCases.breadcrumb, href: prefixLocale(locale, "/use-cases") },
             ]}
             className="mb-8"
           />

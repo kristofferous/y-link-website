@@ -40,7 +40,7 @@ export default async function AIDMXControllerPage({ params }: AIDMXPageProps) {
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: aiDmx.breadcrumb },
+              { label: aiDmx.breadcrumb, href: prefixLocale(locale, "/ai-dmx-controller") },
             ]}
             className="mb-8"
           />

@@ -58,7 +58,7 @@ export default async function FAQPage({ params }: FAQPageProps) {
           <Breadcrumbs
             items={[
               { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
-              { label: faq.breadcrumb },
+              { label: faq.breadcrumb, href: prefixLocale(locale, "/faq") },
             ]}
             className="mb-8"
           />
