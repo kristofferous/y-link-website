@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -40,9 +41,17 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href={prefixLocale(locale, "/")}
-            className="text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-80"
+            className="flex items-center transition-opacity hover:opacity-80"
           >
-            Y-Link
+            <Image
+              src="/Y-Link-Logo.svg"
+              alt="Y-Link"
+              width={120}
+              height={32}
+              className="h-6 w-auto"
+              priority
+            />
+            <span className="sr-only">Y-Link</span>
           </Link>
 
           {/* Desktop Navigation */}

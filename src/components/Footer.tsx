@@ -15,8 +15,15 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href={prefixLocale(locale, "/")} className="text-lg font-semibold tracking-tight text-foreground">
-              Y-Link
+            <Link href={prefixLocale(locale, "/")} className="inline-flex items-center">
+              <Image
+                src="/Y-Link-Logo.svg"
+                alt="Y-Link"
+                width={140}
+                height={36}
+                className="h-7 w-auto"
+              />
+              <span className="sr-only">Y-Link</span>
             </Link>
             <p className="text-sm text-muted-foreground prose-constrained">{footer.tagline}</p>
             <div className="flex items-center gap-3 rounded-lg border border-border/40 bg-card px-4 py-3">
