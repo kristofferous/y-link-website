@@ -21,7 +21,7 @@ export function Footer() {
                 alt="Y-Link"
                 width={140}
                 height={36}
-                className="h-7 w-auto"
+                className="h-7 w-auto dark:invert"
               />
               <span className="sr-only">Y-Link</span>
             </Link>

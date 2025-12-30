@@ -48,7 +48,7 @@ export function Navbar() {
               alt="Y-Link"
               width={120}
               height={32}
-              className="h-6 w-auto"
+              className="h-6 w-auto dark:invert"
               priority
             />
             <span className="sr-only">Y-Link</span>
