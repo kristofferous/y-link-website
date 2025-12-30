@@ -27,6 +27,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local secrets
+omega-terrain-482816-f4-b3d60114c85e.json
+
 # vercel
 .vercel
 
