@@ -36,11 +36,10 @@ export async function subscribeAction(
   _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) {
     return {
       status: "error",
-      message:
-        "Tjenesten er ikke konfigurert. Sett SUPABASE_URL og SUPABASE_SERVICE_ROLE_KEY.",
+      message: "Tjenesten er ikke konfigurert. Sett NEXT_PUBLIC_SUPABASE_URL og SUPABASE_SECRET_KEY.",
     };
   }
 
