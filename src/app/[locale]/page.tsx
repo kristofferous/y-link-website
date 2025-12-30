@@ -75,6 +75,7 @@ export default async function Home({ params }: HomePageProps) {
       {/* Key Features Grid */}
       <section className="section-spacing border-t border-border/40">
         <div className="container-custom">
+          <h2 className="sr-only">{home.featuresTitle}</h2>
           <div className="grid gap-8 lg:grid-cols-3">
             {home.features.map((feature) => (
               <div key={feature.title} className="space-y-3">

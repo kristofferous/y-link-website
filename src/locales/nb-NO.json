@@ -108,6 +108,7 @@
       "subtitle": "Bygget for live-opptredener.",
       "body": "Y-Link gjør lyd om til presise lyssekvenser med stabil timing og live-kontroll. Laget for klubber, små scener og mobile oppsett der pålitelighet er kritisk."
     },
+    "featuresTitle": "Viktige funksjoner",
     "features": [
       {
         "title": "Automatiserte sekvenser",
@@ -888,3 +889,5 @@
     }
   }
 }
+
+
