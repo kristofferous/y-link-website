@@ -5,6 +5,7 @@ import { absoluteUrl } from "@/lib/seo";
 
 const staticRoutes = [
   "/",
+  "/llms.txt",
   "/ai-dmx-controller",
   "/ai-dmx-controller/alternatives",
   "/ai-dmx-controller/vs-maestrodmx",
