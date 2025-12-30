@@ -1,0 +1,9 @@
+# Y-Link AI DMX Controller
+
+Y-Link builds an AI-driven DMX controller and lighting software for predictable, music-reactive shows. It converts audio into deterministic lighting sequences, with operator guardrails and stable timing for clubs, small venues, and mobile rigs.
+
+Key URLs:
+- https://www.y-link.no/ai-dmx-controller
+- https://www.y-link.no/guides
+- https://www.y-link.no/blog
+- https://www.y-link.no/faq

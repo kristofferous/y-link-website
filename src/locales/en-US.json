@@ -457,6 +457,14 @@
       "body": "Y-Link converts audio to lighting sequences that follow tempo, phrasing, and energy. Low latency, guardrails, and operator control ensure your show is predictable, not random.",
       "tags": ["AI DMX Controller", "Music Reactive", "Low Latency"]
     },
+    "summary": {
+      "title": "Product Summary",
+      "points": [
+        "Transforms audio into deterministic DMX cues with stable timing.",
+        "Operator guardrails for safe live adjustments.",
+        "Designed for clubs, small venues, and mobile rigs."
+      ]
+    },
     "how": {
       "title": "How It Works",
       "steps": [

@@ -457,6 +457,14 @@
       "body": "Y-Link gjør lyd om til lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og operatørkontroll gjør showet forutsigbart i stedet for tilfeldig.",
       "tags": ["AI DMX-kontroller", "Musikkreaktiv", "Lav latency"]
     },
+    "summary": {
+      "title": "Produktoppsummering",
+      "points": [
+        "Gjør lyd om til deterministiske DMX-cues med stabil timing.",
+        "Rekkverk for trygge live-justeringer.",
+        "Bygget for klubber, små venues og mobile rigger."
+      ]
+    },
     "how": {
       "title": "Slik fungerer det",
       "steps": [

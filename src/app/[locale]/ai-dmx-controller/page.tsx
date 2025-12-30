@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { StructuredData } from "@/components/StructuredData";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { absoluteUrl } from "@/lib/seo";
 
 type AIDMXPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -31,9 +33,20 @@ export default async function AIDMXControllerPage({ params }: AIDMXPageProps) {
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { aiDmx, navigation } = dictionary;
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Y-Link AI DMX Controller",
+    applicationCategory: "Multimedia",
+    operatingSystem: "Web",
+    description: aiDmx.metadata.description,
+    url: absoluteUrl(prefixLocale(locale, "/ai-dmx-controller")),
+    inLanguage: locale === "en" ? "en" : "nb",
+  };
 
   return (
     <main>
+      <StructuredData data={productSchema} />
       {/* Header Section */}
       <section className="section-spacing">
         <div className="container-custom">
@@ -52,6 +65,17 @@ export default async function AIDMXControllerPage({ params }: AIDMXPageProps) {
               <span className="text-muted-foreground">{aiDmx.hero.subtitle}</span>
             </h1>
             <p className="text-body-lg text-muted-foreground prose-constrained">{aiDmx.hero.body}</p>
+            <div className="rounded-lg border border-border/40 bg-card p-6 text-sm text-muted-foreground">
+              <p className="text-label text-foreground">{aiDmx.summary.title}</p>
+              <ul className="mt-3 space-y-2">
+                {aiDmx.summary.points.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="flex flex-wrap gap-3">
               {aiDmx.hero.tags.map((tag) => (
                 <span
