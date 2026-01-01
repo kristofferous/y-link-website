@@ -1,8 +1,8 @@
 {
   "meta": {
     "siteName": "Y-Link",
-    "title": "AI-drevet DMX-kontroller for forutsigbart, musikkreaktivt lys",
-    "description": "Y-Link gjør lyd om til stabilt, musikkreaktivt lys med deterministisk avspilling, sikkerhetsnett og operatørkontroll.",
+    "title": "Autonom AI DMX-kontroller for romtilpasset, musikkreaktivt lys",
+    "description": "Y-Link gjør lyd om til stabilt, romtilpasset, musikkreaktivt lys med deterministisk avspilling, sikkerhetsnett og operatørkontroll.",
     "ogAlt": "Y-Link AI DMX-kontroller"
   },
   "navigation": {
@@ -106,21 +106,21 @@
       "badge": "Pilotprogram åpent",
       "title": "Profesjonell DMX-kontroll.",
       "subtitle": "Bygget for live-opptredener.",
-      "body": "Y-Link gjør lyd om til presise lyssekvenser med stabil timing og live-kontroll. Laget for klubber, små scener og mobile oppsett der pålitelighet er kritisk."
+      "body": "Y-Link er en fullt autonom AI DMX-kontroller som gjør lyd om til romtilpassede lyssekvenser med stabil timing. Et co-pilot-lag for manuelle cues og triggere kompletterer AI-en uten å overstyre den."
     },
     "featuresTitle": "Viktige funksjoner",
     "features": [
       {
-        "title": "Automatiserte sekvenser",
-        "description": "Generer lys-cues fra lydanalyse. Ingen manuell programmering."
+        "title": "Autonome sekvenser",
+        "description": "Generer lys-cues fra lydanalyse som forstår rommet. Ingen manuell programmering."
       },
       {
         "title": "Presis timing",
         "description": "BPM-låst avspilling med frasedeteksjon. Konsistent ytelse på tvers av økter."
       },
       {
-        "title": "Live rekkverk",
-        "description": "Overstyringer som bevarer timing og struktur. Trygge justeringer under show."
+        "title": "Co-pilot-lag",
+        "description": "Manuelle cues og triggere som kompletterer AI-en. Trygge justeringer uten å bryte timing eller struktur."
       }
     ],
     "howItWorks": {
@@ -136,12 +136,12 @@
         {
           "step": "02",
           "title": "Sekvensgenerering",
-          "description": "Genererer cues, overganger og intensitetskurver mappet til musikkstrukturen."
+          "description": "Genererer romtilpassede cues, overganger og intensitetskurver mappet til musikkstrukturen."
         },
         {
           "step": "03",
           "title": "Live avspilling",
-          "description": "Kjører sekvenser med sanntidsjusteringer. Rekkverk bevarer timing og sammenheng."
+          "description": "Kjører sekvenser med co-pilot-cues og triggere. Rekkverk bevarer timing og sammenheng."
         }
       ]
     },
@@ -203,7 +203,7 @@
     },
     "cta": {
       "title": "Bli med i pilotprogrammet",
-      "description": "Begrensede plasser for tidlig tilgang. Vi jobber med utvalgte venues for å finjustere plattformen.",
+      "description": "Begrensede plasser for tidlig tilgang. Vi jobber med utvalgte venues for å finjustere den autonome plattformen.",
       "button": "Søk pilottilgang"
     }
   },
@@ -217,7 +217,7 @@
       "label": "Om",
       "title": "AI-drevet DMX-kontroller",
       "subtitle": "for musikkstyrte venues",
-      "body": "Y-Link lager lyssekvenser automatisk fra musikk – med presis timing, rekkverk og operatørkontroll. Bygget for klubber, små scener og mobile oppsett som trenger forutsigbare show.",
+      "body": "Y-Link lager lyssekvenser automatisk fra musikk med presis timing, rekkverk og et co-pilot-lag for manuelle cues. Bygget for klubber, små scener og mobile oppsett som trenger forutsigbare show.",
       "secondary": "Slik fungerer det"
     },
     "why": {
@@ -245,7 +245,7 @@
         {
           "step": "03",
           "title": "Live med kontroll",
-          "body": "Operatør kan overstyre mens systemet bevarer struktur og timing-stabilitet."
+          "body": "Operatører bruker et co-pilot-lag for manuelle cues mens systemet bevarer struktur og timing-stabilitet."
         }
       ]
     },
@@ -271,7 +271,7 @@
     "hero": {
       "label": "Teknisk",
       "title": "AI-basert DMX med lav latency, forutsigbar avspilling og sikkerhet",
-      "body": "Y-Link analyserer lyd, genererer cues og leverer DMX innen strenge tidskrav. Runtime er tunet for stabil latency og tydelige overstyringer som holder showet synkronisert."
+      "body": "Y-Link analyserer lyd, genererer romtilpassede cues og leverer DMX innen strenge tidskrav. Runtime er tunet for stabil latency og et co-pilot-lag som holder showet synkronisert."
     },
     "pipeline": {
       "title": "Pipeline",
@@ -283,7 +283,7 @@
     },
     "safety": {
       "title": "Sikkerhet og kontroll",
-      "body": "Operatører har låser for intensitet, blackout-regler og mulighet til å overstyre. Rekkverk hindrer tilfeldige hopp selv ved live-justeringer.",
+      "body": "Operatører har låser for intensitet, blackout-regler og co-pilot-cues. Rekkverk hindrer tilfeldige hopp selv ved live-justeringer.",
       "latencyGuide": "Guide for latency og jitter",
       "pilot": "Bli med i piloten"
     }
@@ -298,7 +298,7 @@
       "badge": "Begrensede plasser",
       "title": "Pilotprogram",
       "subtitle": "Kontrollert utrulling i ekte venues",
-      "body": "Formålet er å validere stabilitet, timing og brukervennlighet i ekte show, med strukturert teknisk og operasjonell feedback. Dette er en kontrollert pilot, ikke en åpen beta.",
+      "body": "Y-Link er under utvikling. Formålet er å validere stabilitet, timing og brukervennlighet i ekte show, med strukturert teknisk og operasjonell feedback. Dette er en kontrollert pilot, ikke en åpen beta.",
       "cta": "Søk pilottilgang"
     },
     "whatIs": {
@@ -308,7 +308,7 @@
         "Samle strukturert teknisk og operasjonell feedback.",
         "Kontrollert pilot med få partnere – ikke en åpen beta.",
         "Tidsbegrenset periode: omtrent 4–8 uker.",
-        "Y1-hardware lånes ut, eies av Y-Link og returneres etter piloten."
+        "Y1-hardware lånes ut, eies av Y-Link og returneres etter piloten. Hardware og programvare er under aktiv utvikling."
       ]
     },
     "whatNot": {
@@ -360,11 +360,11 @@
     "items": [
       {
         "q": "Hva automatiserer AI-en?",
-        "a": "Kontrolleren analyserer lyd for tempo, fraser og energi. Den bygger cues, overganger og rekkverk som følger låten uten manuell programmering."
+        "a": "Kontrolleren analyserer lyd for tempo, fraser, energi og romkontekst. Den bygger cues, overganger og rekkverk som følger låten uten manuell programmering."
       },
       {
         "q": "Kan operatører fortsatt styre riggen?",
-        "a": "Ja. Operatører kan godkjenne looks, låse intensitet, øve seksjoner og overstyre automasjon. Målet er forutsigbar avspilling med menneskelig kontroll."
+        "a": "Ja. Operatører bruker et co-pilot-lag for manuelle cues og triggere, godkjenner looks, låser intensitet og øver seksjoner. Co-piloten kompletterer AI-en uten å overstyre den, slik at avspillingen forblir forutsigbar."
       },
       {
         "q": "Hvordan håndteres latency?",
@@ -376,7 +376,7 @@
       },
       {
         "q": "Hvordan blir jeg med i piloten eller forhåndsbestiller?",
-        "a": "Bruk skjemaet på forsiden eller pilotsiden. Piloten er tidsbegrenset (ca. 4–8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
+        "a": "Bruk skjemaet på forsiden eller pilotsiden. Y-Link er under utvikling, og piloten er tidsbegrenset (ca. 4–8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
       },
       {
         "q": "Hvordan avslutter jeg e-poster?",
@@ -447,21 +447,21 @@
   "aiDmx": {
     "metadata": {
       "title": "AI DMX-kontroller",
-      "description": "Y-Link gjør lyd om til forutsigbart, musikkstyrt lys med lav latency og rekkverk."
+      "description": "Y-Link er en fullt autonom AI DMX-kontroller under utvikling som gjør lyd om til romtilpasset, musikkstyrt lys med lav latency og rekkverk."
     },
     "breadcrumb": "AI DMX-kontroller",
     "hero": {
       "label": "Plattform",
       "title": "AI DMX-kontroller",
       "subtitle": "for musikkreaktivt lys",
-      "body": "Y-Link gjør lyd om til lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og operatørkontroll gjør showet forutsigbart i stedet for tilfeldig.",
+      "body": "Y-Link er en fullt autonom AI DMX-kontroller under utvikling som gjør lyd om til romtilpassede lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og et co-pilot-lag gjør showet forutsigbart i stedet for tilfeldig.",
       "tags": ["AI DMX-kontroller", "Musikkreaktiv", "Lav latency"]
     },
     "summary": {
       "title": "Produktoppsummering",
       "points": [
         "Gjør lyd om til deterministiske DMX-cues med stabil timing.",
-        "Rekkverk for trygge live-justeringer.",
+        "Co-pilot-lag for manuelle cues og trygge live-justeringer.",
         "Bygget for klubber, små venues og mobile rigger."
       ]
     },
@@ -469,8 +469,8 @@
       "title": "Slik fungerer det",
       "steps": [
         { "step": "01", "title": "Lydinn", "body": "Last opp musikk eller bruk live-lyd. Systemet fanger tempo, fraser og energi." },
-        { "step": "02", "title": "Planlegging", "body": "AI planlegger cues, overganger og sikkerhetsgrenser tilpasset riggen din." },
-        { "step": "03", "title": "Deterministisk avspilling", "body": "Signaler tidssettes og overvåkes før output. Latency-budsjett håndheves live." }
+        { "step": "02", "title": "Planlegging", "body": "AI planlegger romtilpassede cues, overganger og sikkerhetsgrenser tilpasset riggen din." },
+        { "step": "03", "title": "Deterministisk avspilling", "body": "Signaler tidssettes og overvåkes før output. Co-pilot-cues og triggere holder seg innenfor rekkverk." }
       ]
     },
     "who": {
@@ -479,7 +479,7 @@
         "Klubber og barer som vil ha musikkreaktivt lys uten manuell programmering.",
         "Små scener og installasjoner med lite bemanning men timingkrav.",
         "Mobile rigger som trenger rask rigging og forutsigbar avspilling.",
-        "Operatører som vil ha rekkverk og mulighet til å overstyre når som helst."
+        "Operatører som vil ha rekkverk og et co-pilot-lag for manuelle cues."
       ],
       "club": "bruk for klubber",
       "smallVenue": "automatisering i små venues"

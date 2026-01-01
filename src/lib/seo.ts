@@ -49,7 +49,7 @@ export function organizationSchema(language: string) {
         availableLanguage: ["no", "en"],
       },
     ],
-    description: "Y-Link builds an AI-driven DMX controller and lighting software for predictable, music-reactive shows.",
+    description: "Y-Link builds an autonomous AI-driven DMX controller and lighting software for room-aware, music-reactive shows.",
     inLanguage: language,
   };
 }

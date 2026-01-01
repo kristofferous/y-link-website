@@ -1,8 +1,8 @@
 {
   "meta": {
     "siteName": "Y-Link",
-    "title": "AI-driven DMX controller for predictable, music-reactive light",
-    "description": "Y-Link turns audio into stable, music-reactive lighting with deterministic playback, guardrails, and operator control.",
+    "title": "Autonomous AI DMX controller for room-aware, music-reactive light",
+    "description": "Y-Link turns audio into stable, room-aware, music-reactive lighting with deterministic playback, guardrails, and operator control.",
     "ogAlt": "Y-Link AI DMX Controller"
   },
   "navigation": {
@@ -106,21 +106,21 @@
       "badge": "Pilot Program Open",
       "title": "Professional DMX Control.",
       "subtitle": "Built for Live Performance.",
-      "body": "Y-Link transforms audio into precise lighting sequences with stable timing and live control. Engineered for clubs, small venues, and mobile setups where reliability matters."
+      "body": "Y-Link is a fully autonomous AI DMX controller that turns audio into room-aware lighting sequences with stable timing. A co-pilot layer for manual cues and triggers complements the AI without overriding it."
     },
     "featuresTitle": "Key Features",
     "features": [
       {
-        "title": "Automated Sequences",
-        "description": "Generate lighting cues from audio analysis. No manual programming required."
+        "title": "Autonomous Sequences",
+        "description": "Generate lighting cues from audio analysis that understand the room. No manual programming required."
       },
       {
         "title": "Precise Timing",
         "description": "BPM-locked execution with phrase detection. Consistent performance across sessions."
       },
       {
-        "title": "Live Guardrails",
-        "description": "Override controls that maintain timing and structure. Safe adjustments during live shows."
+        "title": "Co-Pilot Layer",
+        "description": "Manual cues and triggers that complement the AI. Safe adjustments without breaking timing or structure."
       }
     ],
     "howItWorks": {
@@ -136,12 +136,12 @@
         {
           "step": "02",
           "title": "Sequence Generation",
-          "description": "Generate cues, transitions, and intensity curves mapped to musical structure."
+          "description": "Generate room-aware cues, transitions, and intensity curves mapped to musical structure."
         },
         {
           "step": "03",
           "title": "Live Execution",
-          "description": "Run sequences with real-time adjustments. Guardrails preserve timing and coherence."
+          "description": "Run sequences with co-pilot cues and triggers. Guardrails preserve timing and coherence."
         }
       ]
     },
@@ -203,7 +203,7 @@
     },
     "cta": {
       "title": "Join the Pilot Program",
-      "description": "Limited slots available for early access. We're working with select venues to refine the platform.",
+      "description": "Limited slots available for early access. We're working with select venues to refine the autonomous platform.",
       "button": "Apply for Pilot Access"
     }
   },
@@ -217,7 +217,7 @@
       "label": "About",
       "title": "AI-Powered DMX Controller",
       "subtitle": "for Music-Driven Venues",
-      "body": "Y-Link generates lighting sequences automatically from music—with precise timing, guardrails, and operator control. Built for clubs, small stages, and mobile setups that need predictable shows.",
+      "body": "Y-Link generates lighting sequences automatically from music with precise timing, guardrails, and a co-pilot layer for manual cues. Built for clubs, small stages, and mobile setups that need predictable shows.",
       "secondary": "How it works"
     },
     "why": {
@@ -245,7 +245,7 @@
         {
           "step": "03",
           "title": "Live with Control",
-          "body": "Operator can override while the system maintains structure and timing stability."
+          "body": "Operators use a co-pilot layer for manual cues while the system maintains structure and timing stability."
         }
       ]
     },
@@ -271,7 +271,7 @@
     "hero": {
       "label": "Technical",
       "title": "AI-Based DMX with Low Latency, Predictable Playback, and Safety",
-      "body": "Y-Link analyzes audio, generates cues, and delivers DMX within strict time requirements. Runtime is tuned for stable latency and clear overrides, keeping the show synchronized."
+      "body": "Y-Link analyzes audio, generates room-aware cues, and delivers DMX within strict time requirements. Runtime is tuned for stable latency and a co-pilot layer that keeps the show synchronized."
     },
     "pipeline": {
       "title": "Pipeline",
@@ -283,7 +283,7 @@
     },
     "safety": {
       "title": "Safety and Control",
-      "body": "Operators have locks for intensity, blackout rules, and ability to override. Guardrails prevent random jumps even when adjusting live.",
+      "body": "Operators have locks for intensity, blackout rules, and co-pilot cues. Guardrails prevent random jumps even when adjusting live.",
       "latencyGuide": "Latency and jitter guide",
       "pilot": "Join the pilot"
     }
@@ -298,7 +298,7 @@
       "badge": "Limited Slots",
       "title": "Pilot Program",
       "subtitle": "Controlled Rollout in Real Venues",
-      "body": "The purpose is to validate stability, timing, and usability in real shows, with structured technical and operational feedback. This is a controlled pilot, not an open beta giveaway.",
+      "body": "Y-Link is in development. The purpose is to validate stability, timing, and usability in real shows, with structured technical and operational feedback. This is a controlled pilot, not an open beta giveaway.",
       "cta": "Apply for Pilot Access"
     },
     "whatIs": {
@@ -308,7 +308,7 @@
         "Collect structured technical and operational feedback.",
         "Controlled pilot with few partners - not an open beta.",
         "Time-limited period: approximately 4-8 weeks.",
-        "Y1 hardware loaned out, Y-Link property, returned after pilot."
+        "Y1 hardware loaned out, Y-Link property, returned after pilot. Hardware and software are in active development."
       ]
     },
     "whatNot": {
@@ -360,11 +360,11 @@
     "items": [
       {
         "q": "What does the AI automate?",
-        "a": "The controller analyzes audio for tempo, phrases, and energy. It builds cues, transitions, and guardrails that follow the track without manual programming."
+        "a": "The controller analyzes audio for tempo, phrases, energy, and room context. It builds cues, transitions, and guardrails that follow the track without manual programming."
       },
       {
         "q": "Can operators still control the rig?",
-        "a": "Yes. Operators can approve looks, lock intensity, rehearse sections, and override automation. The goal is predictable playback with human control."
+        "a": "Yes. Operators use a co-pilot layer for manual cues and triggers, approve looks, lock intensity, and rehearse sections. The co-pilot complements the AI without overriding it, keeping playback predictable."
       },
       {
         "q": "How is latency handled?",
@@ -376,7 +376,7 @@
       },
       {
         "q": "How do I join the pilot or pre-order?",
-        "a": "Use the form on the homepage or pilot page. The pilot is time-limited (approx. 4-8 weeks), with Y1 hardware loaned and returned afterward. We take in a small, curated group to test stability, timing, and UX."
+        "a": "Use the form on the homepage or pilot page. Y-Link is in development, and the pilot is time-limited (approx. 4-8 weeks), with Y1 hardware loaned and returned afterward. We take in a small, curated group to test stability, timing, and UX."
       },
       {
         "q": "How do I unsubscribe from emails?",
@@ -447,21 +447,21 @@
   "aiDmx": {
     "metadata": {
       "title": "AI DMX Controller",
-      "description": "Y-Link converts audio into predictable, music-driven lighting with low latency and guardrails."
+      "description": "Y-Link is a fully autonomous AI DMX controller in development, converting audio into room-aware, music-driven lighting with low latency and guardrails."
     },
     "breadcrumb": "AI DMX Controller",
     "hero": {
       "label": "Platform",
       "title": "AI DMX Controller",
       "subtitle": "for Music-Reactive Lighting",
-      "body": "Y-Link converts audio to lighting sequences that follow tempo, phrasing, and energy. Low latency, guardrails, and operator control ensure your show is predictable, not random.",
+      "body": "Y-Link is a fully autonomous AI DMX controller in development that converts audio to room-aware lighting sequences that follow tempo, phrasing, and energy. Low latency, guardrails, and a co-pilot layer ensure your show is predictable, not random.",
       "tags": ["AI DMX Controller", "Music Reactive", "Low Latency"]
     },
     "summary": {
       "title": "Product Summary",
       "points": [
         "Transforms audio into deterministic DMX cues with stable timing.",
-        "Operator guardrails for safe live adjustments.",
+        "Co-pilot layer for manual cues and safe live adjustments.",
         "Designed for clubs, small venues, and mobile rigs."
       ]
     },
@@ -469,8 +469,8 @@
       "title": "How It Works",
       "steps": [
         { "step": "01", "title": "Audio Input", "body": "Upload music or use live audio. The system captures tempo, phrases, and energy." },
-        { "step": "02", "title": "Planning", "body": "AI plans cues, transitions, and safety limits tailored to your rig." },
-        { "step": "03", "title": "Deterministic Playback", "body": "Signals are timed and monitored before output. Latency budget enforced live." }
+        { "step": "02", "title": "Planning", "body": "AI plans room-aware cues, transitions, and safety limits tailored to your rig." },
+        { "step": "03", "title": "Deterministic Playback", "body": "Signals are timed and monitored before output. Co-pilot cues and triggers stay inside guardrails." }
       ]
     },
     "who": {
@@ -479,7 +479,7 @@
         "Clubs and bars wanting music-reactive lighting without manual programming.",
         "Small stages and installations with minimal staffing but timing requirements.",
         "Mobile rigs needing fast load-ins and predictable playback.",
-        "Operators wanting guardrails and the ability to override at any time."
+        "Operators wanting guardrails and a co-pilot layer for manual cues."
       ],
       "club": "club use case",
       "smallVenue": "small venue automation"
