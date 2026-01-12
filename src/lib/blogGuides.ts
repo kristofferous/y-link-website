@@ -245,18 +245,6 @@ const fetchGuideNavItemCached = unstable_cache(
   { revalidate: CACHE_TTL_SECONDS },
 );
 
-  const supabase = createServiceClient();
-  const { data, error } = await supabase
-    .from("blog_tags")
-    .select("tag")
-    .eq("post_id", postId)
-    .order("tag", { ascending: true });
-
-  if (error || !data) return [];
-
-  return data.map((row) => row.tag);
-}
-
 function mapJoined(row: JoinedPostRow): BlogPost | null {
   const translation = row.translations?.[0];
   if (!translation) return null;
