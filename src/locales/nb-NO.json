@@ -1094,6 +1094,32 @@
         "title": "Hvor mange armaturer får plass i et univers?",
         "body": "Kalkulatoren viser maks armaturer per univers, resterende kanaler og hvor mange univers du trenger basert på antall."
       },
+      "howTo": {
+        "title": "Slik bruker du kalkulatoren",
+        "steps": [
+          "Legg inn kanaler per armatur.",
+          "Valgfritt: legg inn antall armaturer.",
+          "Bekreft kanaler per univers (standard er 512).",
+          "Se armaturer per univers, resterende kanaler og univers som trengs."
+        ]
+      },
+      "faq": {
+        "title": "Ofte stilte spørsmål",
+        "items": [
+          {
+            "question": "Hvor mange 13-kanals armaturer får plass i ett univers?",
+            "answer": "39 armaturer får plass i et 512-kanals univers, med 5 kanaler igjen."
+          },
+          {
+            "question": "Fungerer dette for 16-bit armaturer?",
+            "answer": "Ja. Legg inn totalt kanalantall for valgt modus. 16-bit-parametere teller allerede som to kanaler."
+          },
+          {
+            "question": "Hva om antallet overstiger ett univers?",
+            "answer": "Kalkulatoren viser hvor mange univers du trenger og varsler når antallet ikke får plass i ett univers."
+          }
+        ]
+      },
       "details": {
         "title": "Notater om kapasitet",
         "sections": [
@@ -1104,6 +1130,10 @@
           {
             "title": "Modusendringer påvirker kapasiteten",
             "body": "Når du går fra 8-bit til 16-bit kontroll dobles kanalbruken og færre armaturer får plass."
+          },
+          {
+            "title": "Når du bør ha litt margin",
+            "body": "La igjen ledige kanaler hvis du forventer modusendringer, ekstra armaturer eller fremtidig utvidelse."
           }
         ]
       },
@@ -1156,4 +1186,3 @@
     }
   }
 }
-

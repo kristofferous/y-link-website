@@ -1094,6 +1094,32 @@
         "title": "How many fixtures fit in a universe?",
         "body": "This calculator shows the maximum fixtures per universe, leftover channels, and how many universes you need based on fixture count."
       },
+      "howTo": {
+        "title": "How to use this calculator",
+        "steps": [
+          "Enter channels per fixture.",
+          "Optional: add the fixture count you plan to run.",
+          "Confirm channels per universe (default is 512).",
+          "Review fixtures per universe, leftover channels, and universes required."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "question": "How many 13-channel fixtures fit in one universe?",
+            "answer": "39 fixtures fit in a 512-channel universe, leaving 5 channels free."
+          },
+          {
+            "question": "Does this work for 16-bit fixtures?",
+            "answer": "Yes. Enter the total channel count for the fixture mode. 16-bit parameters already count as two channels."
+          },
+          {
+            "question": "What if my fixture count exceeds one universe?",
+            "answer": "The calculator shows how many universes you need and warns when the count will not fit in a single universe."
+          }
+        ]
+      },
       "details": {
         "title": "DMX capacity notes",
         "sections": [
@@ -1104,6 +1130,10 @@
           {
             "title": "Mode changes affect capacity",
             "body": "Switching from 8-bit to 16-bit control doubles channel usage and reduces fixtures per universe."
+          },
+          {
+            "title": "When to leave headroom",
+            "body": "Leave spare channels if you expect mode changes, add-on fixtures, or future expansion."
           }
         ]
       },

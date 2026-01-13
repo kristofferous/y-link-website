@@ -13,7 +13,8 @@ const clampInt = (value: number, min = 1) => {
 
 export function DmxCapacityTool() {
   const { dictionary } = useTranslations();
-  const tool = dictionary.tools.dmxCapacity.tool;
+  const { dmxCapacity } = dictionary.tools;
+  const tool = dmxCapacity.tool;
 
   const [channelsPerFixture, setChannelsPerFixture] = useState(13);
   const [fixtureCount, setFixtureCount] = useState("");
