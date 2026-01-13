@@ -18,8 +18,7 @@
     "secondary": [
       { "label": "Pilot Program", "href": "/pilot" },
       { "label": "Technical", "href": "/teknisk" },
-      { "label": "About Y-Link", "href": "/om" },
-      { "label": "Our Story", "href": "/story" }
+      { "label": "About Y-Link", "href": "/om" }
     ],
     "utility": [
       { "label": "Pilot Access", "href": "/access" },
