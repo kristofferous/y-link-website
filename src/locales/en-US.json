@@ -915,7 +915,9 @@
         "sections": [
           {
             "title": "How DMX universes work",
-            "body": "Each universe holds 512 channels. Fixtures consume a block of channels based on their mode."
+            "body": "Each universe holds 512 channels. Fixtures consume a block of channels based on their mode.",
+            "linkLabel": "DMX universes and scaling",
+            "linkHref": "/guides/dmx-universes"
           },
           {
             "title": "Common addressing mistakes",
@@ -923,7 +925,9 @@
               "Reusing an address after changing a fixture mode.",
               "Forgetting to move to the next universe when a fixture no longer fits.",
               "Mixing 1-based and 0-based address labeling on paper vs console."
-            ]
+            ],
+            "linkLabel": "Fixture addressing guide",
+            "linkHref": "/guides/dmx-addressing"
           },
           {
             "title": "When to leave gaps",
@@ -931,9 +935,62 @@
           },
           {
             "title": "8-bit vs 16-bit channels",
-            "body": "16-bit parameters consume two DMX channels. Always confirm the channel count for the selected mode before patching."
+            "body": "16-bit parameters consume two DMX channels. Always confirm the channel count for the selected mode before patching.",
+            "linkLabel": "DMX basics",
+            "linkHref": "/guides/dmx-basics"
           }
         ]
+      },
+      "howTo": {
+        "title": "How to generate a DMX patch sheet",
+        "steps": [
+          "Set your starting universe and address.",
+          "Add your fixtures and channel counts.",
+          "Enter quantities or duplicate rows.",
+          "Generate the patch sheet.",
+          "Export or print your results."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "question": "Can I use this DMX patch sheet with GrandMA / Chamsys / ETC?",
+            "answer": "Yes. The generated patch sheet uses standard universe + start address notation that works with all major consoles. Exported CSV files can be imported or referenced directly."
+          },
+          {
+            "question": "How many fixtures fit in one DMX universe?",
+            "answer": "That depends on channel count per fixture. A universe has 512 channels. For example, 13-channel fixtures allow up to 39 fixtures per universe (39 x 13 = 507)."
+          },
+          {
+            "question": "Does this tool support 16-bit fixtures?",
+            "answer": "Yes. Just enter the total channel count for the fixture mode. 16-bit parameters already count as two channels."
+          },
+          {
+            "question": "Does this tool prevent overlapping addresses?",
+            "answer": "Yes. Fixtures are packed sequentially and never share channels. If a fixture does not fit, the tool automatically moves to the next universe."
+          }
+        ]
+      },
+      "limitations": {
+        "title": "Tool limitations",
+        "intro": "This tool focuses on fast, reliable addressing. It does not:",
+        "items": [
+          "Load fixture libraries or profiles.",
+          "Optimize patching for console-specific workflows.",
+          "Save patches between sessions (yet)."
+        ],
+        "outro": "For advanced workflows, see our upcoming tools or guides."
+      },
+      "addressNote": {
+        "title": "Address notation note",
+        "body": "Some consoles display addresses as 1.001, others as U1 / 001. This tool uses industry-standard 1-based addressing. Always confirm console display preferences when entering addresses."
+      },
+      "proCta": {
+        "title": "Working on larger rigs?",
+        "body": "If you regularly patch complex shows, multi-universe rigs, or time-coded setups, Y-Link is built for precision playback and deterministic control.",
+        "linkLabel": "Learn about the Y-Link platform",
+        "linkHref": "/ai-dmx-controller"
       },
       "tool": {
         "defaults": {
@@ -964,6 +1021,10 @@
         "actions": {
           "generate": "Generate Patch Sheet",
           "downloadCsv": "Download CSV",
+          "printPatch": "Print patch sheet",
+          "printLabels": "Print labels",
+          "exportPatchPdf": "Export patch sheet (PDF)",
+          "exportLabelsPdf": "Export labels (PDF)",
           "csvName": "dmx-patch-sheet.csv"
         },
         "output": {
@@ -971,6 +1032,12 @@
           "subtitle": "One row per physical fixture. Addresses are 3-digit padded.",
           "empty": "Generate the patch sheet to see output.",
           "labelsTitle": "Label list"
+        },
+        "print": {
+          "patchTitle": "DMX patch sheet",
+          "patchSubtitle": "Generated patch list with universe and address per fixture.",
+          "labelsTitle": "DMX label sheet",
+          "labelsSubtitle": "A4 grid labels for quick fixture tagging."
         },
         "table": {
           "fixture": "Fixture",

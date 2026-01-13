@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxPatchSheetTool } from "@/components/tools/DmxPatchSheetTool";
+import { SectionCard } from "@/components/SectionCard";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
@@ -26,7 +27,41 @@ type ToolDetailsData = {
     title: string;
     body?: string;
     items?: string[];
+    linkLabel?: string;
+    linkHref?: string;
   }>;
+};
+
+type ToolHowToData = {
+  title: string;
+  steps: string[];
+};
+
+type ToolFaqData = {
+  title: string;
+  items: Array<{
+    question: string;
+    answer: string;
+  }>;
+};
+
+type ToolLimitationsData = {
+  title: string;
+  intro: string;
+  items: string[];
+  outro: string;
+};
+
+type ToolAddressNoteData = {
+  title: string;
+  body: string;
+};
+
+type ToolProCtaData = {
+  title: string;
+  body: string;
+  linkLabel: string;
+  linkHref: string;
 };
 
 export async function generateMetadata({ params }: DmxPatchSheetPageProps): Promise<Metadata> {
@@ -85,8 +120,13 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
       }
     >
       <ToolIntro data={tool.intro} />
+      <ToolHowTo data={tool.howTo} />
       <DmxPatchSheetTool />
-      <ToolDetails data={tool.details} />
+      <ToolAddressNote data={tool.addressNote} />
+      <ToolFaq data={tool.faq} />
+      <ToolLimitations data={tool.limitations} />
+      <ToolDetails data={tool.details} locale={locale} />
+      <ToolProCta data={tool.proCta} locale={locale} />
     </ToolPage>
   );
 }
@@ -114,7 +154,7 @@ function ToolIntro({ data }: { data: ToolIntroData }) {
   );
 }
 
-function ToolDetails({ data }: { data: ToolDetailsData }) {
+function ToolDetails({ data, locale }: { data: ToolDetailsData; locale: AppLocale }) {
   return (
     <div className="space-y-6">
       <h2 className="text-heading text-foreground">{data.title}</h2>
@@ -131,10 +171,96 @@ function ToolDetails({ data }: { data: ToolDetailsData }) {
                   ))}
                 </ul>
               ) : null}
+              {section.linkLabel && section.linkHref ? (
+                <Link
+                  href={prefixLocale(locale, section.linkHref)}
+                  className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  {section.linkLabel}
+                </Link>
+              ) : null}
             </div>
           </div>
         ))}
       </div>
     </div>
+  );
+}
+
+function ToolHowTo({ data }: { data: ToolHowToData }) {
+  return (
+    <SectionCard>
+      <div className="space-y-4">
+        <p className="text-title text-foreground">{data.title}</p>
+        <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
+          {data.steps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+      </div>
+    </SectionCard>
+  );
+}
+
+function ToolFaq({ data }: { data: ToolFaqData }) {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-heading text-foreground">{data.title}</h2>
+      <div className="grid gap-6 md:grid-cols-2">
+        {data.items.map((item) => (
+          <SectionCard key={item.question}>
+            <div className="space-y-3">
+              <p className="text-title text-foreground">{item.question}</p>
+              <p className="text-sm text-muted-foreground">{item.answer}</p>
+            </div>
+          </SectionCard>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ToolLimitations({ data }: { data: ToolLimitationsData }) {
+  return (
+    <SectionCard>
+      <div className="space-y-4">
+        <p className="text-title text-foreground">{data.title}</p>
+        <p className="text-sm text-muted-foreground">{data.intro}</p>
+        <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+          {data.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <p className="text-sm text-muted-foreground">{data.outro}</p>
+      </div>
+    </SectionCard>
+  );
+}
+
+function ToolAddressNote({ data }: { data: ToolAddressNoteData }) {
+  return (
+    <SectionCard>
+      <div className="space-y-3">
+        <p className="text-title text-foreground">{data.title}</p>
+        <p className="text-sm text-muted-foreground">{data.body}</p>
+      </div>
+    </SectionCard>
+  );
+}
+
+function ToolProCta({ data, locale }: { data: ToolProCtaData; locale: AppLocale }) {
+  return (
+    <SectionCard>
+      <div className="space-y-3">
+        <p className="text-title text-foreground">{data.title}</p>
+        <p className="text-sm text-muted-foreground">{data.body}</p>
+        <Link
+          href={prefixLocale(locale, data.linkHref)}
+          className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+        >
+          {data.linkLabel}
+        </Link>
+      </div>
+    </SectionCard>
   );
 }

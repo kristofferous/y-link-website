@@ -37,11 +37,16 @@ export function ToolPage({
     "@type": "SoftwareApplication",
     name: title,
     description,
-    applicationCategory: "MultimediaApplication",
+    applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     url: absoluteUrl(canonicalPath),
     inLanguage: lang,
     isAccessibleForFree: true,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
     publisher: {
       "@type": "Organization",
       name: "Y-Link",

@@ -915,7 +915,9 @@
         "sections": [
           {
             "title": "Slik fungerer DMX-univers",
-            "body": "Hvert univers har 512 kanaler. Armaturer bruker en kanalblokk basert på valgt modus."
+            "body": "Hvert univers har 512 kanaler. Armaturer bruker en kanalblokk basert på valgt modus.",
+            "linkLabel": "DMX-univers og skalering",
+            "linkHref": "/guides/dmx-universes"
           },
           {
             "title": "Vanlige adresseringsfeil",
@@ -923,7 +925,9 @@
               "Gjenbruk av en adresse etter å ha endret modus.",
               "Glemme å hoppe til neste univers når en armatur ikke får plass.",
               "Blande 1-basert og 0-basert adressering mellom papir og konsoll."
-            ]
+            ],
+            "linkLabel": "Guide til adressering",
+            "linkHref": "/guides/dmx-addressing"
           },
           {
             "title": "Når du bør la det være hull",
@@ -931,9 +935,62 @@
           },
           {
             "title": "8-bit vs 16-bit kanaler",
-            "body": "16-bit-parametere bruker to DMX-kanaler. Sjekk kanalantallet for valgt modus før patching."
+            "body": "16-bit-parametere bruker to DMX-kanaler. Sjekk kanalantallet for valgt modus før patching.",
+            "linkLabel": "DMX-grunnleggende",
+            "linkHref": "/guides/dmx-basics"
           }
         ]
+      },
+      "howTo": {
+        "title": "Slik lager du en DMX patchliste",
+        "steps": [
+          "Sett startunivers og startadresse.",
+          "Legg til armaturer og kanalantall.",
+          "Legg inn antall eller dupliser rader.",
+          "Generer patchlisten.",
+          "Eksporter eller skriv ut resultatet."
+        ]
+      },
+      "faq": {
+        "title": "Ofte stilte spørsmål",
+        "items": [
+          {
+            "question": "Kan jeg bruke denne DMX patchlisten med GrandMA / Chamsys / ETC?",
+            "answer": "Ja. Patchlisten bruker standard univers + startadresse og fungerer med alle store konsoller. CSV kan importeres eller brukes som referanse."
+          },
+          {
+            "question": "Hvor mange armaturer får plass i ett DMX-univers?",
+            "answer": "Det avhenger av kanalantallet per armatur. Et univers har 512 kanaler. For eksempel gir 13-kanals armaturer plass til 39 armaturer per univers (39 x 13 = 507)."
+          },
+          {
+            "question": "Støtter dette verktøyet 16-bit armaturer?",
+            "answer": "Ja. Oppgi totalt kanalantall for valgt modus. 16-bit-parametere teller allerede som to kanaler."
+          },
+          {
+            "question": "Forhindrer verktøyet overlappende adresser?",
+            "answer": "Ja. Armaturer pakkes sekvensielt og deler aldri kanaler. Hvis en armatur ikke får plass, flyttes den til neste univers."
+          }
+        ]
+      },
+      "limitations": {
+        "title": "Begrensninger",
+        "intro": "Verktøyet fokuserer på rask og pålitelig adressering. Det gjør ikke:",
+        "items": [
+          "Laster inn armaturbibliotek eller profiler.",
+          "Optimaliserer patching for konsollspesifikke arbeidsflyter.",
+          "Lagrer patchlister mellom økter (ennå)."
+        ],
+        "outro": "For avanserte arbeidsflyter, se kommende verktøy eller guider."
+      },
+      "addressNote": {
+        "title": "Merknad om adressenotasjon",
+        "body": "Noen konsoller viser adresser som 1.001, andre som U1 / 001. Dette verktøyet bruker standard 1-basert adressering. Bekreft alltid konsollens visning før du legger inn adresser."
+      },
+      "proCta": {
+        "title": "Jobber du med større rigger?",
+        "body": "Hvis du ofte patcher komplekse show, multi-universe rigger eller tidskodede oppsett, er Y-Link bygget for presis avspilling og deterministisk kontroll.",
+        "linkLabel": "Les om Y-Link-plattformen",
+        "linkHref": "/ai-dmx-controller"
       },
       "tool": {
         "defaults": {
@@ -964,6 +1021,10 @@
         "actions": {
           "generate": "Generer patchliste",
           "downloadCsv": "Last ned CSV",
+          "printPatch": "Skriv ut patchliste",
+          "printLabels": "Skriv ut merkelapper",
+          "exportPatchPdf": "Eksporter patchliste (PDF)",
+          "exportLabelsPdf": "Eksporter merkelapper (PDF)",
           "csvName": "dmx-patch-sheet.csv"
         },
         "output": {
@@ -971,6 +1032,12 @@
           "subtitle": "En rad per fysisk armatur. Adresser er 3-sifret.",
           "empty": "Generer patchlisten for å se resultatet.",
           "labelsTitle": "Merkeliste"
+        },
+        "print": {
+          "patchTitle": "DMX patchliste",
+          "patchSubtitle": "Generert patchliste med univers og adresse per armatur.",
+          "labelsTitle": "DMX merkelapper",
+          "labelsSubtitle": "A4 merkelapper for rask merking av armaturer."
         },
         "table": {
           "fixture": "Armatur",
