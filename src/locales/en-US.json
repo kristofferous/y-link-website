@@ -889,6 +889,12 @@
         "description": "Auto-pack fixtures across universes and export clean patch sheets.",
         "href": "/tools/dmx-patch-sheet",
         "tag": "Free tool"
+      },
+      {
+        "title": "DMX Address Capacity Calculator",
+        "description": "See how many fixtures fit per universe and how many universes you need.",
+        "href": "/tools/dmx-capacity",
+        "tag": "Free tool"
       }
     ],
     "dmxPatch": {
@@ -938,6 +944,12 @@
             "body": "16-bit parameters consume two DMX channels. Always confirm the channel count for the selected mode before patching.",
             "linkLabel": "8-bit vs 16-bit DMX",
             "linkHref": "/guides/8-bit-vs-16-bit-dmx"
+          },
+          {
+            "title": "Not sure how many fixtures fit?",
+            "body": "Use the capacity calculator to estimate fixtures per universe before you build a full patch sheet.",
+            "linkLabel": "DMX capacity calculator",
+            "linkHref": "/tools/dmx-capacity"
           }
         ]
       },
@@ -1069,6 +1081,51 @@
         "title": "Explore more tools",
         "body": "Looking for another DMX utility? Browse the full tools list.",
         "link": "View all tools"
+      }
+    },
+    "dmxCapacity": {
+      "metadata": {
+        "title": "DMX Address Capacity Calculator",
+        "description": "Calculate how many fixtures fit in a DMX universe and how many universes you need."
+      },
+      "breadcrumb": "DMX Address Capacity Calculator",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "How many fixtures fit in a universe?",
+        "body": "This calculator shows the maximum fixtures per universe, leftover channels, and how many universes you need based on fixture count."
+      },
+      "details": {
+        "title": "DMX capacity notes",
+        "sections": [
+          {
+            "title": "Universe limits are fixed",
+            "body": "A universe has 512 channels. Fixture mode determines how many channels each unit uses."
+          },
+          {
+            "title": "Mode changes affect capacity",
+            "body": "Switching from 8-bit to 16-bit control doubles channel usage and reduces fixtures per universe."
+          }
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Capacity inputs",
+          "channelsPerFixture": "Channels per fixture",
+          "fixtureCount": "Number of fixtures (optional)",
+          "channelsPerUniverse": "Channels per universe"
+        },
+        "outputs": {
+          "title": "Results",
+          "fixturesPerUniverse": "Fixtures per universe",
+          "leftoverChannels": "Remaining channels",
+          "universesRequired": "Universes required",
+          "warning": "Warning: this fixture count will not fit in a single universe.",
+          "notPossible": "This fixture mode exceeds the available channels per universe."
+        },
+        "cta": {
+          "title": "Ready to generate a full patch sheet?",
+          "link": "Open DMX Patch Sheet Generator"
+        }
       }
     }
   },

@@ -17,6 +17,7 @@ const staticRoutes = [
   "/guides",
   "/tools",
   "/tools/dmx-patch-sheet",
+  "/tools/dmx-capacity",
   "/om",
   "/teknisk",
   "/faq",

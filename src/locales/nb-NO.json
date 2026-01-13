@@ -889,6 +889,12 @@
         "description": "Pakk armaturer automatisk i univers og eksporter en ryddig patchliste.",
         "href": "/tools/dmx-patch-sheet",
         "tag": "Gratis verktøy"
+      },
+      {
+        "title": "DMX kapasitetskalkulator",
+        "description": "Se hvor mange armaturer som får plass per univers og hvor mange univers du trenger.",
+        "href": "/tools/dmx-capacity",
+        "tag": "Gratis verktøy"
       }
     ],
     "dmxPatch": {
@@ -917,7 +923,7 @@
             "title": "Slik fungerer DMX-univers",
             "body": "Hvert univers har 512 kanaler. Armaturer bruker en kanalblokk basert på valgt modus.",
             "linkLabel": "DMX-univers forklart",
-            "linkHref": "/guides/dmx-universe-explained"
+            "linkHref": "/guides/dmx-univers-forklart"
           },
           {
             "title": "Vanlige adresseringsfeil",
@@ -927,7 +933,7 @@
               "Blande 1-basert og 0-basert adressering mellom papir og konsoll."
             ],
             "linkLabel": "DMX-adresseringskart",
-            "linkHref": "/guides/dmx-addressing-chart"
+            "linkHref": "/guides/dmx-adresseringsskjema"
           },
           {
             "title": "Når du bør la det være hull",
@@ -938,6 +944,12 @@
             "body": "16-bit-parametere bruker to DMX-kanaler. Sjekk kanalantallet for valgt modus før patching.",
             "linkLabel": "8-bit vs 16-bit DMX",
             "linkHref": "/guides/8-bit-vs-16-bit-dmx"
+          },
+          {
+            "title": "Usikker pa hvor mange armaturer som får plass?",
+            "body": "Bruk kapasitetskalkulatoren for å estimere armaturer per univers før du lager en full patchliste.",
+            "linkLabel": "DMX kapasitetskalkulator",
+            "linkHref": "/tools/dmx-capacity"
           }
         ]
       },
@@ -1070,6 +1082,51 @@
         "body": "Ser du etter flere DMX-verktøy? Se hele oversikten.",
         "link": "Se alle verktøy"
       }
+    },
+    "dmxCapacity": {
+      "metadata": {
+        "title": "DMX kapasitetskalkulator",
+        "description": "Beregn hvor mange armaturer som får plass i et DMX-univers og hvor mange univers du trenger."
+      },
+      "breadcrumb": "DMX kapasitetskalkulator",
+      "intro": {
+        "eyebrow": "DMX-verktøy",
+        "title": "Hvor mange armaturer får plass i et univers?",
+        "body": "Kalkulatoren viser maks armaturer per univers, resterende kanaler og hvor mange univers du trenger basert på antall."
+      },
+      "details": {
+        "title": "Notater om kapasitet",
+        "sections": [
+          {
+            "title": "Universets grense er fast",
+            "body": "Et univers har 512 kanaler. Armaturmodus bestemmer hvor mange kanaler hver enhet bruker."
+          },
+          {
+            "title": "Modusendringer påvirker kapasiteten",
+            "body": "Når du går fra 8-bit til 16-bit kontroll dobles kanalbruken og færre armaturer får plass."
+          }
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Kapasitetsdata",
+          "channelsPerFixture": "Kanaler per armatur",
+          "fixtureCount": "Antall armaturer (valgfritt)",
+          "channelsPerUniverse": "Kanaler per univers"
+        },
+        "outputs": {
+          "title": "Resultat",
+          "fixturesPerUniverse": "Armaturer per univers",
+          "leftoverChannels": "Resterende kanaler",
+          "universesRequired": "Univers som trengs",
+          "warning": "Advarsel: dette antallet får ikke plass i ett univers.",
+          "notPossible": "Denne modusen overskrider tilgjengelige kanaler per univers."
+        },
+        "cta": {
+          "title": "Klar for å lage en full patchliste?",
+          "link": "Aapne DMX Patch Sheet Generator"
+        }
+      }
     }
   },
   "studio": {
@@ -1099,5 +1156,4 @@
     }
   }
 }
-
 
