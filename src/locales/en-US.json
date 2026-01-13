@@ -9,6 +9,7 @@
     "main": [
       { "label": "Home", "href": "/" },
       { "label": "Platform", "href": "/ai-dmx-controller" },
+      { "label": "Tools", "href": "/tools" },
       { "label": "Use Cases", "href": "/use-cases" },
       { "label": "Guides", "href": "/guides" },
       { "label": "Blog", "href": "/blog" },
@@ -868,6 +869,126 @@
     "cta": {
       "prefix": "For details on Y-Link, see the main page for the",
       "link": "AI DMX Controller"
+    }
+  },
+  "tools": {
+    "metadata": {
+      "title": "DMX Tools",
+      "description": "Fast, practical DMX tools for patching and addressing."
+    },
+    "breadcrumb": "Tools",
+    "hero": {
+      "label": "Tools",
+      "title": "DMX Tools for Fast Patching",
+      "body": "Practical utilities for lighting techs and operators. Start with the DMX Patch Sheet Generator.",
+      "cta": "Open tool"
+    },
+    "cards": [
+      {
+        "title": "DMX Patch Sheet Generator",
+        "description": "Auto-pack fixtures across universes and export clean patch sheets.",
+        "href": "/tools/dmx-patch-sheet",
+        "tag": "Free tool"
+      }
+    ],
+    "dmxPatch": {
+      "metadata": {
+        "title": "DMX Patch Sheet Generator",
+        "description": "Auto-pack fixtures across DMX universes and export clean patch sheets."
+      },
+      "breadcrumb": "DMX Patch Sheet Generator",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "What a DMX patch sheet is",
+        "body": "A patch sheet lists every fixture with its universe, start address, and channel footprint. It keeps operators, techs, and consoles aligned.",
+        "overlapsTitle": "Why overlaps happen",
+        "overlapsBody": "Overlaps usually come from manual counting, fixture mode changes, or last-minute adds. This tool packs fixtures sequentially so every channel is unique.",
+        "audienceTitle": "Who this tool is for",
+        "audienceItems": [
+          "Lighting techs building patches on site",
+          "Operators who need quick, reliable addressing",
+          "Rental teams prepping rigs before load-in"
+        ]
+      },
+      "details": {
+        "title": "DMX addressing notes",
+        "sections": [
+          {
+            "title": "How DMX universes work",
+            "body": "Each universe holds 512 channels. Fixtures consume a block of channels based on their mode."
+          },
+          {
+            "title": "Common addressing mistakes",
+            "items": [
+              "Reusing an address after changing a fixture mode.",
+              "Forgetting to move to the next universe when a fixture no longer fits.",
+              "Mixing 1-based and 0-based address labeling on paper vs console."
+            ]
+          },
+          {
+            "title": "When to leave gaps",
+            "body": "Leave space when fixtures get swapped often or when you expect mode changes. Otherwise, pack tightly to keep wiring simple."
+          },
+          {
+            "title": "8-bit vs 16-bit channels",
+            "body": "16-bit parameters consume two DMX channels. Always confirm the channel count for the selected mode before patching."
+          }
+        ]
+      },
+      "tool": {
+        "defaults": {
+          "sampleName": "Wash",
+          "newName": "Fixture",
+          "fallbackName": "Fixture",
+          "placeholderName": "Fixture name"
+        },
+        "settings": {
+          "title": "Global settings",
+          "subtitle": "Define where packing starts and how many channels each universe allows.",
+          "startUniverse": "Starting universe",
+          "startAddress": "Starting address",
+          "channelsPerUniverse": "Channels per universe"
+        },
+        "fixtures": {
+          "title": "Fixture table",
+          "subtitle": "Add fixture rows, then duplicate them when you need similar fixtures.",
+          "name": "Fixture name",
+          "channels": "Channels per fixture",
+          "quantity": "Quantity",
+          "actions": "Actions",
+          "add": "Add fixture",
+          "duplicate": "Duplicate",
+          "remove": "Remove",
+          "duplicateCount": "Duplicate x times"
+        },
+        "actions": {
+          "generate": "Generate Patch Sheet",
+          "downloadCsv": "Download CSV",
+          "csvName": "dmx-patch-sheet.csv"
+        },
+        "output": {
+          "title": "Patch sheet output",
+          "subtitle": "One row per physical fixture. Addresses are 3-digit padded.",
+          "empty": "Generate the patch sheet to see output.",
+          "labelsTitle": "Label list"
+        },
+        "table": {
+          "fixture": "Fixture",
+          "index": "#",
+          "universe": "Universe",
+          "address": "Address",
+          "channels": "Channels"
+        },
+        "warnings": {
+          "startAddressTooHigh": "Starting address is above the available channels. Reset to 1.",
+          "fixtureTooLarge": "{name} exceeds {channels} channels per universe. Each unit is placed at the next universe."
+        }
+      },
+      "cta": {
+        "title": "Explore more tools",
+        "body": "Looking for another DMX utility? Browse the full tools list.",
+        "link": "View all tools"
+      }
     }
   },
   "studio": {

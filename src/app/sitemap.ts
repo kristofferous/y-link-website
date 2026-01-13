@@ -15,6 +15,8 @@ const staticRoutes = [
   "/use-cases/beat-synced-lighting-without-programming",
   "/blog",
   "/guides",
+  "/tools",
+  "/tools/dmx-patch-sheet",
   "/om",
   "/teknisk",
   "/faq",

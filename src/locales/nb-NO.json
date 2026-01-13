@@ -9,6 +9,7 @@
     "main": [
       { "label": "Hjem", "href": "/" },
       { "label": "Plattform", "href": "/ai-dmx-controller" },
+      { "label": "Verktøy", "href": "/tools" },
       { "label": "Bruksområder", "href": "/use-cases" },
       { "label": "Guider", "href": "/guides" },
       { "label": "Blogg", "href": "/blog" },
@@ -868,6 +869,126 @@
     "cta": {
       "prefix": "For detaljer om Y-Link, se hovedsiden for",
       "link": "AI DMX-kontrolleren"
+    }
+  },
+  "tools": {
+    "metadata": {
+      "title": "DMX-verktøy",
+      "description": "Raske, praktiske DMX-verktøy for patching og adressering."
+    },
+    "breadcrumb": "Verktøy",
+    "hero": {
+      "label": "Verktøy",
+      "title": "DMX-verktøy for rask patching",
+      "body": "Praktiske verktøy for lysteknikere og operatører. Start med DMX Patch Sheet Generator.",
+      "cta": "Åpne verktøy"
+    },
+    "cards": [
+      {
+        "title": "DMX Patch Sheet Generator",
+        "description": "Pakk armaturer automatisk i univers og eksporter en ryddig patchliste.",
+        "href": "/tools/dmx-patch-sheet",
+        "tag": "Gratis verktøy"
+      }
+    ],
+    "dmxPatch": {
+      "metadata": {
+        "title": "DMX Patch Sheet Generator",
+        "description": "Pakk armaturer automatisk i DMX-univers og eksporter en ryddig patchliste."
+      },
+      "breadcrumb": "DMX Patch Sheet Generator",
+      "intro": {
+        "eyebrow": "DMX-verktøy",
+        "title": "Hva en DMX patchliste er",
+        "body": "En patchliste viser hver armatur med univers, startadresse og kanalbruk. Den holder operatør, tekniker og konsoll synkronisert.",
+        "overlapsTitle": "Hvorfor overlapp oppstår",
+        "overlapsBody": "Overlapp kommer ofte av manuell telling, endring av modus eller siste-liten tillegg. Dette verktøyet pakker armaturer sekvensielt slik at hver kanal er unik.",
+        "audienceTitle": "Hvem verktøyet er for",
+        "audienceItems": [
+          "Lysteknikere som bygger patch på stedet",
+          "Operatører som trenger rask og pålitelig adressering",
+          "Utleieteam som forbereder rigger før innlast"
+        ]
+      },
+      "details": {
+        "title": "Notater om DMX-adressering",
+        "sections": [
+          {
+            "title": "Slik fungerer DMX-univers",
+            "body": "Hvert univers har 512 kanaler. Armaturer bruker en kanalblokk basert på valgt modus."
+          },
+          {
+            "title": "Vanlige adresseringsfeil",
+            "items": [
+              "Gjenbruk av en adresse etter å ha endret modus.",
+              "Glemme å hoppe til neste univers når en armatur ikke får plass.",
+              "Blande 1-basert og 0-basert adressering mellom papir og konsoll."
+            ]
+          },
+          {
+            "title": "Når du bør la det være hull",
+            "body": "La litt rom når armaturer ofte byttes eller du forventer modusskifter. Ellers kan du pakke tett for enklere kabling."
+          },
+          {
+            "title": "8-bit vs 16-bit kanaler",
+            "body": "16-bit-parametere bruker to DMX-kanaler. Sjekk kanalantallet for valgt modus før patching."
+          }
+        ]
+      },
+      "tool": {
+        "defaults": {
+          "sampleName": "Wash",
+          "newName": "Armatur",
+          "fallbackName": "Armatur",
+          "placeholderName": "Armatur-navn"
+        },
+        "settings": {
+          "title": "Globale innstillinger",
+          "subtitle": "Definer hvor pakkingen starter og hvor mange kanaler hvert univers har.",
+          "startUniverse": "Startunivers",
+          "startAddress": "Startadresse",
+          "channelsPerUniverse": "Kanaler per univers"
+        },
+        "fixtures": {
+          "title": "Armaturtabell",
+          "subtitle": "Legg til rader for armaturer, og dupliser når du trenger like enheter.",
+          "name": "Armatur",
+          "channels": "Kanaler per armatur",
+          "quantity": "Antall",
+          "actions": "Handlinger",
+          "add": "Legg til armatur",
+          "duplicate": "Dupliser",
+          "remove": "Fjern",
+          "duplicateCount": "Dupliser x ganger"
+        },
+        "actions": {
+          "generate": "Generer patchliste",
+          "downloadCsv": "Last ned CSV",
+          "csvName": "dmx-patch-sheet.csv"
+        },
+        "output": {
+          "title": "Patchliste",
+          "subtitle": "En rad per fysisk armatur. Adresser er 3-sifret.",
+          "empty": "Generer patchlisten for å se resultatet.",
+          "labelsTitle": "Merkeliste"
+        },
+        "table": {
+          "fixture": "Armatur",
+          "index": "#",
+          "universe": "Univers",
+          "address": "Adresse",
+          "channels": "Kanaler"
+        },
+        "warnings": {
+          "startAddressTooHigh": "Startadressen er høyere enn tilgjengelige kanaler. Tilbakestilles til 1.",
+          "fixtureTooLarge": "{name} bruker flere enn {channels} kanaler per univers. Hver enhet plasseres i neste univers."
+        }
+      },
+      "cta": {
+        "title": "Utforsk flere verktøy",
+        "body": "Ser du etter flere DMX-verktøy? Se hele oversikten.",
+        "link": "Se alle verktøy"
+      }
     }
   },
   "studio": {
