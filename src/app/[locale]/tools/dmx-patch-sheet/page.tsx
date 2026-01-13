@@ -125,7 +125,7 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
       <ToolAddressNote data={tool.addressNote} />
       <ToolFaq data={tool.faq} />
       <ToolLimitations data={tool.limitations} />
-      <ToolDetails data={tool.details} locale={locale} />
+      <ToolDetails data={tool.details} />
       <ToolProCta data={tool.proCta} locale={locale} />
     </ToolPage>
   );
@@ -154,7 +154,7 @@ function ToolIntro({ data }: { data: ToolIntroData }) {
   );
 }
 
-function ToolDetails({ data, locale }: { data: ToolDetailsData; locale: AppLocale }) {
+function ToolDetails({ data }: { data: ToolDetailsData }) {
   return (
     <div className="space-y-6">
       <h2 className="text-heading text-foreground">{data.title}</h2>
@@ -173,7 +173,7 @@ function ToolDetails({ data, locale }: { data: ToolDetailsData; locale: AppLocal
               ) : null}
               {section.linkLabel && section.linkHref ? (
                 <Link
-                  href={prefixLocale(locale, section.linkHref)}
+                  href={section.linkHref}
                   className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
                 >
                   {section.linkLabel}
