@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +31,7 @@ type Settings = {
   channelsPerUniverse: number;
 };
 
-type PrintMode = "patch" | "labels" | null;
+type PrintMode = "patch" | "labels";
 
 const createId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -77,7 +77,6 @@ export function DmxPatchSheetTool() {
   const [duplicateCount, setDuplicateCount] = useState(1);
   const [patchRows, setPatchRows] = useState<PatchRow[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
-  const [printMode, setPrintMode] = useState<PrintMode>(null);
 
   const fixturePadById = useMemo(() => {
     const map = new Map<string, number>();
@@ -94,25 +93,6 @@ export function DmxPatchSheetTool() {
     }
     return pages;
   }, [patchRows]);
-
-  useEffect(() => {
-    if (!printMode) {
-      document.body.dataset.printMode = "";
-      return;
-    }
-
-    document.body.dataset.printMode = printMode;
-    const handleAfterPrint = () => {
-      setPrintMode(null);
-    };
-    window.addEventListener("afterprint", handleAfterPrint);
-    const timeout = window.setTimeout(() => window.print(), 100);
-
-    return () => {
-      window.removeEventListener("afterprint", handleAfterPrint);
-      window.clearTimeout(timeout);
-    };
-  }, [printMode]);
 
   const updateFixture = (id: string, patch: Partial<FixtureRow>) => {
     setFixtures((current) => current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture)));
@@ -229,132 +209,137 @@ export function DmxPatchSheetTool() {
   };
 
   const openPrintView = (mode: PrintMode) => {
-    if (!mode || patchRows.length === 0) return;
-    setPrintMode(mode);
+    if (patchRows.length === 0) return;
+    const origin = window.location.origin;
+    const logoSrc = `${origin}/Y-Link-Logo.png`;
+    const escapedRows = patchRows.map((row) => ({
+      fixtureLabel: row.fixtureLabel,
+      indexLabel: row.indexLabel,
+      universe: row.universe,
+      addressLabel: row.addressLabel,
+      channels: row.channels,
+    }));
+    const pages = [];
+    for (let index = 0; index < escapedRows.length; index += 24) {
+      pages.push(escapedRows.slice(index, index + 24));
+    }
+
+    const html = `
+      <!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>${tool.print.patchTitle}</title>
+          <style>
+            @page { size: A4; margin: 10mm; }
+            * { box-sizing: border-box; }
+            body { margin: 0; font-family: Arial, sans-serif; color: #000; background: #fff; }
+            .page { page-break-after: always; }
+            .page:last-child { page-break-after: auto; }
+            .logo { width: 80mm; height: auto; margin-bottom: 6mm; }
+            .title { font-size: 16px; font-weight: 600; margin-bottom: 4mm; }
+            .subtitle { font-size: 12px; margin-bottom: 8mm; }
+            table { width: 100%; border-collapse: collapse; font-size: 12px; }
+            th, td { border: 1px solid #111; padding: 4px 6px; text-align: left; }
+            .label-grid {
+              display: grid;
+              grid-template-columns: repeat(3, 61mm);
+              grid-auto-rows: 32mm;
+              column-gap: 3mm;
+              row-gap: 3mm;
+            }
+            .label {
+              border: 1px solid #111;
+              padding: 4mm;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              gap: 2mm;
+            }
+            .label-name { font-size: 12px; font-weight: 600; }
+            .label-address { font-size: 11px; }
+          </style>
+        </head>
+        <body>
+          ${
+            mode === "patch"
+              ? `<div class="page">
+                  <img src="${logoSrc}" alt="Y-Link" class="logo" />
+                  <div class="title">${tool.print.patchTitle}</div>
+                  <div class="subtitle">${tool.print.patchSubtitle}</div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>${tool.table.fixture}</th>
+                        <th>${tool.table.index}</th>
+                        <th>${tool.table.universe}</th>
+                        <th>${tool.table.address}</th>
+                        <th>${tool.table.channels}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${escapedRows
+                        .map(
+                          (row) => `
+                          <tr>
+                            <td>${row.fixtureLabel}</td>
+                            <td>${row.indexLabel}</td>
+                            <td>${row.universe}</td>
+                            <td>${row.addressLabel}</td>
+                            <td>${row.channels}</td>
+                          </tr>`,
+                        )
+                        .join("")}
+                    </tbody>
+                  </table>
+                </div>`
+              : pages
+                  .map(
+                    (page) => `
+                      <div class="page">
+                        <img src="${logoSrc}" alt="Y-Link" class="logo" />
+                        <div class="title">${tool.print.labelsTitle}</div>
+                        <div class="subtitle">${tool.print.labelsSubtitle}</div>
+                        <div class="label-grid">
+                          ${page
+                            .map(
+                              (row) => `
+                                <div class="label">
+                                  <div class="label-name">${row.fixtureLabel}</div>
+                                  <div class="label-address">U${row.universe} / ${row.addressLabel}</div>
+                                </div>`,
+                            )
+                            .join("")}
+                        </div>
+                      </div>`,
+                  )
+                  .join("")
+          }
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open("", "_blank", "width=900,height=1200");
+    if (!printWindow) return;
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+    const logo = printWindow.document.querySelector("img");
+    const triggerPrint = () => {
+      printWindow.focus();
+      printWindow.print();
+    };
+    if (logo) {
+      logo.addEventListener("load", triggerPrint, { once: true });
+      logo.addEventListener("error", triggerPrint, { once: true });
+    } else {
+      triggerPrint();
+    }
   };
 
   return (
     <div className="space-y-10">
-      <style jsx global>{`
-        .print-only {
-          display: none;
-        }
-
-        .print-hide {
-          display: block;
-        }
-
-        @media print {
-          @page {
-            size: A4;
-            margin: 10mm;
-          }
-
-          body {
-            background: #ffffff !important;
-            color: #000000 !important;
-          }
-
-          body[data-print-mode] * {
-            display: none !important;
-          }
-
-          body[data-print-mode] .print-only {
-            display: block !important;
-          }
-
-          body[data-print-mode] .print-only * {
-            display: block !important;
-          }
-
-          body[data-print-mode] .print-only table {
-            display: table !important;
-            width: 100%;
-          }
-
-          body[data-print-mode] .print-only thead {
-            display: table-header-group !important;
-          }
-
-          body[data-print-mode] .print-only tbody {
-            display: table-row-group !important;
-          }
-
-          body[data-print-mode] .print-only tr {
-            display: table-row !important;
-          }
-
-          body[data-print-mode] .print-only th,
-          body[data-print-mode] .print-only td {
-            display: table-cell !important;
-          }
-
-          .print-page {
-            page-break-after: always;
-          }
-
-          .print-page:last-child {
-            page-break-after: auto;
-          }
-
-          .print-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4mm;
-          }
-
-          .print-subtitle {
-            font-size: 12px;
-            margin-bottom: 8mm;
-          }
-
-          .print-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-          }
-
-          .print-table th,
-          .print-table td {
-            border: 1px solid #111111;
-            padding: 4px 6px;
-            text-align: left;
-          }
-
-          .print-label-grid {
-            display: grid;
-            grid-template-columns: repeat(3, var(--label-width));
-            grid-auto-rows: var(--label-height);
-            column-gap: var(--label-column-gap);
-            row-gap: var(--label-row-gap);
-          }
-
-          .print-label {
-            border: 1px solid #111111;
-            padding: 4mm;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 2mm;
-          }
-
-          .print-label-name {
-            font-size: 12px;
-            font-weight: 600;
-          }
-
-          .print-label-address {
-            font-size: 11px;
-          }
-
-          :root {
-            --label-width: 61mm;
-            --label-height: 32mm;
-            --label-column-gap: 3mm;
-            --label-row-gap: 3mm;
-          }
-        }
-      `}</style>
       <div className="space-y-10 print-hide">
         <SectionCard>
           <div className="space-y-6">
@@ -605,63 +590,6 @@ export function DmxPatchSheetTool() {
         </SectionCard>
       </div>
 
-      <div className="print-only">
-        {printMode === "patch" ? (
-          <div className="print-page">
-            <img
-              src="/Y-Link-Logo.png"
-              alt="Y-Link"
-              style={{ width: "80mm", height: "auto", marginBottom: "6mm" }}
-            />
-            <div className="print-title">{tool.print.patchTitle}</div>
-            <div className="print-subtitle">{tool.print.patchSubtitle}</div>
-            <table className="print-table">
-              <thead>
-                <tr>
-                  <th>{tool.table.fixture}</th>
-                  <th>{tool.table.index}</th>
-                  <th>{tool.table.universe}</th>
-                  <th>{tool.table.address}</th>
-                  <th>{tool.table.channels}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patchRows.map((row) => (
-                  <tr key={`${row.fixtureLabel}-${row.universe}-${row.address}-print`}>
-                    <td>{row.fixtureLabel}</td>
-                    <td>{row.indexLabel}</td>
-                    <td>{row.universe}</td>
-                    <td>{row.addressLabel}</td>
-                    <td>{row.channels}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : null}
-
-        {printMode === "labels"
-          ? labelPages.map((page, pageIndex) => (
-              <div className="print-page" key={`labels-${pageIndex}`}>
-                <img
-                  src="/Y-Link-Logo.png"
-                  alt="Y-Link"
-                  style={{ width: "80mm", height: "auto", marginBottom: "6mm" }}
-                />
-                <div className="print-title">{tool.print.labelsTitle}</div>
-                <div className="print-subtitle">{tool.print.labelsSubtitle}</div>
-                <div className="print-label-grid">
-                  {page.map((row) => (
-                    <div className="print-label" key={`${row.fixtureLabel}-${row.universe}-${row.address}-grid`}>
-                      <div className="print-label-name">{row.fixtureLabel}</div>
-                      <div className="print-label-address">{`U${row.universe} / ${row.addressLabel}`}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))
-          : null}
-      </div>
     </div>
   );
 }
