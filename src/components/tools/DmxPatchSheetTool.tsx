@@ -394,10 +394,18 @@ export function DmxPatchSheetTool() {
             .label-grid {
               display: grid;
               grid-template-columns: repeat(3, 61mm);
-              grid-auto-rows: 32mm;
+              grid-auto-rows: 28mm;
               column-gap: 3mm;
               row-gap: 3mm;
-              min-height: calc(8 * 32mm + 7 * 3mm);
+              min-height: calc(8 * 28mm + 7 * 3mm);
+            }
+            body.mode-labels .logo { margin-bottom: 3mm; }
+            body.mode-labels .title { font-size: 12px; margin-bottom: 2mm; }
+            body.mode-labels .subtitle { font-size: 10px; margin-bottom: 4mm; }
+            body.mode-labels .label-grid {
+              grid-template-columns: repeat(3, 61mm);
+              grid-auto-rows: 28mm;
+              min-height: calc(8 * 28mm + 7 * 3mm);
             }
             .label {
               border: 1px solid #111;
@@ -411,7 +419,7 @@ export function DmxPatchSheetTool() {
             .label-address { font-size: 11px; }
           </style>
         </head>
-        <body>
+        <body class="mode-${mode}">
           ${mode === "patch" ? buildPatchPrintHtml(escapedRows, logoSrc) : buildLabelPrintHtml(pages, logoSrc)}
         </body>
       </html>
