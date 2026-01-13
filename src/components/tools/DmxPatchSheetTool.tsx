@@ -255,15 +255,18 @@ export function DmxPatchSheetTool() {
             color: #000000 !important;
           }
 
-          .print-only {
-            display: block !important;
+          body[data-print-mode] * {
+            visibility: hidden !important;
           }
 
-          .print-hide,
-          header,
-          nav,
-          footer {
-            display: none !important;
+          body[data-print-mode] .print-only,
+          body[data-print-mode] .print-only * {
+            visibility: visible !important;
+          }
+
+          body[data-print-mode] .print-only {
+            position: absolute;
+            inset: 0;
           }
 
           .print-page {
