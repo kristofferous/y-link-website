@@ -916,8 +916,8 @@
           {
             "title": "How DMX universes work",
             "body": "Each universe holds 512 channels. Fixtures consume a block of channels based on their mode.",
-            "linkLabel": "DMX universes and scaling",
-            "linkHref": "/guides/dmx-universes"
+            "linkLabel": "DMX universe explained",
+            "linkHref": "/guides/dmx-universe-explained"
           },
           {
             "title": "Common addressing mistakes",
@@ -926,8 +926,8 @@
               "Forgetting to move to the next universe when a fixture no longer fits.",
               "Mixing 1-based and 0-based address labeling on paper vs console."
             ],
-            "linkLabel": "Fixture addressing guide",
-            "linkHref": "/guides/dmx-addressing"
+            "linkLabel": "DMX addressing chart",
+            "linkHref": "/guides/dmx-addressing-chart"
           },
           {
             "title": "When to leave gaps",
@@ -936,8 +936,8 @@
           {
             "title": "8-bit vs 16-bit channels",
             "body": "16-bit parameters consume two DMX channels. Always confirm the channel count for the selected mode before patching.",
-            "linkLabel": "DMX basics",
-            "linkHref": "/guides/dmx-basics"
+            "linkLabel": "8-bit vs 16-bit DMX",
+            "linkHref": "/guides/8-bit-vs-16-bit-dmx"
           }
         ]
       },

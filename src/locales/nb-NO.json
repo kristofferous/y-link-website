@@ -916,8 +916,8 @@
           {
             "title": "Slik fungerer DMX-univers",
             "body": "Hvert univers har 512 kanaler. Armaturer bruker en kanalblokk basert på valgt modus.",
-            "linkLabel": "DMX-univers og skalering",
-            "linkHref": "/guides/dmx-universes"
+            "linkLabel": "DMX-univers forklart",
+            "linkHref": "/guides/dmx-universe-explained"
           },
           {
             "title": "Vanlige adresseringsfeil",
@@ -926,8 +926,8 @@
               "Glemme å hoppe til neste univers når en armatur ikke får plass.",
               "Blande 1-basert og 0-basert adressering mellom papir og konsoll."
             ],
-            "linkLabel": "Guide til adressering",
-            "linkHref": "/guides/dmx-addressing"
+            "linkLabel": "DMX-adresseringskart",
+            "linkHref": "/guides/dmx-addressing-chart"
           },
           {
             "title": "Når du bør la det være hull",
@@ -936,8 +936,8 @@
           {
             "title": "8-bit vs 16-bit kanaler",
             "body": "16-bit-parametere bruker to DMX-kanaler. Sjekk kanalantallet for valgt modus før patching.",
-            "linkLabel": "DMX-grunnleggende",
-            "linkHref": "/guides/dmx-basics"
+            "linkLabel": "8-bit vs 16-bit DMX",
+            "linkHref": "/guides/8-bit-vs-16-bit-dmx"
           }
         ]
       },
