@@ -1051,6 +1051,9 @@
           "csvOrderLabel": "CSV order:",
           "csvOrderFixture": "Fixture first",
           "csvOrderUniverse": "Universe first",
+          "exportGroupingLabel": "Export pages:",
+          "exportGroupingContinuous": "Continuous",
+          "exportGroupingUniverse": "One universe per page",
           "largeRigWarning": "Heads up: this patch uses {count} universes."
         },
         "print": {
@@ -1058,6 +1061,7 @@
           "patchSubtitle": "Generated patch list with universe and address per fixture.",
           "labelsTitle": "DMX label sheet",
           "labelsSubtitle": "A4 grid labels for quick fixture tagging.",
+          "universeLabel": "Universe {universe}",
           "popupBlocked": "Popup blocked. Allow popups for this site to print or export PDF."
         },
         "validation": {

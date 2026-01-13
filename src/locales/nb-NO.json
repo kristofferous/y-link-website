@@ -1051,6 +1051,9 @@
           "csvOrderLabel": "CSV-rekkefølge:",
           "csvOrderFixture": "Armatur først",
           "csvOrderUniverse": "Univers først",
+          "exportGroupingLabel": "Eksport-sider:",
+          "exportGroupingContinuous": "Fortløpende",
+          "exportGroupingUniverse": "Ett univers per side",
           "largeRigWarning": "Merk: denne patchlisten bruker {count} univers."
         },
         "print": {
@@ -1058,6 +1061,7 @@
           "patchSubtitle": "Generert patchliste med univers og adresse per armatur.",
           "labelsTitle": "DMX merkelapper",
           "labelsSubtitle": "A4 merkelapper for rask merking av armaturer.",
+          "universeLabel": "Univers {universe}",
           "popupBlocked": "Popup blokkert. Tillat popups for å skrive ut eller lagre PDF."
         },
         "validation": {

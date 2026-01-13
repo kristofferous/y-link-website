@@ -88,6 +88,7 @@ export function DmxPatchSheetTool() {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isPrinting, setIsPrinting] = useState(false);
   const [csvOrder, setCsvOrder] = useState<"fixture" | "universe">("fixture");
+  const [exportGrouping, setExportGrouping] = useState<"continuous" | "universe">("continuous");
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
 
   const fixturePadById = useMemo(() => {
@@ -122,14 +123,6 @@ export function DmxPatchSheetTool() {
 
     return Array.from(new Set(errors));
   }, [fixtures, settings, tool]);
-
-  const labelPages = useMemo(() => {
-    const pages: PatchRow[][] = [];
-    for (let index = 0; index < patchRows.length; index += 24) {
-      pages.push(patchRows.slice(index, index + 24));
-    }
-    return pages;
-  }, [patchRows]);
 
   const updateFixture = (id: string, patch: Partial<FixtureRow>) => {
     setFixtures((current) => current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture)));
@@ -277,54 +270,71 @@ export function DmxPatchSheetTool() {
     }
   };
 
-  const buildPatchPrintHtml = (rows: PatchRow[], logoSrc: string) => {
+  const buildPatchPrintHtml = (
+    pages: Array<{ universe?: number; rows: PatchRow[] }>,
+    logoSrc: string,
+  ) => {
     const title = escapeHtml(tool.print.patchTitle);
     const subtitle = escapeHtml(tool.print.patchSubtitle);
-    return `
-      <div class="page">
-        <img src="${logoSrc}" alt="Y-Link" class="logo logo--patch" />
-        <div class="title">${title}</div>
-        <div class="subtitle">${subtitle}</div>
-        <table>
-          <thead>
-            <tr>
-              <th>${escapeHtml(tool.table.fixture)}</th>
-              <th>${escapeHtml(tool.table.index)}</th>
-              <th>${escapeHtml(tool.table.universe)}</th>
-              <th>${escapeHtml(tool.table.address)}</th>
-              <th>${escapeHtml(tool.table.channels)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows
-              .map(
-                (row) => `
-                  <tr>
-                    <td>${escapeHtml(row.fixtureLabel)}</td>
-                    <td>${escapeHtml(row.indexLabel)}</td>
-                    <td>${row.universe}</td>
-                    <td>${escapeHtml(row.addressLabel)}</td>
-                    <td>${row.channels}</td>
-                  </tr>`,
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>`;
+    return pages
+      .map((page) => {
+        const universeLabel =
+          typeof page.universe === "number"
+            ? escapeHtml(tool.print.universeLabel.replace("{universe}", String(page.universe)))
+            : "";
+        return `
+          <div class="page">
+            <img src="${logoSrc}" alt="Y-Link" class="logo logo--patch" />
+            <div class="title">${title}</div>
+            <div class="subtitle">${subtitle}</div>
+            ${universeLabel ? `<div class="universe">${universeLabel}</div>` : ""}
+            <table>
+              <thead>
+                <tr>
+                  <th>${escapeHtml(tool.table.fixture)}</th>
+                  <th>${escapeHtml(tool.table.index)}</th>
+                  <th>${escapeHtml(tool.table.universe)}</th>
+                  <th>${escapeHtml(tool.table.address)}</th>
+                  <th>${escapeHtml(tool.table.channels)}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${page.rows
+                  .map(
+                    (row) => `
+                      <tr>
+                        <td>${escapeHtml(row.fixtureLabel)}</td>
+                        <td>${escapeHtml(row.indexLabel)}</td>
+                        <td>${row.universe}</td>
+                        <td>${escapeHtml(row.addressLabel)}</td>
+                        <td>${row.channels}</td>
+                      </tr>`,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>`;
+      })
+      .join("");
   };
 
-  const buildLabelPrintHtml = (pages: PatchRow[][], logoSrc: string) => {
+  const buildLabelPrintHtml = (pages: Array<{ universe?: number; rows: PatchRow[] }>, logoSrc: string) => {
     const title = escapeHtml(tool.print.labelsTitle);
     const subtitle = escapeHtml(tool.print.labelsSubtitle);
     return pages
-      .map(
-        (page) => `
+      .map((page) => {
+        const universeLabel =
+          typeof page.universe === "number"
+            ? escapeHtml(tool.print.universeLabel.replace("{universe}", String(page.universe)))
+            : "";
+        return `
           <div class="page">
             <img src="${logoSrc}" alt="Y-Link" class="logo logo--labels" />
             <div class="title">${title}</div>
             <div class="subtitle">${subtitle}</div>
+            ${universeLabel ? `<div class="universe">${universeLabel}</div>` : ""}
             <div class="label-grid">
-              ${page
+              ${page.rows
                 .map(
                   (row) => `
                     <div class="label">
@@ -334,8 +344,8 @@ export function DmxPatchSheetTool() {
                 )
                 .join("")}
             </div>
-          </div>`,
-      )
+          </div>`;
+      })
       .join("");
   };
 
@@ -355,9 +365,27 @@ export function DmxPatchSheetTool() {
       addressLabel: row.addressLabel,
       channels: row.channels,
     }));
-    const pages: PatchRow[][] = [];
-    for (let index = 0; index < escapedRows.length; index += 24) {
-      pages.push(escapedRows.slice(index, index + 24));
+    const rowsByUniverse = escapedRows.reduce<Map<number, PatchRow[]>>((map, row) => {
+      const group = map.get(row.universe) ?? [];
+      group.push(row);
+      map.set(row.universe, group);
+      return map;
+    }, new Map());
+    const patchPages =
+      exportGrouping === "universe"
+        ? Array.from(rowsByUniverse.entries()).map(([universe, rows]) => ({ universe, rows }))
+        : [{ rows: escapedRows }];
+    const labelPagesByUniverse: Array<{ universe?: number; rows: PatchRow[] }> = [];
+    if (exportGrouping === "universe") {
+      rowsByUniverse.forEach((rows, universe) => {
+        for (let index = 0; index < rows.length; index += 24) {
+          labelPagesByUniverse.push({ universe, rows: rows.slice(index, index + 24) });
+        }
+      });
+    } else {
+      for (let index = 0; index < escapedRows.length; index += 24) {
+        labelPagesByUniverse.push({ rows: escapedRows.slice(index, index + 24) });
+      }
     }
 
     const html = `
@@ -384,6 +412,7 @@ export function DmxPatchSheetTool() {
             .logo--labels { width: 25mm; }
             .title { font-size: 16px; font-weight: 600; margin-bottom: 4mm; }
             .subtitle { font-size: 12px; margin-bottom: 8mm; }
+            .universe { font-size: 12px; font-weight: 600; margin-bottom: 6mm; }
             table { width: 100%; border-collapse: collapse; font-size: 12px; }
             thead { display: table-header-group; }
             th, td { border: 1px solid #111; padding: 4px 6px; text-align: left; }
@@ -402,6 +431,7 @@ export function DmxPatchSheetTool() {
             body.mode-labels .logo { margin-bottom: 3mm; }
             body.mode-labels .title { font-size: 12px; margin-bottom: 2mm; }
             body.mode-labels .subtitle { font-size: 10px; margin-bottom: 4mm; }
+            body.mode-labels .universe { font-size: 10px; margin-bottom: 3mm; }
             body.mode-labels .label-grid {
               grid-template-columns: repeat(3, 61mm);
               grid-auto-rows: 28mm;
@@ -420,7 +450,11 @@ export function DmxPatchSheetTool() {
           </style>
         </head>
         <body class="mode-${mode}">
-          ${mode === "patch" ? buildPatchPrintHtml(escapedRows, logoSrc) : buildLabelPrintHtml(pages, logoSrc)}
+          ${
+            mode === "patch"
+              ? buildPatchPrintHtml(patchPages, logoSrc)
+              : buildLabelPrintHtml(labelPagesByUniverse, logoSrc)
+          }
         </body>
       </html>
     `;
@@ -686,6 +720,25 @@ export function DmxPatchSheetTool() {
                 onClick={() => setCsvOrder("universe")}
               >
                 {tool.output.csvOrderUniverse}
+              </Button>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              <span>{tool.output.exportGroupingLabel}</span>
+              <Button
+                type="button"
+                variant={exportGrouping === "continuous" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setExportGrouping("continuous")}
+              >
+                {tool.output.exportGroupingContinuous}
+              </Button>
+              <Button
+                type="button"
+                variant={exportGrouping === "universe" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setExportGrouping("universe")}
+              >
+                {tool.output.exportGroupingUniverse}
               </Button>
             </div>
 
