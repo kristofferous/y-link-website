@@ -1037,7 +1037,8 @@
           "patchTitle": "DMX patch sheet",
           "patchSubtitle": "Generated patch list with universe and address per fixture.",
           "labelsTitle": "DMX label sheet",
-          "labelsSubtitle": "A4 grid labels for quick fixture tagging."
+          "labelsSubtitle": "A4 grid labels for quick fixture tagging.",
+          "popupBlocked": "Popup blocked. Allow popups for this site to print or export PDF."
         },
         "table": {
           "fixture": "Fixture",

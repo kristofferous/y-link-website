@@ -1037,7 +1037,8 @@
           "patchTitle": "DMX patchliste",
           "patchSubtitle": "Generert patchliste med univers og adresse per armatur.",
           "labelsTitle": "DMX merkelapper",
-          "labelsSubtitle": "A4 merkelapper for rask merking av armaturer."
+          "labelsSubtitle": "A4 merkelapper for rask merking av armaturer.",
+          "popupBlocked": "Popup blokkert. Tillat popups for å skrive ut eller lagre PDF."
         },
         "table": {
           "fixture": "Armatur",

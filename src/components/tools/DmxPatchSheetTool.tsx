@@ -32,6 +32,7 @@ type Settings = {
 };
 
 type PrintMode = "patch" | "labels";
+type PrintIntent = "print" | "pdf";
 
 const createId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -55,6 +56,14 @@ const escapeCsv = (value: string | number) => {
   return text;
 };
 
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 export function DmxPatchSheetTool() {
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.dmxPatch.tool;
@@ -77,6 +86,7 @@ export function DmxPatchSheetTool() {
   const [duplicateCount, setDuplicateCount] = useState(1);
   const [patchRows, setPatchRows] = useState<PatchRow[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   const fixturePadById = useMemo(() => {
     const map = new Map<string, number>();
@@ -208,8 +218,72 @@ export function DmxPatchSheetTool() {
     URL.revokeObjectURL(url);
   };
 
-  const openPrintView = (mode: PrintMode) => {
+  const buildPatchPrintHtml = (rows: PatchRow[], logoSrc: string) => {
+    const title = escapeHtml(tool.print.patchTitle);
+    const subtitle = escapeHtml(tool.print.patchSubtitle);
+    return `
+      <div class="page">
+        <img src="${logoSrc}" alt="Y-Link" class="logo" />
+        <div class="title">${title}</div>
+        <div class="subtitle">${subtitle}</div>
+        <table>
+          <thead>
+            <tr>
+              <th>${escapeHtml(tool.table.fixture)}</th>
+              <th>${escapeHtml(tool.table.index)}</th>
+              <th>${escapeHtml(tool.table.universe)}</th>
+              <th>${escapeHtml(tool.table.address)}</th>
+              <th>${escapeHtml(tool.table.channels)}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows
+              .map(
+                (row) => `
+                  <tr>
+                    <td>${escapeHtml(row.fixtureLabel)}</td>
+                    <td>${escapeHtml(row.indexLabel)}</td>
+                    <td>${row.universe}</td>
+                    <td>${escapeHtml(row.addressLabel)}</td>
+                    <td>${row.channels}</td>
+                  </tr>`,
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>`;
+  };
+
+  const buildLabelPrintHtml = (pages: PatchRow[][], logoSrc: string) => {
+    const title = escapeHtml(tool.print.labelsTitle);
+    const subtitle = escapeHtml(tool.print.labelsSubtitle);
+    return pages
+      .map(
+        (page) => `
+          <div class="page">
+            <img src="${logoSrc}" alt="Y-Link" class="logo" />
+            <div class="title">${title}</div>
+            <div class="subtitle">${subtitle}</div>
+            <div class="label-grid">
+              ${page
+                .map(
+                  (row) => `
+                    <div class="label">
+                      <div class="label-name">${escapeHtml(row.fixtureLabel)}</div>
+                      <div class="label-address">U${row.universe} / ${escapeHtml(row.addressLabel)}</div>
+                    </div>`,
+                )
+                .join("")}
+            </div>
+          </div>`,
+      )
+      .join("");
+  };
+
+  const openPrintView = (mode: PrintMode, intent: PrintIntent) => {
     if (patchRows.length === 0) return;
+    if (isPrinting) return;
+    setIsPrinting(true);
     const origin = window.location.origin;
     const logoSrc = `${origin}/Y-Link-Logo.png`;
     const escapedRows = patchRows.map((row) => ({
@@ -219,7 +293,7 @@ export function DmxPatchSheetTool() {
       addressLabel: row.addressLabel,
       channels: row.channels,
     }));
-    const pages = [];
+    const pages: PatchRow[][] = [];
     for (let index = 0; index < escapedRows.length; index += 24) {
       pages.push(escapedRows.slice(index, index + 24));
     }
@@ -230,11 +304,17 @@ export function DmxPatchSheetTool() {
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>${tool.print.patchTitle}</title>
+          <meta name="robots" content="noindex" />
+          <title>${escapeHtml(tool.print.patchTitle)}</title>
           <style>
             @page { size: A4; margin: 10mm; }
             * { box-sizing: border-box; }
-            body { margin: 0; font-family: Arial, sans-serif; color: #000; background: #fff; }
+            body {
+              margin: 0;
+              font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+              color: #000;
+              background: #fff;
+            }
             .page { page-break-after: always; }
             .page:last-child { page-break-after: auto; }
             .logo { width: 80mm; height: auto; margin-bottom: 6mm; }
@@ -248,6 +328,7 @@ export function DmxPatchSheetTool() {
               grid-auto-rows: 32mm;
               column-gap: 3mm;
               row-gap: 3mm;
+              min-height: calc(8 * 32mm + 7 * 3mm);
             }
             .label {
               border: 1px solid #111;
@@ -262,66 +343,17 @@ export function DmxPatchSheetTool() {
           </style>
         </head>
         <body>
-          ${
-            mode === "patch"
-              ? `<div class="page">
-                  <img src="${logoSrc}" alt="Y-Link" class="logo" />
-                  <div class="title">${tool.print.patchTitle}</div>
-                  <div class="subtitle">${tool.print.patchSubtitle}</div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>${tool.table.fixture}</th>
-                        <th>${tool.table.index}</th>
-                        <th>${tool.table.universe}</th>
-                        <th>${tool.table.address}</th>
-                        <th>${tool.table.channels}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${escapedRows
-                        .map(
-                          (row) => `
-                          <tr>
-                            <td>${row.fixtureLabel}</td>
-                            <td>${row.indexLabel}</td>
-                            <td>${row.universe}</td>
-                            <td>${row.addressLabel}</td>
-                            <td>${row.channels}</td>
-                          </tr>`,
-                        )
-                        .join("")}
-                    </tbody>
-                  </table>
-                </div>`
-              : pages
-                  .map(
-                    (page) => `
-                      <div class="page">
-                        <img src="${logoSrc}" alt="Y-Link" class="logo" />
-                        <div class="title">${tool.print.labelsTitle}</div>
-                        <div class="subtitle">${tool.print.labelsSubtitle}</div>
-                        <div class="label-grid">
-                          ${page
-                            .map(
-                              (row) => `
-                                <div class="label">
-                                  <div class="label-name">${row.fixtureLabel}</div>
-                                  <div class="label-address">U${row.universe} / ${row.addressLabel}</div>
-                                </div>`,
-                            )
-                            .join("")}
-                        </div>
-                      </div>`,
-                  )
-                  .join("")
-          }
+          ${mode === "patch" ? buildPatchPrintHtml(escapedRows, logoSrc) : buildLabelPrintHtml(pages, logoSrc)}
         </body>
       </html>
     `;
 
     const printWindow = window.open("", "_blank", "width=900,height=1200");
-    if (!printWindow) return;
+    if (!printWindow) {
+      setIsPrinting(false);
+      alert(tool.print.popupBlocked);
+      return;
+    }
     printWindow.document.open();
     printWindow.document.write(html);
     printWindow.document.close();
@@ -329,6 +361,14 @@ export function DmxPatchSheetTool() {
     const triggerPrint = () => {
       printWindow.focus();
       printWindow.print();
+      window.setTimeout(() => {
+        try {
+          printWindow.close();
+        } catch {
+          // Ignore close errors on restrictive browsers.
+        }
+        setIsPrinting(false);
+      }, 1000);
     };
     if (logo) {
       logo.addEventListener("load", triggerPrint, { once: true });
@@ -515,32 +555,32 @@ export function DmxPatchSheetTool() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => openPrintView("patch")}
-                  disabled={patchRows.length === 0}
+                  onClick={() => openPrintView("patch", "print")}
+                  disabled={patchRows.length === 0 || isPrinting}
                 >
                   {tool.actions.printPatch}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => openPrintView("labels")}
-                  disabled={patchRows.length === 0}
+                  onClick={() => openPrintView("labels", "print")}
+                  disabled={patchRows.length === 0 || isPrinting}
                 >
                   {tool.actions.printLabels}
                 </Button>
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={() => openPrintView("patch")}
-                  disabled={patchRows.length === 0}
+                  onClick={() => openPrintView("patch", "pdf")}
+                  disabled={patchRows.length === 0 || isPrinting}
                 >
                   {tool.actions.exportPatchPdf}
                 </Button>
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={() => openPrintView("labels")}
-                  disabled={patchRows.length === 0}
+                  onClick={() => openPrintView("labels", "pdf")}
+                  disabled={patchRows.length === 0 || isPrinting}
                 >
                   {tool.actions.exportLabelsPdf}
                 </Button>
