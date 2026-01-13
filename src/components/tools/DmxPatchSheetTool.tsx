@@ -261,6 +261,7 @@ export function DmxPatchSheetTool() {
 
           body[data-print-mode] .print-only,
           body[data-print-mode] .print-only * {
+            display: block !important;
             visibility: visible !important;
           }
 
