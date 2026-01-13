@@ -87,6 +87,8 @@ export function DmxPatchSheetTool() {
   const [patchRows, setPatchRows] = useState<PatchRow[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isPrinting, setIsPrinting] = useState(false);
+  const [csvOrder, setCsvOrder] = useState<"fixture" | "universe">("fixture");
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
 
   const fixturePadById = useMemo(() => {
     const map = new Map<string, number>();
@@ -95,6 +97,31 @@ export function DmxPatchSheetTool() {
     });
     return map;
   }, [fixtures]);
+
+  const validationErrors = useMemo(() => {
+    const errors: string[] = [];
+    const channelsPerUniverse = clampInt(settings.channelsPerUniverse, 1);
+    const startAddress = clampInt(settings.startAddress);
+
+    if (startAddress > channelsPerUniverse) {
+      errors.push(tool.validation.startAddressTooHigh);
+    }
+
+    fixtures.forEach((fixture) => {
+      if (clampInt(fixture.channelCount) > channelsPerUniverse) {
+        errors.push(
+          tool.validation.fixtureTooLarge
+            .replace("{name}", fixture.name.trim() || tool.defaults.fallbackName)
+            .replace("{channels}", String(channelsPerUniverse)),
+        );
+      }
+      if (fixture.name.trim().length === 0) {
+        errors.push(tool.validation.missingName);
+      }
+    });
+
+    return Array.from(new Set(errors));
+  }, [fixtures, settings, tool]);
 
   const labelPages = useMemo(() => {
     const pages: PatchRow[][] = [];
@@ -194,20 +221,37 @@ export function DmxPatchSheetTool() {
 
   const downloadCsv = () => {
     if (patchRows.length === 0) return;
-    const header = [
+    const fixtureFirstHeader = [
       tool.table.fixture,
       tool.table.index,
       tool.table.universe,
       tool.table.address,
       tool.table.channels,
     ];
-    const rows = patchRows.map((row) => [
-      row.fixtureLabel,
-      row.indexLabel,
-      row.universe,
-      row.addressLabel,
-      row.channels,
-    ]);
+    const universeFirstHeader = [
+      tool.table.universe,
+      tool.table.address,
+      tool.table.fixture,
+      tool.table.index,
+      tool.table.channels,
+    ];
+    const header = csvOrder === "fixture" ? fixtureFirstHeader : universeFirstHeader;
+    const rows =
+      csvOrder === "fixture"
+        ? patchRows.map((row) => [
+            row.fixtureLabel,
+            row.indexLabel,
+            row.universe,
+            row.addressLabel,
+            row.channels,
+          ])
+        : patchRows.map((row) => [
+            row.universe,
+            row.addressLabel,
+            row.fixtureLabel,
+            row.indexLabel,
+            row.channels,
+          ]);
     const csv = `\uFEFF${[header, ...rows].map((row) => row.map(escapeCsv).join(",")).join("\n")}`;
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -216,6 +260,21 @@ export function DmxPatchSheetTool() {
     link.download = tool.actions.csvName;
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const copyLabelList = async () => {
+    if (patchRows.length === 0) return;
+    const text = patchRows
+      .map((row) => `${row.fixtureLabel} -> U${row.universe} / ${row.addressLabel}`)
+      .join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyStatus("copied");
+      window.setTimeout(() => setCopyStatus("idle"), 1500);
+    } catch {
+      setCopyStatus("error");
+      window.setTimeout(() => setCopyStatus("idle"), 2000);
+    }
   };
 
   const buildPatchPrintHtml = (rows: PatchRow[], logoSrc: string) => {
@@ -444,6 +503,13 @@ export function DmxPatchSheetTool() {
                 />
               </div>
             </div>
+            {validationErrors.length > 0 ? (
+              <div className="rounded-lg border border-border/60 bg-card px-4 py-3 text-sm text-muted-foreground">
+                {validationErrors.map((error) => (
+                  <p key={error}>{error}</p>
+                ))}
+              </div>
+            ) : null}
           </div>
         </SectionCard>
 
@@ -539,8 +605,23 @@ export function DmxPatchSheetTool() {
         </SectionCard>
 
         <div className="flex flex-wrap items-center gap-4">
-          <Button type="button" size="lg" onClick={generatePatch}>
+          <Button type="button" size="lg" onClick={generatePatch} disabled={validationErrors.length > 0}>
             {tool.actions.generate}
+          </Button>
+          <Button type="button" variant="outline" onClick={() => {
+            setSettings({ startUniverse: 1, startAddress: 1, channelsPerUniverse: 512 });
+            setFixtures([
+              {
+                id: createId(),
+                name: tool.defaults.sampleName,
+                channelCount: 13,
+                quantity: 2,
+              },
+            ]);
+            setPatchRows([]);
+            setWarnings([]);
+          }}>
+            {tool.actions.reset}
           </Button>
           {warnings.length > 0 ? (
             <div className="rounded-lg border border-border/60 bg-card px-4 py-2 text-sm text-muted-foreground">
@@ -580,6 +661,25 @@ export function DmxPatchSheetTool() {
                 </Button>
               </div>
             </div>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              <span>{tool.output.csvOrderLabel}</span>
+              <Button
+                type="button"
+                variant={csvOrder === "fixture" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCsvOrder("fixture")}
+              >
+                {tool.output.csvOrderFixture}
+              </Button>
+              <Button
+                type="button"
+                variant={csvOrder === "universe" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCsvOrder("universe")}
+              >
+                {tool.output.csvOrderUniverse}
+              </Button>
+            </div>
 
             {patchRows.length === 0 ? (
               <div className="rounded-lg border border-border/40 bg-background px-4 py-6 text-sm text-muted-foreground">
@@ -587,6 +687,14 @@ export function DmxPatchSheetTool() {
               </div>
             ) : (
               <>
+                {patchRows.length > 0 && patchRows[patchRows.length - 1].universe > 4 ? (
+                  <div className="rounded-lg border border-border/60 bg-card px-4 py-3 text-sm text-muted-foreground">
+                    {tool.output.largeRigWarning.replace(
+                      "{count}",
+                      String(patchRows[patchRows.length - 1].universe),
+                    )}
+                  </div>
+                ) : null}
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -611,8 +719,23 @@ export function DmxPatchSheetTool() {
                 </Table>
 
                 <div className="rounded-lg border border-border/40 bg-background p-4">
-                  <p className="text-sm font-semibold text-foreground">{tool.output.labelsTitle}</p>
-                <div className="mt-3 grid gap-1 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-sm font-semibold text-foreground">{tool.output.labelsTitle}</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={copyLabelList}
+                      disabled={patchRows.length === 0}
+                    >
+                      {copyStatus === "copied"
+                        ? tool.actions.copyLabelsSuccess
+                        : copyStatus === "error"
+                          ? tool.actions.copyLabelsError
+                          : tool.actions.copyLabels}
+                    </Button>
+                  </div>
+                  <div className="mt-3 grid gap-1 text-sm text-muted-foreground">
                   {patchRows.map((row) => (
                     <div
                       key={`${row.fixtureLabel}-${row.universe}-${row.address}-label`}

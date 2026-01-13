@@ -1025,13 +1025,21 @@
           "printLabels": "Skriv ut merkelapper",
           "exportPatchPdf": "Eksporter patchliste (PDF)",
           "exportLabelsPdf": "Eksporter merkelapper (PDF)",
+          "reset": "Tilbakestill",
+          "copyLabels": "Kopier merkeliste",
+          "copyLabelsSuccess": "Kopiert",
+          "copyLabelsError": "Kopiering feilet",
           "csvName": "dmx-patch-sheet.csv"
         },
         "output": {
           "title": "Patchliste",
           "subtitle": "En rad per fysisk armatur. Adresser er 3-sifret.",
           "empty": "Generer patchlisten for å se resultatet.",
-          "labelsTitle": "Merkeliste"
+          "labelsTitle": "Merkeliste",
+          "csvOrderLabel": "CSV-rekkefølge:",
+          "csvOrderFixture": "Armatur først",
+          "csvOrderUniverse": "Univers først",
+          "largeRigWarning": "Merk: denne patchlisten bruker {count} univers."
         },
         "print": {
           "patchTitle": "DMX patchliste",
@@ -1039,6 +1047,11 @@
           "labelsTitle": "DMX merkelapper",
           "labelsSubtitle": "A4 merkelapper for rask merking av armaturer.",
           "popupBlocked": "Popup blokkert. Tillat popups for å skrive ut eller lagre PDF."
+        },
+        "validation": {
+          "startAddressTooHigh": "Startadressen er høyere enn tilgjengelige kanaler per univers.",
+          "fixtureTooLarge": "{name} bruker flere enn {channels} kanaler per univers.",
+          "missingName": "Armatur-navn kan ikke være tomt."
         },
         "table": {
           "fixture": "Armatur",

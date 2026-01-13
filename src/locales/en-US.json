@@ -1025,13 +1025,21 @@
           "printLabels": "Print labels",
           "exportPatchPdf": "Export patch sheet (PDF)",
           "exportLabelsPdf": "Export labels (PDF)",
+          "reset": "Reset defaults",
+          "copyLabels": "Copy label list",
+          "copyLabelsSuccess": "Copied",
+          "copyLabelsError": "Copy failed",
           "csvName": "dmx-patch-sheet.csv"
         },
         "output": {
           "title": "Patch sheet output",
           "subtitle": "One row per physical fixture. Addresses are 3-digit padded.",
           "empty": "Generate the patch sheet to see output.",
-          "labelsTitle": "Label list"
+          "labelsTitle": "Label list",
+          "csvOrderLabel": "CSV order:",
+          "csvOrderFixture": "Fixture first",
+          "csvOrderUniverse": "Universe first",
+          "largeRigWarning": "Heads up: this patch uses {count} universes."
         },
         "print": {
           "patchTitle": "DMX patch sheet",
@@ -1039,6 +1047,11 @@
           "labelsTitle": "DMX label sheet",
           "labelsSubtitle": "A4 grid labels for quick fixture tagging.",
           "popupBlocked": "Popup blocked. Allow popups for this site to print or export PDF."
+        },
+        "validation": {
+          "startAddressTooHigh": "Starting address is above the available channels per universe.",
+          "fixtureTooLarge": "{name} exceeds {channels} channels per universe.",
+          "missingName": "Fixture name cannot be empty."
         },
         "table": {
           "fixture": "Fixture",
