@@ -6,6 +6,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
+import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
 type DmxCapacityPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -15,16 +16,37 @@ export async function generateMetadata({ params }: DmxCapacityPageProps): Promis
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
+  const canonicalPath = prefixLocale(locale, "/tools/dmx-capacity");
+  const ogAlt = dictionary.meta?.ogAlt ?? "Y-Link";
 
   return {
     title: dictionary.tools.dmxCapacity.metadata.title,
     description: dictionary.tools.dmxCapacity.metadata.description,
     alternates: {
-      canonical: prefixLocale(locale, "/tools/dmx-capacity"),
+      canonical: canonicalPath,
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-capacity"),
         "en-US": prefixLocale("en", "/tools/dmx-capacity"),
       },
+    },
+    openGraph: {
+      title: dictionary.tools.dmxCapacity.metadata.title,
+      description: dictionary.tools.dmxCapacity.metadata.description,
+      url: absoluteUrl(canonicalPath),
+      images: [
+        {
+          url: defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dictionary.tools.dmxCapacity.metadata.title,
+      description: dictionary.tools.dmxCapacity.metadata.description,
+      images: [defaultOgImage],
     },
   };
 }
@@ -36,6 +58,30 @@ export default async function DmxCapacityPage({ params }: DmxCapacityPageProps) 
   const lang = getLanguageTag(locale);
   const { tools, navigation } = dictionary;
   const tool = tools.dmxCapacity;
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: tool.faq.items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: tool.howTo.title,
+    description: tool.metadata.description,
+    step: tool.howTo.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      text: step,
+    })),
+  };
+  const structuredData = [faqSchema, howToSchema];
 
   const breadcrumbs = [
     { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
@@ -51,6 +97,7 @@ export default async function DmxCapacityPage({ params }: DmxCapacityPageProps) 
       intro={tool.intro.eyebrow}
       breadcrumbs={breadcrumbs}
       canonicalPath={prefixLocale(locale, "/tools/dmx-capacity")}
+      structuredData={structuredData}
       cta={
         <div className="rounded-lg border border-border/40 bg-card p-6">
           <div className="space-y-4">

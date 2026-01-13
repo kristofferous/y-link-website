@@ -6,6 +6,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
+import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
 type DmxPatchSheetPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -68,16 +69,37 @@ export async function generateMetadata({ params }: DmxPatchSheetPageProps): Prom
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
+  const canonicalPath = prefixLocale(locale, "/tools/dmx-patch-sheet");
+  const ogAlt = dictionary.meta?.ogAlt ?? "Y-Link";
 
   return {
     title: dictionary.tools.dmxPatch.metadata.title,
     description: dictionary.tools.dmxPatch.metadata.description,
     alternates: {
-      canonical: prefixLocale(locale, "/tools/dmx-patch-sheet"),
+      canonical: canonicalPath,
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-patch-sheet"),
         "en-US": prefixLocale("en", "/tools/dmx-patch-sheet"),
       },
+    },
+    openGraph: {
+      title: dictionary.tools.dmxPatch.metadata.title,
+      description: dictionary.tools.dmxPatch.metadata.description,
+      url: absoluteUrl(canonicalPath),
+      images: [
+        {
+          url: defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dictionary.tools.dmxPatch.metadata.title,
+      description: dictionary.tools.dmxPatch.metadata.description,
+      images: [defaultOgImage],
     },
   };
 }
@@ -89,6 +111,30 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
   const lang = getLanguageTag(locale);
   const { tools, navigation } = dictionary;
   const tool = tools.dmxPatch;
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: tool.faq.items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: tool.howTo.title,
+    description: tool.metadata.description,
+    step: tool.howTo.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      text: step,
+    })),
+  };
+  const structuredData = [faqSchema, howToSchema];
 
   const breadcrumbs = [
     { label: navigation.main[0].label, href: prefixLocale(locale, "/") },
@@ -104,6 +150,7 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
       intro={tool.intro.eyebrow}
       breadcrumbs={breadcrumbs}
       canonicalPath={prefixLocale(locale, "/tools/dmx-patch-sheet")}
+      structuredData={structuredData}
       cta={
         <div className="rounded-lg border border-border/40 bg-card p-6">
           <div className="space-y-4">
@@ -125,7 +172,7 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
       <ToolAddressNote data={tool.addressNote} />
       <ToolFaq data={tool.faq} />
       <ToolLimitations data={tool.limitations} />
-      <ToolDetails data={tool.details} />
+      <ToolDetails data={tool.details} locale={locale} />
       <ToolProCta data={tool.proCta} locale={locale} />
     </ToolPage>
   );
@@ -154,7 +201,7 @@ function ToolIntro({ data }: { data: ToolIntroData }) {
   );
 }
 
-function ToolDetails({ data }: { data: ToolDetailsData }) {
+function ToolDetails({ data, locale }: { data: ToolDetailsData; locale: AppLocale }) {
   return (
     <div className="space-y-6">
       <h2 className="text-heading text-foreground">{data.title}</h2>
@@ -173,7 +220,11 @@ function ToolDetails({ data }: { data: ToolDetailsData }) {
               ) : null}
               {section.linkLabel && section.linkHref ? (
                 <Link
-                  href={section.linkHref}
+                  href={
+                    section.linkHref.startsWith("/guides/")
+                      ? section.linkHref
+                      : prefixLocale(locale, section.linkHref)
+                  }
                   className="inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
                 >
                   {section.linkLabel}

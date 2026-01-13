@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import clsx from "clsx";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { StructuredData } from "@/components/StructuredData";
-import { absoluteUrl, siteUrl } from "@/lib/seo";
+import { absoluteUrl, buildBreadcrumbSchema, siteUrl } from "@/lib/seo";
 
 type ToolBreadcrumb = {
   label: string;
@@ -16,6 +16,7 @@ type ToolPageProps = {
   intro?: string;
   breadcrumbs: ToolBreadcrumb[];
   canonicalPath: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
   cta?: ReactNode;
   children: ReactNode;
   className?: string;
@@ -28,6 +29,7 @@ export function ToolPage({
   intro,
   breadcrumbs,
   canonicalPath,
+  structuredData,
   cta,
   children,
   className,
@@ -54,9 +56,18 @@ export function ToolPage({
     },
   };
 
+  const extraStructuredData = structuredData
+    ? Array.isArray(structuredData)
+      ? structuredData
+      : [structuredData]
+    : [];
+
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
+  const combinedStructuredData = [toolSchema, breadcrumbSchema, ...extraStructuredData];
+
   return (
     <main>
-      <StructuredData data={toolSchema} />
+      <StructuredData data={combinedStructuredData} />
       <section className="section-spacing">
         <div className="container-custom">
           <Breadcrumbs items={breadcrumbs} className="mb-8" />
