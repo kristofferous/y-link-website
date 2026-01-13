@@ -223,7 +223,7 @@ export function DmxPatchSheetTool() {
     const subtitle = escapeHtml(tool.print.patchSubtitle);
     return `
       <div class="page">
-        <img src="${logoSrc}" alt="Y-Link" class="logo" />
+        <img src="${logoSrc}" alt="Y-Link" class="logo logo--patch" />
         <div class="title">${title}</div>
         <div class="subtitle">${subtitle}</div>
         <table>
@@ -261,7 +261,7 @@ export function DmxPatchSheetTool() {
       .map(
         (page) => `
           <div class="page">
-            <img src="${logoSrc}" alt="Y-Link" class="logo" />
+            <img src="${logoSrc}" alt="Y-Link" class="logo logo--labels" />
             <div class="title">${title}</div>
             <div class="subtitle">${subtitle}</div>
             <div class="label-grid">
@@ -284,6 +284,9 @@ export function DmxPatchSheetTool() {
     if (patchRows.length === 0) return;
     if (isPrinting) return;
     setIsPrinting(true);
+    const dateStamp = new Date().toISOString().slice(0, 10);
+    const docTitle =
+      mode === "patch" ? `dmx-patch-sheet_${dateStamp}` : `dmx-labels_${dateStamp}`;
     const origin = window.location.origin;
     const logoSrc = `${origin}/Y-Link-Logo.png`;
     const escapedRows = patchRows.map((row) => ({
@@ -305,7 +308,7 @@ export function DmxPatchSheetTool() {
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="robots" content="noindex" />
-          <title>${escapeHtml(tool.print.patchTitle)}</title>
+          <title>${escapeHtml(docTitle)}</title>
           <style>
             @page { size: A4; margin: 10mm; }
             * { box-sizing: border-box; }
@@ -317,11 +320,18 @@ export function DmxPatchSheetTool() {
             }
             .page { page-break-after: always; }
             .page:last-child { page-break-after: auto; }
-            .logo { width: 80mm; height: auto; margin-bottom: 6mm; }
+            .logo { height: auto; margin-bottom: 6mm; }
+            .logo--patch { width: 60mm; }
+            .logo--labels { width: 45mm; }
             .title { font-size: 16px; font-weight: 600; margin-bottom: 4mm; }
             .subtitle { font-size: 12px; margin-bottom: 8mm; }
             table { width: 100%; border-collapse: collapse; font-size: 12px; }
+            thead { display: table-header-group; }
             th, td { border: 1px solid #111; padding: 4px 6px; text-align: left; }
+            th:nth-child(4),
+            td:nth-child(4) {
+              font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            }
             .label-grid {
               display: grid;
               grid-template-columns: repeat(3, 61mm);
