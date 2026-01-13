@@ -321,8 +321,8 @@ export function DmxPatchSheetTool() {
             .page { page-break-after: always; }
             .page:last-child { page-break-after: auto; }
             .logo { height: auto; margin-bottom: 6mm; }
-            .logo--patch { width: 60mm; }
-            .logo--labels { width: 45mm; }
+            .logo--patch { width: 30mm; }
+            .logo--labels { width: 25mm; }
             .title { font-size: 16px; font-weight: 600; margin-bottom: 4mm; }
             .subtitle { font-size: 12px; margin-bottom: 8mm; }
             table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -564,22 +564,6 @@ export function DmxPatchSheetTool() {
                 </Button>
                 <Button
                   type="button"
-                  variant="outline"
-                  onClick={() => openPrintView("patch", "print")}
-                  disabled={patchRows.length === 0 || isPrinting}
-                >
-                  {tool.actions.printPatch}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => openPrintView("labels", "print")}
-                  disabled={patchRows.length === 0 || isPrinting}
-                >
-                  {tool.actions.printLabels}
-                </Button>
-                <Button
-                  type="button"
                   variant="ghost"
                   onClick={() => openPrintView("patch", "pdf")}
                   disabled={patchRows.length === 0 || isPrinting}
@@ -628,12 +612,14 @@ export function DmxPatchSheetTool() {
 
                 <div className="rounded-lg border border-border/40 bg-background p-4">
                   <p className="text-sm font-semibold text-foreground">{tool.output.labelsTitle}</p>
-                  <div className="mt-3 grid gap-1 text-sm text-muted-foreground">
-                    {patchRows.map((row) => (
-                      <div key={`${row.fixtureLabel}-label`}>{`${row.fixtureLabel} -> U${row.universe} / ${row.addressLabel}`}</div>
-                    ))}
-                  </div>
+                <div className="mt-3 grid gap-1 text-sm text-muted-foreground">
+                  {patchRows.map((row) => (
+                    <div
+                      key={`${row.fixtureLabel}-${row.universe}-${row.address}-label`}
+                    >{`${row.fixtureLabel} -> U${row.universe} / ${row.addressLabel}`}</div>
+                  ))}
                 </div>
+              </div>
               </>
             )}
           </div>
