@@ -256,18 +256,37 @@ export function DmxPatchSheetTool() {
           }
 
           body[data-print-mode] * {
-            visibility: hidden !important;
-          }
-
-          body[data-print-mode] .print-only,
-          body[data-print-mode] .print-only * {
-            display: block !important;
-            visibility: visible !important;
+            display: none !important;
           }
 
           body[data-print-mode] .print-only {
-            position: absolute;
-            inset: 0;
+            display: block !important;
+          }
+
+          body[data-print-mode] .print-only * {
+            display: block !important;
+          }
+
+          body[data-print-mode] .print-only table {
+            display: table !important;
+            width: 100%;
+          }
+
+          body[data-print-mode] .print-only thead {
+            display: table-header-group !important;
+          }
+
+          body[data-print-mode] .print-only tbody {
+            display: table-row-group !important;
+          }
+
+          body[data-print-mode] .print-only tr {
+            display: table-row !important;
+          }
+
+          body[data-print-mode] .print-only th,
+          body[data-print-mode] .print-only td {
+            display: table-cell !important;
           }
 
           .print-page {
