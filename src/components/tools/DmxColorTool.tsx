@@ -189,6 +189,12 @@ export function DmxColorTool() {
     const parsed = parseHex(value);
     if (parsed) {
       setRgb(parsed);
+    }
+  };
+
+  const handleHexCommit = () => {
+    const parsed = parseHex(hexInput);
+    if (parsed) {
       setHexInput(rgbToHex(parsed));
     }
   };
@@ -410,6 +416,12 @@ export function DmxColorTool() {
                     id="dmx-color-hex"
                     value={hexInput}
                     onChange={(event) => handleHexChange(event.target.value)}
+                    onBlur={handleHexCommit}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        handleHexCommit();
+                      }
+                    }}
                     placeholder="#FFFFFF"
                   />
                 </div>
