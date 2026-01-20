@@ -196,8 +196,8 @@ export function DmxColorTool() {
 
   const output = useMemo(() => {
     const intensity = clamp(cctIntensity / 100);
-    const cctValue = cctInput.trim() ? Number(cctInput) : 3200;
-    const clampedCct = Number.isFinite(cctValue) ? clamp(cctValue, 1800, 10000) : 3200;
+    const cctInputValue = cctInput.trim() ? Number(cctInput) : 3200;
+    const clampedCct = Number.isFinite(cctInputValue) ? clamp(cctInputValue, 1800, 10000) : 3200;
     const cctLinear = cctToLinearRgb(clampedCct);
 
     const baseLinear =
