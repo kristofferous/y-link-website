@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SectionCard } from "@/components/SectionCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 type FixtureType = "rgb" | "rgbw" | "rgba" | "rgbwa" | "rgbwauv" | "rgbwwcw";
+type InputMode = "hexRgb" | "wheel" | "cct";
 
 type Rgb = {
   r: number;
@@ -69,6 +70,28 @@ const rgbToSaturation = (r: number, g: number, b: number) => {
   return max === 0 ? 0 : (max - min) / max;
 };
 
+const cctToRgb = (kelvin: number): Rgb => {
+  const temp = kelvin / 100;
+  let red = 255;
+  let green = 0;
+  let blue = 0;
+
+  if (temp <= 66) {
+    green = 99.4708025861 * Math.log(temp) - 161.1195681661;
+    blue = temp <= 19 ? 0 : 138.5177312231 * Math.log(temp - 10) - 305.0447927307;
+  } else {
+    red = 329.698727446 * Math.pow(temp - 60, -0.1332047592);
+    green = 288.1221695283 * Math.pow(temp - 60, -0.0755148492);
+    blue = 255;
+  }
+
+  return {
+    r: clampChannel(red),
+    g: clampChannel(green),
+    b: clampChannel(blue),
+  };
+};
+
 const estimateCct = (r: number, g: number, b: number) => {
   const x = r * 0.4124 + g * 0.3576 + b * 0.1805;
   const y = r * 0.2126 + g * 0.7152 + b * 0.0722;
@@ -95,9 +118,11 @@ export function DmxColorTool() {
   const tool = dictionary.tools.dmxColor.tool;
 
   const [fixtureType, setFixtureType] = useState<FixtureType>("rgbw");
+  const [inputMode, setInputMode] = useState<InputMode>("hexRgb");
   const [hexInput, setHexInput] = useState("#FF7A66");
   const [rgb, setRgb] = useState<Rgb>({ r: 255, g: 122, b: 102 });
   const [cctInput, setCctInput] = useState("");
+  const [cctIntensity, setCctIntensity] = useState(100);
   const [optimizeWhites, setOptimizeWhites] = useState(true);
   const [limitWhite, setLimitWhite] = useState(true);
   const [rgbOnly, setRgbOnly] = useState(false);
@@ -107,6 +132,18 @@ export function DmxColorTool() {
   const supportsWwCw = fixtureType === "rgbwwcw";
   const supportsAmber = fixtureType === "rgba" || fixtureType === "rgbwa" || fixtureType === "rgbwauv";
   const supportsUv = fixtureType === "rgbwauv";
+
+  useEffect(() => {
+    if (!supportsWwCw && inputMode === "cct") {
+      setInputMode("hexRgb");
+    }
+  }, [supportsWwCw, inputMode]);
+
+  useEffect(() => {
+    if (inputMode === "cct" && rgbOnly) {
+      setRgbOnly(false);
+    }
+  }, [inputMode, rgbOnly]);
 
   const handleHexChange = (value: string) => {
     setHexInput(value);
@@ -154,14 +191,14 @@ export function DmxColorTool() {
     let cctValue: number | null = null;
     let cctMode = false;
 
-    if (supportsWwCw) {
+    if (supportsWwCw && inputMode === "cct") {
       const parsedCct = cctInput.trim() ? Number(cctInput) : null;
-      cctValue = parsedCct && Number.isFinite(parsedCct) ? clamp(parsedCct, 1800, 10000) : null;
-      cctMode = Boolean(cctValue) && !rgbOnly;
+      cctValue = parsedCct && Number.isFinite(parsedCct) ? clamp(parsedCct, 1800, 10000) : 3200;
+      cctMode = !rgbOnly;
     }
 
     if (supportsWwCw && cctMode && cctValue) {
-      const intensity = maxLinear;
+      const intensity = clamp(cctIntensity / 100);
       const scaledIntensity = intensity * whiteScale;
       const blend = clamp((cctValue - 2700) / (6500 - 2700));
       const useBoth = Math.abs(blend - 0.5) < 0.12;
@@ -231,7 +268,19 @@ export function DmxColorTool() {
       channels,
       cctMode,
     };
-  }, [rgb, cctInput, fixtureType, optimizeWhites, limitWhite, rgbOnly, supportsWhite, supportsWwCw, supportsAmber]);
+  }, [
+    rgb,
+    cctInput,
+    cctIntensity,
+    fixtureType,
+    inputMode,
+    optimizeWhites,
+    limitWhite,
+    rgbOnly,
+    supportsWhite,
+    supportsWwCw,
+    supportsAmber,
+  ]);
 
   const channelList = useMemo(() => {
     const labels = tool.channels;
@@ -250,12 +299,28 @@ export function DmxColorTool() {
     return list;
   }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber, supportsUv]);
 
+  const previewRgb =
+    supportsWwCw && inputMode === "cct"
+      ? (() => {
+          const base = cctToRgb(cctInput.trim() ? Number(cctInput) : 3200);
+          const intensity = clamp(cctIntensity / 100);
+          return {
+            r: clampChannel(base.r * intensity),
+            g: clampChannel(base.g * intensity),
+            b: clampChannel(base.b * intensity),
+          };
+        })()
+      : rgb;
+  const previewHex = rgbToHex(previewRgb);
   const swatchStyle = {
-    backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
+    backgroundColor: `rgb(${previewRgb.r}, ${previewRgb.g}, ${previewRgb.b})`,
   };
 
-  const optimizationDisabled = rgbOnly || (!supportsWhite && !supportsWwCw && !supportsAmber);
-  const whiteLimitDisabled = optimizationDisabled || (!supportsWhite && !supportsWwCw);
+  const showOptimization = (supportsWhite || supportsWwCw || supportsAmber) && inputMode !== "cct";
+  const optimizationDisabled = rgbOnly;
+  const showLimitWhite = supportsWhite || supportsWwCw;
+  const whiteLimitDisabled = optimizationDisabled;
+  const showRgbOnly = (supportsWhite || supportsWwCw || supportsAmber) && inputMode !== "cct";
 
   return (
     <SectionCard>
@@ -264,54 +329,125 @@ export function DmxColorTool() {
           <div className="space-y-4">
             <p className="text-title text-foreground">{tool.inputs.title}</p>
             <div className="space-y-2">
-              <Label htmlFor="dmx-color-hex">{tool.inputs.hexLabel}</Label>
-              <Input
-                id="dmx-color-hex"
-                value={hexInput}
-                onChange={(event) => handleHexChange(event.target.value)}
-                placeholder="#FFFFFF"
-              />
+              <p className="text-sm font-semibold text-foreground">{tool.inputs.modeLabel}</p>
+              <RadioGroup value={inputMode} onValueChange={(value) => setInputMode(value as InputMode)}>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RadioGroupItem value="hexRgb" />
+                  {tool.inputs.modes.hexRgb}
+                </label>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RadioGroupItem value="wheel" />
+                  {tool.inputs.modes.wheel}
+                </label>
+                {supportsWwCw ? (
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <RadioGroupItem value="cct" />
+                    {tool.inputs.modes.cct}
+                  </label>
+                ) : null}
+              </RadioGroup>
             </div>
-            <div className="space-y-4">
-              <p className="text-sm font-semibold text-foreground">{tool.inputs.rgbLabel}</p>
-              {(["r", "g", "b"] as const).map((channel) => (
-                <div key={channel} className="space-y-2">
-                  <Label htmlFor={`dmx-color-${channel}`}>{tool.inputs[channel]}</Label>
+            {inputMode === "hexRgb" ? (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="dmx-color-hex">{tool.inputs.hexLabel}</Label>
+                  <Input
+                    id="dmx-color-hex"
+                    value={hexInput}
+                    onChange={(event) => handleHexChange(event.target.value)}
+                    placeholder="#FFFFFF"
+                  />
+                </div>
+                <div className="space-y-4">
+                  <p className="text-sm font-semibold text-foreground">{tool.inputs.rgbLabel}</p>
+                  {(["r", "g", "b"] as const).map((channel) => (
+                    <div key={channel} className="space-y-2">
+                      <Label htmlFor={`dmx-color-${channel}`}>{tool.inputs[channel]}</Label>
+                      <div className="flex items-center gap-3">
+                        <input
+                          id={`dmx-color-${channel}`}
+                          type="range"
+                          min={0}
+                          max={255}
+                          value={rgb[channel]}
+                          onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                          className="w-full"
+                        />
+                        <Input
+                          type="number"
+                          min={0}
+                          max={255}
+                          value={rgb[channel]}
+                          onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                          className="w-24"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : null}
+            {inputMode === "wheel" ? (
+              <div className="space-y-3">
+                <Label htmlFor="dmx-color-wheel">{tool.inputs.colorWheelLabel}</Label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <input
+                    id="dmx-color-wheel"
+                    type="color"
+                    value={hexInput}
+                    onChange={(event) => handleHexChange(event.target.value)}
+                    className="h-12 w-16 rounded-md border border-border/60 bg-transparent"
+                  />
+                  <Input
+                    value={hexInput}
+                    onChange={(event) => handleHexChange(event.target.value)}
+                    placeholder="#FFFFFF"
+                    className="w-40"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">{tool.inputs.colorWheelHelp}</p>
+              </div>
+            ) : null}
+            {inputMode === "cct" && supportsWwCw ? (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dmx-color-cct">{tool.inputs.cctLabel}</Label>
+                  <Input
+                    id="dmx-color-cct"
+                    type="number"
+                    min={1800}
+                    max={10000}
+                    value={cctInput}
+                    onChange={(event) => setCctInput(event.target.value)}
+                    placeholder="e.g. 3200"
+                  />
+                  <p className="text-xs text-muted-foreground">{tool.inputs.cctHelp}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dmx-color-cct-intensity">{tool.inputs.cctIntensity}</Label>
                   <div className="flex items-center gap-3">
                     <input
-                      id={`dmx-color-${channel}`}
+                      id="dmx-color-cct-intensity"
                       type="range"
                       min={0}
-                      max={255}
-                      value={rgb[channel]}
-                      onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                      max={100}
+                      value={cctIntensity}
+                      onChange={(event) => setCctIntensity(Number(event.target.value))}
                       className="w-full"
                     />
                     <Input
                       type="number"
                       min={0}
-                      max={255}
-                      value={rgb[channel]}
-                      onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                      max={100}
+                      value={cctIntensity}
+                      onChange={(event) => setCctIntensity(Number(event.target.value))}
                       className="w-24"
                     />
                   </div>
+                  <p className="text-xs text-muted-foreground">{tool.inputs.cctIntensityHelp}</p>
                 </div>
-              ))}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="dmx-color-cct">{tool.inputs.cctLabel}</Label>
-              <Input
-                id="dmx-color-cct"
-                type="number"
-                min={1800}
-                max={10000}
-                value={cctInput}
-                onChange={(event) => setCctInput(event.target.value)}
-                placeholder="e.g. 3200"
-              />
-              <p className="text-xs text-muted-foreground">{tool.inputs.cctHelp}</p>
-            </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="space-y-4">
@@ -332,33 +468,41 @@ export function DmxColorTool() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="rounded-lg border border-border/40 bg-background p-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-foreground">{tool.options.optimizeWhites}</p>
-                  <p className="text-xs text-muted-foreground">{tool.options.optimizeWhitesHelp}</p>
-                </div>
-                <Switch
-                  checked={optimizeWhites}
-                  onCheckedChange={setOptimizeWhites}
-                  disabled={optimizationDisabled}
-                />
+            {showOptimization || showRgbOnly ? (
+              <div className="rounded-lg border border-border/40 bg-background p-4">
+                {showOptimization ? (
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground">{tool.options.optimizeWhites}</p>
+                      <p className="text-xs text-muted-foreground">{tool.options.optimizeWhitesHelp}</p>
+                    </div>
+                    <Switch
+                      checked={optimizeWhites}
+                      onCheckedChange={setOptimizeWhites}
+                      disabled={optimizationDisabled}
+                    />
+                  </div>
+                ) : null}
+                {showLimitWhite ? (
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground">{tool.options.limitWhite}</p>
+                      <p className="text-xs text-muted-foreground">{tool.options.limitWhiteHelp}</p>
+                    </div>
+                    <Switch checked={limitWhite} onCheckedChange={setLimitWhite} disabled={whiteLimitDisabled} />
+                  </div>
+                ) : null}
+                {showRgbOnly ? (
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground">{tool.options.rgbOnly}</p>
+                      <p className="text-xs text-muted-foreground">{tool.options.rgbOnlyHelp}</p>
+                    </div>
+                    <Switch checked={rgbOnly} onCheckedChange={setRgbOnly} />
+                  </div>
+                ) : null}
               </div>
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-foreground">{tool.options.limitWhite}</p>
-                  <p className="text-xs text-muted-foreground">{tool.options.limitWhiteHelp}</p>
-                </div>
-                <Switch checked={limitWhite} onCheckedChange={setLimitWhite} disabled={whiteLimitDisabled} />
-              </div>
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-foreground">{tool.options.rgbOnly}</p>
-                  <p className="text-xs text-muted-foreground">{tool.options.rgbOnlyHelp}</p>
-                </div>
-                <Switch checked={rgbOnly} onCheckedChange={setRgbOnly} />
-              </div>
-            </div>
+            ) : null}
             <div className="space-y-2">
               <p className="text-sm font-semibold text-foreground">{tool.options.outputMode}</p>
               <RadioGroup value={outputMode} onValueChange={(value) => setOutputMode(value as "coarse" | "fine")}>
@@ -379,7 +523,7 @@ export function DmxColorTool() {
               <div className="mt-3 flex items-center gap-3">
                 <div className="h-10 w-10 rounded-md border border-border/40" style={swatchStyle} />
                 <div className="text-sm text-muted-foreground">
-                  {tool.options.previewValue}: <span className="text-foreground">{hexInput}</span>
+                  {tool.options.previewValue}: <span className="text-foreground">{previewHex}</span>
                 </div>
               </div>
             </div>

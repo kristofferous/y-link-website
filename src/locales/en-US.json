@@ -967,13 +967,23 @@
       "tool": {
         "inputs": {
           "title": "Color input",
+          "modeLabel": "Input mode",
+          "modes": {
+            "hexRgb": "HEX + RGB sliders",
+            "wheel": "Color wheel",
+            "cct": "CCT (Kelvin)"
+          },
           "hexLabel": "HEX color",
           "rgbLabel": "RGB sliders",
           "r": "Red",
           "g": "Green",
           "b": "Blue",
+          "colorWheelLabel": "Color wheel",
+          "colorWheelHelp": "Pick a hue quickly, then tweak the HEX value if needed.",
           "cctLabel": "CCT (Kelvin)",
-          "cctHelp": "Optional. Only applies to RGBWW/CW fixtures."
+          "cctHelp": "Only available for RGBWW/CW fixtures.",
+          "cctIntensity": "CCT intensity (%)",
+          "cctIntensityHelp": "Sets the output level for WW/CW channels."
         },
         "options": {
           "title": "Fixture settings",

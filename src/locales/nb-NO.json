@@ -967,13 +967,23 @@
       "tool": {
         "inputs": {
           "title": "Fargeinput",
+          "modeLabel": "Inputmodus",
+          "modes": {
+            "hexRgb": "HEX + RGB-slidere",
+            "wheel": "Fargehjul",
+            "cct": "CCT (Kelvin)"
+          },
           "hexLabel": "HEX-farge",
           "rgbLabel": "RGB-slidere",
           "r": "Rød",
           "g": "Grønn",
           "b": "Blå",
+          "colorWheelLabel": "Fargehjul",
+          "colorWheelHelp": "Velg nyanse raskt, og finjuster HEX om nødvendig.",
           "cctLabel": "CCT (Kelvin)",
-          "cctHelp": "Valgfritt. Gjelder kun RGBWW/CW."
+          "cctHelp": "Kun tilgjengelig for RGBWW/CW.",
+          "cctIntensity": "CCT-intensitet (%)",
+          "cctIntensityHelp": "Setter output-nivået for WW/CW-kanaler."
         },
         "options": {
           "title": "Fixture-innstillinger",
