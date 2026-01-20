@@ -79,14 +79,15 @@ export const ColorPicker = ({
 
   // Update color when controlled value changes
   useEffect(() => {
-    if (value) {
-      const color = Color.rgb(value).rgb().object()
+    if (!value) return
+    const color = Color(value)
+    const [nextHue, nextSaturation, nextLightness] = color.hsl().array()
+    const nextAlpha = color.alpha() * 100
 
-      setHue(color.r)
-      setSaturation(color.g)
-      setLightness(color.b)
-      setAlpha(color.a)
-    }
+    if (Number.isFinite(nextHue)) setHue(nextHue)
+    if (Number.isFinite(nextSaturation)) setSaturation(nextSaturation)
+    if (Number.isFinite(nextLightness)) setLightness(nextLightness)
+    if (Number.isFinite(nextAlpha)) setAlpha(nextAlpha)
   }, [value])
 
   // Notify parent of changes
