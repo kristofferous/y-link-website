@@ -449,7 +449,7 @@ export function DmxColorTool() {
               <div className="space-y-3">
                 <Label htmlFor="dmx-color-wheel">{tool.inputs.colorWheelLabel}</Label>
                 <div className="space-y-4 rounded-lg border border-border/40 bg-background p-4">
-                  <ColorPicker value={hexInput} onChange={updateFromPicker}>
+                  <ColorPicker defaultValue={hexInput} onChange={updateFromPicker}>
                     <ColorPickerSelection className="aspect-square w-full" />
                     <div className="space-y-3">
                       <ColorPickerHue />
