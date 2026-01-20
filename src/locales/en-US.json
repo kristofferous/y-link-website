@@ -970,7 +970,7 @@
           "modeLabel": "Input mode",
           "modes": {
             "hexRgb": "HEX + RGB sliders",
-            "wheel": "Color wheel",
+            "wheel": "Color picker",
             "cct": "CCT (Kelvin)"
           },
           "hexLabel": "HEX color",
@@ -978,8 +978,11 @@
           "r": "Red",
           "g": "Green",
           "b": "Blue",
-          "colorWheelLabel": "Color wheel",
-          "colorWheelHelp": "Pick a hue quickly, then tweak the HEX value if needed.",
+          "colorWheelLabel": "Color picker",
+          "colorWheelHelp": "Adjust hue, saturation, and lightness for precise control.",
+          "hueLabel": "Hue",
+          "saturationLabel": "Saturation",
+          "lightnessLabel": "Lightness",
           "cctLabel": "CCT (Kelvin)",
           "cctHelp": "Uses WW/CW if available, otherwise blends RGB to match the CCT.",
           "cctIntensity": "CCT intensity (%)",

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
@@ -68,6 +69,68 @@ const rgbToSaturation = (r: number, g: number, b: number) => {
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   return max === 0 ? 0 : (max - min) / max;
+};
+
+const rgbToHsl = (r: number, g: number, b: number) => {
+  const red = r / 255;
+  const green = g / 255;
+  const blue = b / 255;
+  const max = Math.max(red, green, blue);
+  const min = Math.min(red, green, blue);
+  const delta = max - min;
+  let hue = 0;
+  if (delta !== 0) {
+    if (max === red) hue = ((green - blue) / delta) % 6;
+    else if (max === green) hue = (blue - red) / delta + 2;
+    else hue = (red - green) / delta + 4;
+    hue *= 60;
+    if (hue < 0) hue += 360;
+  }
+  const lightness = (max + min) / 2;
+  const saturation = delta === 0 ? 0 : delta / (1 - Math.abs(2 * lightness - 1));
+  return {
+    h: Math.round(hue),
+    s: Math.round(saturation * 100),
+    l: Math.round(lightness * 100),
+  };
+};
+
+const hslToRgb = (h: number, s: number, l: number): Rgb => {
+  const saturation = clamp(s / 100);
+  const lightness = clamp(l / 100);
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const huePrime = h / 60;
+  const x = chroma * (1 - Math.abs((huePrime % 2) - 1));
+  let r1 = 0;
+  let g1 = 0;
+  let b1 = 0;
+
+  if (huePrime >= 0 && huePrime < 1) {
+    r1 = chroma;
+    g1 = x;
+  } else if (huePrime >= 1 && huePrime < 2) {
+    r1 = x;
+    g1 = chroma;
+  } else if (huePrime >= 2 && huePrime < 3) {
+    g1 = chroma;
+    b1 = x;
+  } else if (huePrime >= 3 && huePrime < 4) {
+    g1 = x;
+    b1 = chroma;
+  } else if (huePrime >= 4 && huePrime < 5) {
+    r1 = x;
+    b1 = chroma;
+  } else if (huePrime >= 5 && huePrime < 6) {
+    r1 = chroma;
+    b1 = x;
+  }
+
+  const m = lightness - chroma / 2;
+  return {
+    r: clampChannel((r1 + m) * 255),
+    g: clampChannel((g1 + m) * 255),
+    b: clampChannel((b1 + m) * 255),
+  };
 };
 
 const cctToXy = (kelvin: number) => {
@@ -192,6 +255,12 @@ export function DmxColorTool() {
     const next = { ...rgb, [channel]: clampChannel(value) };
     setRgb(next);
     setHexInput(rgbToHex(next));
+  };
+
+  const updateFromHsl = (next: { h: number; s: number; l: number }) => {
+    const nextRgb = hslToRgb(next.h, next.s, next.l);
+    setRgb(nextRgb);
+    setHexInput(rgbToHex(nextRgb));
   };
 
   const output = useMemo(() => {
@@ -338,6 +407,8 @@ export function DmxColorTool() {
     return list;
   }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber]);
 
+  const hsl = useMemo(() => rgbToHsl(rgb.r, rgb.g, rgb.b), [rgb]);
+
   const previewRgb =
     inputMode === "cct"
       ? (() => {
@@ -429,20 +500,84 @@ export function DmxColorTool() {
             {inputMode === "wheel" ? (
               <div className="space-y-3">
                 <Label htmlFor="dmx-color-wheel">{tool.inputs.colorWheelLabel}</Label>
-                <div className="flex flex-wrap items-center gap-3">
-                  <input
-                    id="dmx-color-wheel"
-                    type="color"
-                    value={hexInput}
-                    onChange={(event) => handleHexChange(event.target.value)}
-                    className="h-12 w-16 rounded-md border border-border/60 bg-transparent"
-                  />
-                  <Input
-                    value={hexInput}
-                    onChange={(event) => handleHexChange(event.target.value)}
-                    placeholder="#FFFFFF"
-                    className="w-40"
-                  />
+                <div className="space-y-4 rounded-lg border border-border/40 bg-background p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-md border border-border/40" style={swatchStyle} />
+                    <Input
+                      value={hexInput}
+                      onChange={(event) => handleHexChange(event.target.value)}
+                      placeholder="#FFFFFF"
+                      className="w-40"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="dmx-color-hue">{tool.inputs.hueLabel}</Label>
+                      <div className="flex items-center gap-3">
+                        <Slider
+                          id="dmx-color-hue"
+                          min={0}
+                          max={360}
+                          step={1}
+                          value={[hsl.h]}
+                          onValueChange={(value) => updateFromHsl({ h: value[0], s: hsl.s, l: hsl.l })}
+                          className="flex-1"
+                        />
+                        <Input
+                          type="number"
+                          min={0}
+                          max={360}
+                          value={hsl.h}
+                          onChange={(event) => updateFromHsl({ h: Number(event.target.value), s: hsl.s, l: hsl.l })}
+                          className="w-20"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dmx-color-saturation">{tool.inputs.saturationLabel}</Label>
+                      <div className="flex items-center gap-3">
+                        <Slider
+                          id="dmx-color-saturation"
+                          min={0}
+                          max={100}
+                          step={1}
+                          value={[hsl.s]}
+                          onValueChange={(value) => updateFromHsl({ h: hsl.h, s: value[0], l: hsl.l })}
+                          className="flex-1"
+                        />
+                        <Input
+                          type="number"
+                          min={0}
+                          max={100}
+                          value={hsl.s}
+                          onChange={(event) => updateFromHsl({ h: hsl.h, s: Number(event.target.value), l: hsl.l })}
+                          className="w-20"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dmx-color-lightness">{tool.inputs.lightnessLabel}</Label>
+                      <div className="flex items-center gap-3">
+                        <Slider
+                          id="dmx-color-lightness"
+                          min={0}
+                          max={100}
+                          step={1}
+                          value={[hsl.l]}
+                          onValueChange={(value) => updateFromHsl({ h: hsl.h, s: hsl.s, l: value[0] })}
+                          className="flex-1"
+                        />
+                        <Input
+                          type="number"
+                          min={0}
+                          max={100}
+                          value={hsl.l}
+                          onChange={(event) => updateFromHsl({ h: hsl.h, s: hsl.s, l: Number(event.target.value) })}
+                          className="w-20"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">{tool.inputs.colorWheelHelp}</p>
               </div>

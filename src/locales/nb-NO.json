@@ -970,7 +970,7 @@
           "modeLabel": "Inputmodus",
           "modes": {
             "hexRgb": "HEX + RGB-slidere",
-            "wheel": "Fargehjul",
+            "wheel": "Fargevelger",
             "cct": "CCT (Kelvin)"
           },
           "hexLabel": "HEX-farge",
@@ -978,8 +978,11 @@
           "r": "Rød",
           "g": "Grønn",
           "b": "Blå",
-          "colorWheelLabel": "Fargehjul",
-          "colorWheelHelp": "Velg nyanse raskt, og finjuster HEX om nødvendig.",
+          "colorWheelLabel": "Fargevelger",
+          "colorWheelHelp": "Juster hue, metning og lyshet for presis kontroll.",
+          "hueLabel": "Hue",
+          "saturationLabel": "Metning",
+          "lightnessLabel": "Lyshet",
           "cctLabel": "CCT (Kelvin)",
           "cctHelp": "Bruker WW/CW hvis tilgjengelig, ellers blandes RGB for å matche CCT.",
           "cctIntensity": "CCT-intensitet (%)",
