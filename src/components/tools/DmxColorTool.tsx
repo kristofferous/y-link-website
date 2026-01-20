@@ -9,10 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import {
   ColorPicker,
-  ColorPickerEyeDropper,
-  ColorPickerFormat,
   ColorPickerHue,
-  ColorPickerOutput,
   ColorPickerSelection,
 } from "@/components/ui/shadcn-io/color-picker";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
