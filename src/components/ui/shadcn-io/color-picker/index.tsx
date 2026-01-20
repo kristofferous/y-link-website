@@ -8,11 +8,11 @@ import {
   createContext,
   type HTMLAttributes,
   memo,
+  useRef,
   useCallback,
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react"
 import { Button } from "@/components/ui/button"
@@ -76,6 +76,7 @@ export const ColorPicker = ({
   )
   const [alpha, setAlpha] = useState(selectedColor.alpha() * 100 || defaultColor.alpha() * 100)
   const [mode, setMode] = useState("hex")
+  const isSyncing = useRef(false)
 
   // Update color when controlled value changes
   useEffect(() => {
@@ -84,6 +85,7 @@ export const ColorPicker = ({
     const [nextHue, nextSaturation, nextLightness] = color.hsl().array()
     const nextAlpha = color.alpha() * 100
 
+    isSyncing.current = true
     if (Number.isFinite(nextHue)) setHue(nextHue)
     if (Number.isFinite(nextSaturation)) setSaturation(nextSaturation)
     if (Number.isFinite(nextLightness)) setLightness(nextLightness)
@@ -92,12 +94,15 @@ export const ColorPicker = ({
 
   // Notify parent of changes
   useEffect(() => {
-    if (onChange) {
-      const color = Color.hsl(hue, saturation, lightness).alpha(alpha / 100)
-      const rgba = color.rgb().array()
-
-      onChange([rgba[0], rgba[1], rgba[2], alpha / 100])
+    if (!onChange) return
+    if (isSyncing.current) {
+      isSyncing.current = false
+      return
     }
+    const color = Color.hsl(hue, saturation, lightness).alpha(alpha / 100)
+    const rgba = color.rgb().array()
+
+    onChange([rgba[0], rgba[1], rgba[2], alpha / 100])
   }, [hue, saturation, lightness, alpha, onChange])
 
   return (
