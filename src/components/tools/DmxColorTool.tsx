@@ -454,11 +454,6 @@ export function DmxColorTool() {
                     <div className="space-y-3">
                       <ColorPickerHue />
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <ColorPickerOutput />
-                      <ColorPickerFormat className="flex-1" />
-                      <ColorPickerEyeDropper />
-                    </div>
                   </ColorPicker>
                 </div>
                 <p className="text-xs text-muted-foreground">{tool.inputs.colorWheelHelp}</p>
