@@ -890,12 +890,148 @@
         "tag": "Gratis verktøy"
       },
       {
+        "title": "DMX Color Picker & RGB til DMX",
+        "description": "Konverter HEX eller RGB til DMX-verdier for RGB, RGBW, RGBWA og RGBWW/CW.",
+        "href": "/tools/dmx-color-picker",
+        "tag": "Gratis verktøy"
+      },
+      {
         "title": "DMX kapasitetskalkulator",
         "description": "Se hvor mange armaturer som får plass per univers og hvor mange univers du trenger.",
         "href": "/tools/dmx-capacity",
         "tag": "Gratis verktøy"
       }
     ],
+    "dmxColor": {
+      "metadata": {
+        "title": "DMX Color Picker og RGB til DMX-konverter",
+        "description": "DMX color picker og HEX til DMX-konverter. Få DMX-verdier for RGB, RGBW, RGBWA, RGBWW/CW og RGBWA+UV med valgfri CCT-beregning."
+      },
+      "breadcrumb": "DMX Color Picker",
+      "intro": {
+        "eyebrow": "DMX-verktøy",
+        "title": "Konverter farge til DMX-verdier raskt",
+        "body": "Bruk HEX, RGB-slidere eller CCT for å få rene DMX-kanalverdier for vanlige fixture-typer. Optimaliserte hvite gir riktige pasteller uten å endre mettede farger."
+      },
+      "howTo": {
+        "title": "Slik bruker du DMX color picker",
+        "steps": [
+          "Skriv inn en HEX-farge eller juster RGB med sliderne.",
+          "Velg fixture-type (RGB, RGBW, RGBWA, RGBWA+UV eller RGBWW/CW).",
+          "Valgfritt: legg inn CCT for WW/CW-fixtures.",
+          "Kopier 8-bit eller 16-bit kanalverdier."
+        ]
+      },
+      "faq": {
+        "title": "Ofte stilte spørsmål",
+        "items": [
+          {
+            "question": "Fungerer dette for RGBW og RGBWW/CW?",
+            "answer": "Ja. Verktøyet trekker ut nøytral hvit for RGBW og splitter varm/kald hvit når fixture støtter WW/CW."
+          },
+          {
+            "question": "Hvorfor blir hvit litt rosa?",
+            "answer": "Rene RGB-mikser kan farge hvitt. Optimaliser hvitt bruker hvit-LED for nøytrale og pastellfarger, men lar mettede farger være urørt."
+          },
+          {
+            "question": "Gir dere 16-bit verdier?",
+            "answer": "Ja. Du får både 8-bit og 16-bit verdier, samt coarse/fine kanaler for fixtures med finstyring."
+          },
+          {
+            "question": "Bruker dere UV automatisk?",
+            "answer": "Nei. UV er alltid manuell for å unngå uventet output."
+          }
+        ]
+      },
+      "details": {
+        "title": "Notater om DMX-fargekonvertering",
+        "sections": [
+          {
+            "title": "Beskyttelse for hvitkanal",
+            "body": "Hvit brukes kun for nøytrale eller pastellfarger. Mettede farger forblir ren RGB."
+          },
+          {
+            "title": "Varm vs kald hvit",
+            "body": "For RGBWW/CW fixtures blandes varm og kald hvit ut fra ønsket fargetemperatur."
+          },
+          {
+            "title": "Coarse vs fine",
+            "body": "Bruk coarse-only for 8-bit kontroll, eller inkluder fine-kanaler når fixture støtter 16-bit presisjon."
+          },
+          {
+            "title": "Amber og UV",
+            "body": "Amber brukes konservativt for varme toner. UV brukes aldri automatisk."
+          }
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Fargeinput",
+          "hexLabel": "HEX-farge",
+          "rgbLabel": "RGB-slidere",
+          "r": "Rød",
+          "g": "Grønn",
+          "b": "Blå",
+          "cctLabel": "CCT (Kelvin)",
+          "cctHelp": "Valgfritt. Gjelder kun RGBWW/CW."
+        },
+        "options": {
+          "title": "Fixture-innstillinger",
+          "fixtureType": "Fixture-type",
+          "fixturePlaceholder": "Velg fixture-type",
+          "fixtures": {
+            "rgb": "RGB",
+            "rgbw": "RGBW",
+            "rgba": "RGBA",
+            "rgbwa": "RGBWA",
+            "rgbwauv": "RGBWA + UV",
+            "rgbwwcw": "RGB + Varm hvit + Kald hvit"
+          },
+          "optimizeWhites": "Optimaliser hvitt (anbefalt)",
+          "optimizeWhitesHelp": "Bruker hvit-LED for nøytrale og pastellfarger. Mettede farger er uendret.",
+          "limitWhite": "Begrens hvitandel",
+          "limitWhiteHelp": "Begrenser hvit output for å unngå harde LED-er på rimelige fixtures.",
+          "rgbOnly": "RGB-only fallback",
+          "rgbOnlyHelp": "Deaktiver automatisk hvit/amber-uttrekk.",
+          "outputMode": "Kanalkonfigurasjon",
+          "outputModes": {
+            "coarse": "Kun coarse (8-bit)",
+            "fine": "Coarse + fine (16-bit)"
+          },
+          "previewLabel": "Forhåndsvisning",
+          "previewValue": "Gjeldende farge"
+        },
+        "outputs": {
+          "title8": "8-bit DMX-verdier",
+          "title16": "16-bit DMX-verdier",
+          "channelLabel": "Kanal",
+          "value8Label": "Verdi",
+          "value16Label": "Verdi",
+          "coarseLabel": "Coarse",
+          "fineLabel": "Fine"
+        },
+        "channels": {
+          "red": "R",
+          "green": "G",
+          "blue": "B",
+          "white": "W",
+          "warmWhite": "WW",
+          "coolWhite": "CW",
+          "amber": "A",
+          "uv": "UV"
+        },
+        "notices": {
+          "cctOverride": "CCT-modus aktiv: RGB settes til 0, kun WW/CW.",
+          "uvDisabled": "UV er alltid manuell og brukes ikke automatisk."
+        }
+      },
+      "cta": {
+        "title": "Trenger du flere DMX-verktøy?",
+        "body": "Se hele verktøylisten for patching, kapasitet og planlegging.",
+        "linkLabel": "Se alle verktøy",
+        "linkHref": "/tools"
+      }
+    },
     "dmxPatch": {
       "metadata": {
         "title": "DMX Patch Sheet Generator",

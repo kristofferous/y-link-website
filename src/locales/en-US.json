@@ -890,12 +890,148 @@
         "tag": "Free tool"
       },
       {
+        "title": "DMX Color Picker & RGB to DMX",
+        "description": "Convert HEX or RGB to DMX values for RGB, RGBW, RGBWA, and RGBWW/CW fixtures.",
+        "href": "/tools/dmx-color-picker",
+        "tag": "Free tool"
+      },
+      {
         "title": "DMX Address Capacity Calculator",
         "description": "See how many fixtures fit per universe and how many universes you need.",
         "href": "/tools/dmx-capacity",
         "tag": "Free tool"
       }
     ],
+    "dmxColor": {
+      "metadata": {
+        "title": "DMX Color Picker & RGB to DMX Converter",
+        "description": "DMX color picker and HEX to DMX converter. Get RGB, RGBW, RGBWA, RGBWW/CW, and RGBWA+UV DMX values with optional CCT channel calculation."
+      },
+      "breadcrumb": "DMX Color Picker",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "Convert color to DMX values fast",
+        "body": "Use HEX, RGB sliders, or CCT to get clean DMX channel values for common fixture types. Optimized whites keep pastel and neutral tones accurate without changing saturated colors."
+      },
+      "howTo": {
+        "title": "How to use the DMX color picker",
+        "steps": [
+          "Enter a HEX color or dial in RGB with the sliders.",
+          "Choose your fixture type (RGB, RGBW, RGBWA, RGBWA+UV, or RGBWW/CW).",
+          "Optional: add a CCT value for WW/CW fixtures.",
+          "Copy the 8-bit or 16-bit channel values."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "question": "Does this work for RGBW and RGBWW/CW fixtures?",
+            "answer": "Yes. The tool can extract neutral whites for RGBW and split warm/cool white channels when your fixture supports WW/CW."
+          },
+          {
+            "question": "Why does my white look pinkish?",
+            "answer": "Pure RGB mixes can tint white. The Optimize whites option uses a white LED for near-neutral and pastel colors while preserving saturated hues."
+          },
+          {
+            "question": "Do you output 16-bit values?",
+            "answer": "Yes. You get both 8-bit and 16-bit values plus coarse and fine channels for fixtures that use fine control."
+          },
+          {
+            "question": "Do you auto-use UV?",
+            "answer": "No. UV is always manual-only to avoid unexpected output."
+          }
+        ]
+      },
+      "details": {
+        "title": "DMX color conversion notes",
+        "sections": [
+          {
+            "title": "White channel guardrails",
+            "body": "White is only used for near-neutral or pastel colors. Saturated hues stay pure RGB so your intent is preserved."
+          },
+          {
+            "title": "Warm vs cool white",
+            "body": "For RGBWW/CW fixtures, warm and cool whites are blended based on the target color temperature."
+          },
+          {
+            "title": "Coarse vs fine channels",
+            "body": "Use coarse-only for 8-bit control, or include fine channels when your fixture supports 16-bit precision."
+          },
+          {
+            "title": "Amber and UV handling",
+            "body": "Amber is used conservatively for warm tones. UV is never auto-used."
+          }
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Color input",
+          "hexLabel": "HEX color",
+          "rgbLabel": "RGB sliders",
+          "r": "Red",
+          "g": "Green",
+          "b": "Blue",
+          "cctLabel": "CCT (Kelvin)",
+          "cctHelp": "Optional. Only applies to RGBWW/CW fixtures."
+        },
+        "options": {
+          "title": "Fixture settings",
+          "fixtureType": "Fixture type",
+          "fixturePlaceholder": "Select fixture type",
+          "fixtures": {
+            "rgb": "RGB",
+            "rgbw": "RGBW",
+            "rgba": "RGBA",
+            "rgbwa": "RGBWA",
+            "rgbwauv": "RGBWA + UV",
+            "rgbwwcw": "RGB + Warm White + Cool White"
+          },
+          "optimizeWhites": "Optimize whites (recommended)",
+          "optimizeWhitesHelp": "Uses white LEDs for neutral and pastel colors. Saturated hues are unaffected.",
+          "limitWhite": "Limit white contribution",
+          "limitWhiteHelp": "Caps white output to avoid harsh LEDs on cheaper fixtures.",
+          "rgbOnly": "RGB-only fallback",
+          "rgbOnlyHelp": "Disable automatic white/amber extraction.",
+          "outputMode": "Channel format",
+          "outputModes": {
+            "coarse": "Coarse only (8-bit)",
+            "fine": "Coarse + fine (16-bit)"
+          },
+          "previewLabel": "Preview",
+          "previewValue": "Current color"
+        },
+        "outputs": {
+          "title8": "8-bit DMX values",
+          "title16": "16-bit DMX values",
+          "channelLabel": "Channel",
+          "value8Label": "Value",
+          "value16Label": "Value",
+          "coarseLabel": "Coarse",
+          "fineLabel": "Fine"
+        },
+        "channels": {
+          "red": "R",
+          "green": "G",
+          "blue": "B",
+          "white": "W",
+          "warmWhite": "WW",
+          "coolWhite": "CW",
+          "amber": "A",
+          "uv": "UV"
+        },
+        "notices": {
+          "cctOverride": "CCT mode active: RGB channels set to 0, WW/CW only.",
+          "uvDisabled": "UV is manual-only and never auto-used."
+        }
+      },
+      "cta": {
+        "title": "Need more DMX utilities?",
+        "body": "Browse the full tools list for patching, capacity, and planning.",
+        "linkLabel": "View all tools",
+        "linkHref": "/tools"
+      }
+    },
     "dmxPatch": {
       "metadata": {
         "title": "DMX Patch Sheet Generator",

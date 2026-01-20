@@ -1,0 +1,450 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { SectionCard } from "@/components/SectionCard";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { useTranslations } from "@/lib/i18n/TranslationProvider";
+
+type FixtureType = "rgb" | "rgbw" | "rgba" | "rgbwa" | "rgbwauv" | "rgbwwcw";
+
+type Rgb = {
+  r: number;
+  g: number;
+  b: number;
+};
+
+type ChannelKey = "r" | "g" | "b" | "w" | "ww" | "cw" | "a" | "uv";
+
+const WHITE_THRESHOLD = 0.08;
+const SATURATION_CUTOFF = 0.65;
+const WHITE_LIMIT = 0.7;
+
+const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+const clampChannel = (value: number) => Math.min(255, Math.max(0, Math.round(value)));
+
+const srgbToLinear = (value: number) =>
+  value <= 0.04045 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+
+const linearToSrgb = (value: number) =>
+  value <= 0.0031308 ? value * 12.92 : 1.055 * Math.pow(value, 1 / 2.4) - 0.055;
+
+const rgbToHex = ({ r, g, b }: Rgb) =>
+  `#${[r, g, b].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+
+const parseHex = (value: string): Rgb | null => {
+  const cleaned = value.trim().replace(/^#/, "");
+  if (!/^[0-9a-fA-F]{3}$/.test(cleaned) && !/^[0-9a-fA-F]{6}$/.test(cleaned)) return null;
+  const hex =
+    cleaned.length === 3
+      ? cleaned
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : cleaned;
+  const number = Number.parseInt(hex, 16);
+  return {
+    r: (number >> 16) & 255,
+    g: (number >> 8) & 255,
+    b: number & 255,
+  };
+};
+
+const rgbToHue = (r: number, g: number, b: number) => {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  if (delta === 0) return 0;
+  if (max === r) return ((g - b) / delta) * 60 + (g < b ? 360 : 0);
+  if (max === g) return ((b - r) / delta) * 60 + 120;
+  return ((r - g) / delta) * 60 + 240;
+};
+
+const rgbToSaturation = (r: number, g: number, b: number) => {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  return max === 0 ? 0 : (max - min) / max;
+};
+
+const estimateCct = (r: number, g: number, b: number) => {
+  const x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+  const y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+  const z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+  const sum = x + y + z;
+  if (sum === 0) return 6500;
+  const cx = x / sum;
+  const cy = y / sum;
+  const n = (cx - 0.332) / (0.1858 - cy);
+  const cct = 449 * Math.pow(n, 3) + 3525 * Math.pow(n, 2) + 6823.3 * n + 5520.33;
+  return clamp(cct, 2000, 9000);
+};
+
+const toDmx8 = (value: number) => Math.round(clamp(value) * 255);
+const toDmx16 = (value: number) => Math.round(clamp(value) * 65535);
+
+const toCoarseFine = (value16: number) => ({
+  coarse: Math.floor(value16 / 256),
+  fine: value16 % 256,
+});
+
+export function DmxColorTool() {
+  const { dictionary } = useTranslations();
+  const tool = dictionary.tools.dmxColor.tool;
+
+  const [fixtureType, setFixtureType] = useState<FixtureType>("rgbw");
+  const [hexInput, setHexInput] = useState("#FF7A66");
+  const [rgb, setRgb] = useState<Rgb>({ r: 255, g: 122, b: 102 });
+  const [cctInput, setCctInput] = useState("");
+  const [optimizeWhites, setOptimizeWhites] = useState(true);
+  const [limitWhite, setLimitWhite] = useState(true);
+  const [rgbOnly, setRgbOnly] = useState(false);
+  const [outputMode, setOutputMode] = useState<"coarse" | "fine">("fine");
+
+  const supportsWhite = fixtureType === "rgbw" || fixtureType === "rgbwa" || fixtureType === "rgbwauv";
+  const supportsWwCw = fixtureType === "rgbwwcw";
+  const supportsAmber = fixtureType === "rgba" || fixtureType === "rgbwa" || fixtureType === "rgbwauv";
+  const supportsUv = fixtureType === "rgbwauv";
+
+  const handleHexChange = (value: string) => {
+    setHexInput(value);
+    const parsed = parseHex(value);
+    if (parsed) {
+      setRgb(parsed);
+      setHexInput(rgbToHex(parsed));
+    }
+  };
+
+  const updateChannel = (channel: keyof Rgb, value: number) => {
+    const next = { ...rgb, [channel]: clampChannel(value) };
+    setRgb(next);
+    setHexInput(rgbToHex(next));
+  };
+
+  const output = useMemo(() => {
+    const srgb = {
+      r: clamp(rgb.r / 255),
+      g: clamp(rgb.g / 255),
+      b: clamp(rgb.b / 255),
+    };
+    const linear = {
+      r: srgbToLinear(srgb.r),
+      g: srgbToLinear(srgb.g),
+      b: srgbToLinear(srgb.b),
+    };
+
+    const maxLinear = Math.max(linear.r, linear.g, linear.b);
+    const minLinear = Math.min(linear.r, linear.g, linear.b);
+    const neutral = minLinear;
+    const saturation = maxLinear === 0 ? 0 : (maxLinear - minLinear) / maxLinear;
+    const canOptimize = optimizeWhites && !rgbOnly;
+    const shouldUseWhite = canOptimize && neutral > WHITE_THRESHOLD && saturation < SATURATION_CUTOFF;
+    const whiteScale = limitWhite ? WHITE_LIMIT : 1;
+
+    let outR = linear.r;
+    let outG = linear.g;
+    let outB = linear.b;
+    let outW = 0;
+    let outWw = 0;
+    let outCw = 0;
+    let outA = 0;
+    let outUv = 0;
+    let cctValue: number | null = null;
+    let cctMode = false;
+
+    if (supportsWwCw) {
+      const parsedCct = cctInput.trim() ? Number(cctInput) : null;
+      cctValue = parsedCct && Number.isFinite(parsedCct) ? clamp(parsedCct, 1800, 10000) : null;
+      cctMode = Boolean(cctValue) && !rgbOnly;
+    }
+
+    if (supportsWwCw && cctMode && cctValue) {
+      const intensity = maxLinear;
+      const scaledIntensity = intensity * whiteScale;
+      const blend = clamp((cctValue - 2700) / (6500 - 2700));
+      const useBoth = Math.abs(blend - 0.5) < 0.12;
+      outR = 0;
+      outG = 0;
+      outB = 0;
+      if (useBoth) {
+        outWw = scaledIntensity * (1 - blend);
+        outCw = scaledIntensity * blend;
+      } else if (blend < 0.5) {
+        outWw = scaledIntensity;
+      } else {
+        outCw = scaledIntensity;
+      }
+    } else {
+      if (supportsWwCw && shouldUseWhite) {
+        const baseCct = estimateCct(linear.r, linear.g, linear.b);
+        const blend = clamp((baseCct - 2700) / (6500 - 2700));
+        const useBoth = Math.abs(blend - 0.5) < 0.12;
+        const neutralScaled = neutral * whiteScale;
+        outR = Math.max(0, outR - neutralScaled);
+        outG = Math.max(0, outG - neutralScaled);
+        outB = Math.max(0, outB - neutralScaled);
+        if (useBoth) {
+          outWw = neutralScaled * (1 - blend);
+          outCw = neutralScaled * blend;
+        } else if (blend < 0.5) {
+          outWw = neutralScaled;
+        } else {
+          outCw = neutralScaled;
+        }
+      }
+
+      if (supportsWhite && shouldUseWhite) {
+        const neutralScaled = neutral * whiteScale;
+        outW = neutralScaled;
+        outR = Math.max(0, outR - neutralScaled);
+        outG = Math.max(0, outG - neutralScaled);
+        outB = Math.max(0, outB - neutralScaled);
+      }
+
+      if (supportsAmber && canOptimize) {
+        const hue = rgbToHue(srgb.r, srgb.g, srgb.b);
+        const saturationRgb = rgbToSaturation(srgb.r, srgb.g, srgb.b);
+        if (hue >= 20 && hue <= 60 && saturationRgb > 0.2) {
+          const amberFactor = 1 - Math.abs(hue - 40) / 20;
+          const amberAmount = Math.min(outR, outG) * amberFactor * 0.6;
+          outA = amberAmount;
+          outR = Math.max(0, outR - amberAmount * 0.5);
+          outG = Math.max(0, outG - amberAmount * 0.5);
+        }
+      }
+    }
+
+    const channels = {
+      r: clamp(linearToSrgb(outR)),
+      g: clamp(linearToSrgb(outG)),
+      b: clamp(linearToSrgb(outB)),
+      w: clamp(linearToSrgb(outW)),
+      ww: clamp(linearToSrgb(outWw)),
+      cw: clamp(linearToSrgb(outCw)),
+      a: clamp(linearToSrgb(outA)),
+      uv: clamp(linearToSrgb(outUv)),
+    };
+
+    return {
+      channels,
+      cctMode,
+    };
+  }, [rgb, cctInput, fixtureType, optimizeWhites, limitWhite, rgbOnly, supportsWhite, supportsWwCw, supportsAmber]);
+
+  const channelList = useMemo(() => {
+    const labels = tool.channels;
+    const list: Array<{ key: ChannelKey; label: string }> = [];
+    const push = (key: ChannelKey, label: string) => list.push({ key, label });
+    push("r", labels.red);
+    push("g", labels.green);
+    push("b", labels.blue);
+    if (supportsWhite) push("w", labels.white);
+    if (supportsWwCw) {
+      push("ww", labels.warmWhite);
+      push("cw", labels.coolWhite);
+    }
+    if (supportsAmber) push("a", labels.amber);
+    if (supportsUv) push("uv", labels.uv);
+    return list;
+  }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber, supportsUv]);
+
+  const swatchStyle = {
+    backgroundColor: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
+  };
+
+  const optimizationDisabled = rgbOnly || (!supportsWhite && !supportsWwCw && !supportsAmber);
+  const whiteLimitDisabled = optimizationDisabled || (!supportsWhite && !supportsWwCw);
+
+  return (
+    <SectionCard>
+      <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-4">
+            <p className="text-title text-foreground">{tool.inputs.title}</p>
+            <div className="space-y-2">
+              <Label htmlFor="dmx-color-hex">{tool.inputs.hexLabel}</Label>
+              <Input
+                id="dmx-color-hex"
+                value={hexInput}
+                onChange={(event) => handleHexChange(event.target.value)}
+                placeholder="#FFFFFF"
+              />
+            </div>
+            <div className="space-y-4">
+              <p className="text-sm font-semibold text-foreground">{tool.inputs.rgbLabel}</p>
+              {(["r", "g", "b"] as const).map((channel) => (
+                <div key={channel} className="space-y-2">
+                  <Label htmlFor={`dmx-color-${channel}`}>{tool.inputs[channel]}</Label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      id={`dmx-color-${channel}`}
+                      type="range"
+                      min={0}
+                      max={255}
+                      value={rgb[channel]}
+                      onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                      className="w-full"
+                    />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={255}
+                      value={rgb[channel]}
+                      onChange={(event) => updateChannel(channel, Number(event.target.value))}
+                      className="w-24"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="dmx-color-cct">{tool.inputs.cctLabel}</Label>
+              <Input
+                id="dmx-color-cct"
+                type="number"
+                min={1800}
+                max={10000}
+                value={cctInput}
+                onChange={(event) => setCctInput(event.target.value)}
+                placeholder="e.g. 3200"
+              />
+              <p className="text-xs text-muted-foreground">{tool.inputs.cctHelp}</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-title text-foreground">{tool.options.title}</p>
+            <div className="space-y-2">
+              <Label htmlFor="dmx-color-fixture">{tool.options.fixtureType}</Label>
+              <Select value={fixtureType} onValueChange={(value) => setFixtureType(value as FixtureType)}>
+                <SelectTrigger id="dmx-color-fixture" className="w-full">
+                  <SelectValue placeholder={tool.options.fixturePlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="rgb">{tool.options.fixtures.rgb}</SelectItem>
+                  <SelectItem value="rgbw">{tool.options.fixtures.rgbw}</SelectItem>
+                  <SelectItem value="rgba">{tool.options.fixtures.rgba}</SelectItem>
+                  <SelectItem value="rgbwa">{tool.options.fixtures.rgbwa}</SelectItem>
+                  <SelectItem value="rgbwauv">{tool.options.fixtures.rgbwauv}</SelectItem>
+                  <SelectItem value="rgbwwcw">{tool.options.fixtures.rgbwwcw}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="rounded-lg border border-border/40 bg-background p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-foreground">{tool.options.optimizeWhites}</p>
+                  <p className="text-xs text-muted-foreground">{tool.options.optimizeWhitesHelp}</p>
+                </div>
+                <Switch
+                  checked={optimizeWhites}
+                  onCheckedChange={setOptimizeWhites}
+                  disabled={optimizationDisabled}
+                />
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-foreground">{tool.options.limitWhite}</p>
+                  <p className="text-xs text-muted-foreground">{tool.options.limitWhiteHelp}</p>
+                </div>
+                <Switch checked={limitWhite} onCheckedChange={setLimitWhite} disabled={whiteLimitDisabled} />
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-foreground">{tool.options.rgbOnly}</p>
+                  <p className="text-xs text-muted-foreground">{tool.options.rgbOnlyHelp}</p>
+                </div>
+                <Switch checked={rgbOnly} onCheckedChange={setRgbOnly} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-foreground">{tool.options.outputMode}</p>
+              <RadioGroup value={outputMode} onValueChange={(value) => setOutputMode(value as "coarse" | "fine")}>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RadioGroupItem value="coarse" />
+                  {tool.options.outputModes.coarse}
+                </label>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RadioGroupItem value="fine" />
+                  {tool.options.outputModes.fine}
+                </label>
+              </RadioGroup>
+            </div>
+            <div className="rounded-lg border border-border/40 bg-card p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                {tool.options.previewLabel}
+              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-md border border-border/40" style={swatchStyle} />
+                <div className="text-sm text-muted-foreground">
+                  {tool.options.previewValue}: <span className="text-foreground">{hexInput}</span>
+                </div>
+              </div>
+            </div>
+            {supportsUv ? <p className="text-xs text-muted-foreground">{tool.notices.uvDisabled}</p> : null}
+          </div>
+        </div>
+
+        {output.cctMode ? <p className="text-xs text-muted-foreground">{tool.notices.cctOverride}</p> : null}
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-lg border border-border/40 bg-background p-4">
+            <p className="text-sm font-semibold text-foreground">{tool.outputs.title8}</p>
+            <div className="mt-3 overflow-hidden rounded-md border border-border/40">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-card text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2">{tool.outputs.channelLabel}</th>
+                    <th className="px-3 py-2">{tool.outputs.value8Label}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {channelList.map((channel) => {
+                    const value8 = toDmx8(output.channels[channel.key]);
+                    return (
+                      <tr key={channel.key} className="border-t border-border/40">
+                        <td className="px-3 py-2 text-muted-foreground">{channel.label}</td>
+                        <td className="px-3 py-2 text-foreground">{value8}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="rounded-lg border border-border/40 bg-background p-4">
+            <p className="text-sm font-semibold text-foreground">{tool.outputs.title16}</p>
+            <div className="mt-3 overflow-hidden rounded-md border border-border/40">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-card text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2">{tool.outputs.channelLabel}</th>
+                    <th className="px-3 py-2">{tool.outputs.value16Label}</th>
+                    <th className="px-3 py-2">{tool.outputs.coarseLabel}</th>
+                    {outputMode === "fine" ? <th className="px-3 py-2">{tool.outputs.fineLabel}</th> : null}
+                  </tr>
+                </thead>
+                <tbody>
+                  {channelList.map((channel) => {
+                    const value16 = toDmx16(output.channels[channel.key]);
+                    const { coarse, fine } = toCoarseFine(value16);
+                    return (
+                      <tr key={channel.key} className="border-t border-border/40">
+                        <td className="px-3 py-2 text-muted-foreground">{channel.label}</td>
+                        <td className="px-3 py-2 text-foreground">{value16}</td>
+                        <td className="px-3 py-2 text-foreground">{coarse}</td>
+                        {outputMode === "fine" ? <td className="px-3 py-2 text-foreground">{fine}</td> : null}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </SectionCard>
+  );
+}
