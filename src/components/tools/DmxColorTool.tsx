@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SectionCard } from "@/components/SectionCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -202,7 +202,7 @@ export function DmxColorTool() {
     setHexInput(rgbToHex(next));
   };
 
-  const updateFromPicker = (value: number[]) => {
+  const updateFromPicker = useCallback((value: number[]) => {
     const [r, g, b] = value;
     const next = {
       r: clampChannel(r),
@@ -211,7 +211,7 @@ export function DmxColorTool() {
     };
     setRgb(next);
     setHexInput(rgbToHex(next));
-  };
+  }, []);
 
   const output = useMemo(() => {
     const intensity = clamp(cctIntensity / 100);
@@ -399,10 +399,10 @@ export function DmxColorTool() {
                   <RadioGroupItem value="wheel" />
                   {tool.inputs.modes.wheel}
                 </label>
-            <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <RadioGroupItem value="cct" />
-              {tool.inputs.modes.cct}
-            </label>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RadioGroupItem value="cct" />
+                  {tool.inputs.modes.cct}
+                </label>
               </RadioGroup>
             </div>
             {inputMode === "hexRgb" ? (
