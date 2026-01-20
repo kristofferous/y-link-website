@@ -905,7 +905,7 @@
     "dmxColor": {
       "metadata": {
         "title": "DMX Color Picker & RGB to DMX Converter",
-        "description": "DMX color picker and HEX to DMX converter. Get RGB, RGBW, RGBWA, RGBWW/CW, and RGBWA+UV DMX values with optional CCT channel calculation."
+        "description": "DMX color picker and HEX to DMX converter. Get RGB, RGBW, RGBWA, and RGBWW/CW DMX values with optional CCT channel calculation."
       },
       "breadcrumb": "DMX Color Picker",
       "intro": {
@@ -917,8 +917,8 @@
         "title": "How to use the DMX color picker",
         "steps": [
           "Enter a HEX color or dial in RGB with the sliders.",
-          "Choose your fixture type (RGB, RGBW, RGBWA, RGBWA+UV, or RGBWW/CW).",
-          "Optional: add a CCT value for WW/CW fixtures.",
+          "Choose your fixture type (RGB, RGBW, RGBWA, or RGBWW/CW).",
+          "Optional: add a CCT value for white channel fixtures or RGB mixing.",
           "Copy the 8-bit or 16-bit channel values."
         ]
       },
@@ -938,8 +938,8 @@
             "answer": "Yes. You get both 8-bit and 16-bit values plus coarse and fine channels for fixtures that use fine control."
           },
           {
-            "question": "Do you auto-use UV?",
-            "answer": "No. UV is always manual-only to avoid unexpected output."
+            "question": "Can I use CCT for RGB fixtures?",
+            "answer": "Yes. If your fixture does not have WW/CW channels, the tool blends RGB values to approximate the chosen color temperature."
           }
         ]
       },
@@ -959,8 +959,8 @@
             "body": "Use coarse-only for 8-bit control, or include fine channels when your fixture supports 16-bit precision."
           },
           {
-            "title": "Amber and UV handling",
-            "body": "Amber is used conservatively for warm tones. UV is never auto-used."
+            "title": "Amber handling",
+            "body": "Amber is used conservatively for warm tones."
           }
         ]
       },
@@ -981,9 +981,9 @@
           "colorWheelLabel": "Color wheel",
           "colorWheelHelp": "Pick a hue quickly, then tweak the HEX value if needed.",
           "cctLabel": "CCT (Kelvin)",
-          "cctHelp": "Only available for RGBWW/CW fixtures.",
+          "cctHelp": "Uses WW/CW if available, otherwise blends RGB to match the CCT.",
           "cctIntensity": "CCT intensity (%)",
-          "cctIntensityHelp": "Sets the output level for WW/CW channels."
+          "cctIntensityHelp": "Sets the output level for CCT mode."
         },
         "options": {
           "title": "Fixture settings",
@@ -994,7 +994,6 @@
             "rgbw": "RGBW",
             "rgba": "RGBA",
             "rgbwa": "RGBWA",
-            "rgbwauv": "RGBWA + UV",
             "rgbwwcw": "RGB + Warm White + Cool White"
           },
           "optimizeWhites": "Optimize whites (recommended)",
@@ -1027,12 +1026,10 @@
           "white": "W",
           "warmWhite": "WW",
           "coolWhite": "CW",
-          "amber": "A",
-          "uv": "UV"
+          "amber": "A"
         },
         "notices": {
-          "cctOverride": "CCT mode active: RGB channels set to 0, WW/CW only.",
-          "uvDisabled": "UV is manual-only and never auto-used."
+          "cctOverride": "CCT mode active: RGB channels set to 0, WW/CW only."
         }
       },
       "cta": {

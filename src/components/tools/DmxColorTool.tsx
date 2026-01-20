@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
-type FixtureType = "rgb" | "rgbw" | "rgba" | "rgbwa" | "rgbwauv" | "rgbwwcw";
+type FixtureType = "rgb" | "rgbw" | "rgba" | "rgbwa" | "rgbwwcw";
 type InputMode = "hexRgb" | "wheel" | "cct";
 
 type Rgb = {
@@ -18,7 +18,7 @@ type Rgb = {
   b: number;
 };
 
-type ChannelKey = "r" | "g" | "b" | "w" | "ww" | "cw" | "a" | "uv";
+type ChannelKey = "r" | "g" | "b" | "w" | "ww" | "cw" | "a";
 
 const WHITE_THRESHOLD = 0.08;
 const SATURATION_CUTOFF = 0.65;
@@ -128,16 +128,15 @@ export function DmxColorTool() {
   const [rgbOnly, setRgbOnly] = useState(false);
   const [outputMode, setOutputMode] = useState<"coarse" | "fine">("fine");
 
-  const supportsWhite = fixtureType === "rgbw" || fixtureType === "rgbwa" || fixtureType === "rgbwauv";
+  const supportsWhite = fixtureType === "rgbw" || fixtureType === "rgbwa";
   const supportsWwCw = fixtureType === "rgbwwcw";
-  const supportsAmber = fixtureType === "rgba" || fixtureType === "rgbwa" || fixtureType === "rgbwauv";
-  const supportsUv = fixtureType === "rgbwauv";
+  const supportsAmber = fixtureType === "rgba" || fixtureType === "rgbwa";
 
   useEffect(() => {
-    if (!supportsWwCw && inputMode === "cct") {
-      setInputMode("hexRgb");
+    if (inputMode === "cct" && rgbOnly) {
+      setRgbOnly(false);
     }
-  }, [supportsWwCw, inputMode]);
+  }, [inputMode, rgbOnly]);
 
   useEffect(() => {
     if (inputMode === "cct" && rgbOnly) {
@@ -161,10 +160,24 @@ export function DmxColorTool() {
   };
 
   const output = useMemo(() => {
+    const baseRgb =
+      inputMode === "cct"
+        ? (() => {
+            const cctValue = cctInput.trim() ? Number(cctInput) : 3200;
+            const clampedCct = Number.isFinite(cctValue) ? clamp(cctValue, 1800, 10000) : 3200;
+            const base = cctToRgb(clampedCct);
+            const intensity = clamp(cctIntensity / 100);
+            return {
+              r: clampChannel(base.r * intensity),
+              g: clampChannel(base.g * intensity),
+              b: clampChannel(base.b * intensity),
+            };
+          })()
+        : rgb;
     const srgb = {
-      r: clamp(rgb.r / 255),
-      g: clamp(rgb.g / 255),
-      b: clamp(rgb.b / 255),
+      r: clamp(baseRgb.r / 255),
+      g: clamp(baseRgb.g / 255),
+      b: clamp(baseRgb.b / 255),
     };
     const linear = {
       r: srgbToLinear(srgb.r),
@@ -176,7 +189,7 @@ export function DmxColorTool() {
     const minLinear = Math.min(linear.r, linear.g, linear.b);
     const neutral = minLinear;
     const saturation = maxLinear === 0 ? 0 : (maxLinear - minLinear) / maxLinear;
-    const canOptimize = optimizeWhites && !rgbOnly;
+    const canOptimize = optimizeWhites && !rgbOnly && inputMode !== "cct";
     const shouldUseWhite = canOptimize && neutral > WHITE_THRESHOLD && saturation < SATURATION_CUTOFF;
     const whiteScale = limitWhite ? WHITE_LIMIT : 1;
 
@@ -187,11 +200,10 @@ export function DmxColorTool() {
     let outWw = 0;
     let outCw = 0;
     let outA = 0;
-    let outUv = 0;
     let cctValue: number | null = null;
     let cctMode = false;
 
-    if (supportsWwCw && inputMode === "cct") {
+    if (inputMode === "cct" && supportsWwCw) {
       const parsedCct = cctInput.trim() ? Number(cctInput) : null;
       cctValue = parsedCct && Number.isFinite(parsedCct) ? clamp(parsedCct, 1800, 10000) : 3200;
       cctMode = !rgbOnly;
@@ -201,18 +213,11 @@ export function DmxColorTool() {
       const intensity = clamp(cctIntensity / 100);
       const scaledIntensity = intensity * whiteScale;
       const blend = clamp((cctValue - 2700) / (6500 - 2700));
-      const useBoth = Math.abs(blend - 0.5) < 0.12;
       outR = 0;
       outG = 0;
       outB = 0;
-      if (useBoth) {
-        outWw = scaledIntensity * (1 - blend);
-        outCw = scaledIntensity * blend;
-      } else if (blend < 0.5) {
-        outWw = scaledIntensity;
-      } else {
-        outCw = scaledIntensity;
-      }
+      outWw = scaledIntensity * (1 - blend);
+      outCw = scaledIntensity * blend;
     } else {
       if (supportsWwCw && shouldUseWhite) {
         const baseCct = estimateCct(linear.r, linear.g, linear.b);
@@ -261,7 +266,6 @@ export function DmxColorTool() {
       ww: clamp(linearToSrgb(outWw)),
       cw: clamp(linearToSrgb(outCw)),
       a: clamp(linearToSrgb(outA)),
-      uv: clamp(linearToSrgb(outUv)),
     };
 
     return {
@@ -295,9 +299,8 @@ export function DmxColorTool() {
       push("cw", labels.coolWhite);
     }
     if (supportsAmber) push("a", labels.amber);
-    if (supportsUv) push("uv", labels.uv);
     return list;
-  }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber, supportsUv]);
+  }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber]);
 
   const previewRgb =
     supportsWwCw && inputMode === "cct"
@@ -339,12 +342,10 @@ export function DmxColorTool() {
                   <RadioGroupItem value="wheel" />
                   {tool.inputs.modes.wheel}
                 </label>
-                {supportsWwCw ? (
-                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <RadioGroupItem value="cct" />
-                    {tool.inputs.modes.cct}
-                  </label>
-                ) : null}
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <RadioGroupItem value="cct" />
+              {tool.inputs.modes.cct}
+            </label>
               </RadioGroup>
             </div>
             {inputMode === "hexRgb" ? (
@@ -408,7 +409,7 @@ export function DmxColorTool() {
                 <p className="text-xs text-muted-foreground">{tool.inputs.colorWheelHelp}</p>
               </div>
             ) : null}
-            {inputMode === "cct" && supportsWwCw ? (
+            {inputMode === "cct" ? (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="dmx-color-cct">{tool.inputs.cctLabel}</Label>
@@ -463,7 +464,6 @@ export function DmxColorTool() {
                   <SelectItem value="rgbw">{tool.options.fixtures.rgbw}</SelectItem>
                   <SelectItem value="rgba">{tool.options.fixtures.rgba}</SelectItem>
                   <SelectItem value="rgbwa">{tool.options.fixtures.rgbwa}</SelectItem>
-                  <SelectItem value="rgbwauv">{tool.options.fixtures.rgbwauv}</SelectItem>
                   <SelectItem value="rgbwwcw">{tool.options.fixtures.rgbwwcw}</SelectItem>
                 </SelectContent>
               </Select>
@@ -527,7 +527,6 @@ export function DmxColorTool() {
                 </div>
               </div>
             </div>
-            {supportsUv ? <p className="text-xs text-muted-foreground">{tool.notices.uvDisabled}</p> : null}
           </div>
         </div>
 

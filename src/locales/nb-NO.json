@@ -905,7 +905,7 @@
     "dmxColor": {
       "metadata": {
         "title": "DMX Color Picker og RGB til DMX-konverter",
-        "description": "DMX color picker og HEX til DMX-konverter. Få DMX-verdier for RGB, RGBW, RGBWA, RGBWW/CW og RGBWA+UV med valgfri CCT-beregning."
+        "description": "DMX color picker og HEX til DMX-konverter. Få DMX-verdier for RGB, RGBW, RGBWA og RGBWW/CW med valgfri CCT-beregning."
       },
       "breadcrumb": "DMX Color Picker",
       "intro": {
@@ -917,8 +917,8 @@
         "title": "Slik bruker du DMX color picker",
         "steps": [
           "Skriv inn en HEX-farge eller juster RGB med sliderne.",
-          "Velg fixture-type (RGB, RGBW, RGBWA, RGBWA+UV eller RGBWW/CW).",
-          "Valgfritt: legg inn CCT for WW/CW-fixtures.",
+          "Velg fixture-type (RGB, RGBW, RGBWA eller RGBWW/CW).",
+          "Valgfritt: legg inn CCT for hvitkanaler eller RGB-miks.",
           "Kopier 8-bit eller 16-bit kanalverdier."
         ]
       },
@@ -938,8 +938,8 @@
             "answer": "Ja. Du får både 8-bit og 16-bit verdier, samt coarse/fine kanaler for fixtures med finstyring."
           },
           {
-            "question": "Bruker dere UV automatisk?",
-            "answer": "Nei. UV er alltid manuell for å unngå uventet output."
+            "question": "Kan jeg bruke CCT for RGB-fixtures?",
+            "answer": "Ja. Hvis fixture ikke har WW/CW, blandes RGB-verdier for å treffe ønsket fargetemperatur."
           }
         ]
       },
@@ -959,8 +959,8 @@
             "body": "Bruk coarse-only for 8-bit kontroll, eller inkluder fine-kanaler når fixture støtter 16-bit presisjon."
           },
           {
-            "title": "Amber og UV",
-            "body": "Amber brukes konservativt for varme toner. UV brukes aldri automatisk."
+            "title": "Amber",
+            "body": "Amber brukes konservativt for varme toner."
           }
         ]
       },
@@ -981,9 +981,9 @@
           "colorWheelLabel": "Fargehjul",
           "colorWheelHelp": "Velg nyanse raskt, og finjuster HEX om nødvendig.",
           "cctLabel": "CCT (Kelvin)",
-          "cctHelp": "Kun tilgjengelig for RGBWW/CW.",
+          "cctHelp": "Bruker WW/CW hvis tilgjengelig, ellers blandes RGB for å matche CCT.",
           "cctIntensity": "CCT-intensitet (%)",
-          "cctIntensityHelp": "Setter output-nivået for WW/CW-kanaler."
+          "cctIntensityHelp": "Setter output-nivået i CCT-modus."
         },
         "options": {
           "title": "Fixture-innstillinger",
@@ -994,7 +994,6 @@
             "rgbw": "RGBW",
             "rgba": "RGBA",
             "rgbwa": "RGBWA",
-            "rgbwauv": "RGBWA + UV",
             "rgbwwcw": "RGB + Varm hvit + Kald hvit"
           },
           "optimizeWhites": "Optimaliser hvitt (anbefalt)",
@@ -1027,12 +1026,10 @@
           "white": "W",
           "warmWhite": "WW",
           "coolWhite": "CW",
-          "amber": "A",
-          "uv": "UV"
+          "amber": "A"
         },
         "notices": {
-          "cctOverride": "CCT-modus aktiv: RGB settes til 0, kun WW/CW.",
-          "uvDisabled": "UV er alltid manuell og brukes ikke automatisk."
+          "cctOverride": "CCT-modus aktiv: RGB settes til 0, kun WW/CW."
         }
       },
       "cta": {
