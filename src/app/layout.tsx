@@ -8,11 +8,13 @@ export const metadata = {
   description: "Y-Link - autonomous AI DMX controller for room-aware lighting",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/LogoVariants/16x16Y-Logo-Circle.png", sizes: "16x16", type: "image/png" },
       { url: "/LogoVariants/32x32Y-Logo-Circle.png", sizes: "32x32", type: "image/png" },
       { url: "/LogoVariants/96x96Y-Logo-Circle.png", sizes: "96x96", type: "image/png" },
       { url: "/LogoVariants/Y-Logo-Circle.svg", type: "image/svg+xml" },
     ],
+    shortcut: "/favicon.ico",
     apple: [{ url: "/LogoVariants/192x192Y-Logo-Circle.png", sizes: "192x192", type: "image/png" }],
   },
 };
