@@ -1029,7 +1029,8 @@
           "amber": "A"
         },
         "notices": {
-          "cctOverride": "CCT mode active: RGB channels set to 0, WW/CW only."
+          "cctOverride": "CCT mode active: RGB channels set to 0, WW/CW only.",
+          "cctRgbBlend": "CCT mode active: RGB channels blended to match the Kelvin value."
         }
       },
       "cta": {

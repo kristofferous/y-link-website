@@ -70,26 +70,67 @@ const rgbToSaturation = (r: number, g: number, b: number) => {
   return max === 0 ? 0 : (max - min) / max;
 };
 
-const cctToRgb = (kelvin: number): Rgb => {
-  const temp = kelvin / 100;
-  let red = 255;
-  let green = 0;
-  let blue = 0;
+const cctToXy = (kelvin: number) => {
+  const temp = clamp(kelvin, 1667, 25000);
+  let x = 0;
+  let y = 0;
 
-  if (temp <= 66) {
-    green = 99.4708025861 * Math.log(temp) - 161.1195681661;
-    blue = temp <= 19 ? 0 : 138.5177312231 * Math.log(temp - 10) - 305.0447927307;
+  if (temp <= 4000) {
+    x =
+      -0.2661239 * 1e9 / Math.pow(temp, 3) -
+      0.234358 * 1e6 / Math.pow(temp, 2) +
+      0.8776956 * 1e3 / temp +
+      0.17991;
   } else {
-    red = 329.698727446 * Math.pow(temp - 60, -0.1332047592);
-    green = 288.1221695283 * Math.pow(temp - 60, -0.0755148492);
-    blue = 255;
+    x =
+      -3.0258469 * 1e9 / Math.pow(temp, 3) +
+      2.1070379 * 1e6 / Math.pow(temp, 2) +
+      0.2226347 * 1e3 / temp +
+      0.24039;
   }
 
-  return {
-    r: clampChannel(red),
-    g: clampChannel(green),
-    b: clampChannel(blue),
-  };
+  if (temp <= 2222) {
+    y = -1.1063814 * Math.pow(x, 3) - 1.3481102 * Math.pow(x, 2) + 2.1855583 * x - 0.20219683;
+  } else if (temp <= 4000) {
+    y = -0.9549476 * Math.pow(x, 3) - 1.37418593 * Math.pow(x, 2) + 2.09137015 * x - 0.16748867;
+  } else {
+    y = 3.081758 * Math.pow(x, 3) - 5.8733867 * Math.pow(x, 2) + 3.75112997 * x - 0.37001483;
+  }
+
+  return { x, y };
+};
+
+const xyToLinearRgb = (x: number, y: number, Y = 1) => {
+  const X = (x * Y) / y;
+  const Z = ((1 - x - y) * Y) / y;
+  let r = X * 3.2406 + Y * -1.5372 + Z * -0.4986;
+  let g = X * -0.9689 + Y * 1.8758 + Z * 0.0415;
+  let b = X * 0.0557 + Y * -0.204 + Z * 1.057;
+  r = Math.max(0, r);
+  g = Math.max(0, g);
+  b = Math.max(0, b);
+  const max = Math.max(r, g, b);
+  if (max > 1) {
+    r /= max;
+    g /= max;
+    b /= max;
+  }
+  return { r, g, b };
+};
+
+const cctToLinearRgb = (kelvin: number) => {
+  const { x, y } = cctToXy(kelvin);
+  return xyToLinearRgb(x, y);
+};
+
+const mixWwCw = (kelvin: number) => {
+  const warm = 2700;
+  const cool = 6500;
+  const mired = 1e6 / clamp(kelvin, 1800, 10000);
+  const miredWarm = 1e6 / warm;
+  const miredCool = 1e6 / cool;
+  const warmWeight = clamp((mired - miredCool) / (miredWarm - miredCool));
+  return { warmWeight, coolWeight: 1 - warmWeight };
 };
 
 const estimateCct = (r: number, g: number, b: number) => {
@@ -138,12 +179,6 @@ export function DmxColorTool() {
     }
   }, [inputMode, rgbOnly]);
 
-  useEffect(() => {
-    if (inputMode === "cct" && rgbOnly) {
-      setRgbOnly(false);
-    }
-  }, [inputMode, rgbOnly]);
-
   const handleHexChange = (value: string) => {
     setHexInput(value);
     const parsed = parseHex(value);
@@ -160,30 +195,38 @@ export function DmxColorTool() {
   };
 
   const output = useMemo(() => {
-    const baseRgb =
+    const intensity = clamp(cctIntensity / 100);
+    const cctValue = cctInput.trim() ? Number(cctInput) : 3200;
+    const clampedCct = Number.isFinite(cctValue) ? clamp(cctValue, 1800, 10000) : 3200;
+    const cctLinear = cctToLinearRgb(clampedCct);
+
+    const baseLinear =
       inputMode === "cct"
-        ? (() => {
-            const cctValue = cctInput.trim() ? Number(cctInput) : 3200;
-            const clampedCct = Number.isFinite(cctValue) ? clamp(cctValue, 1800, 10000) : 3200;
-            const base = cctToRgb(clampedCct);
-            const intensity = clamp(cctIntensity / 100);
-            return {
-              r: clampChannel(base.r * intensity),
-              g: clampChannel(base.g * intensity),
-              b: clampChannel(base.b * intensity),
-            };
-          })()
-        : rgb;
-    const srgb = {
-      r: clamp(baseRgb.r / 255),
-      g: clamp(baseRgb.g / 255),
-      b: clamp(baseRgb.b / 255),
-    };
-    const linear = {
-      r: srgbToLinear(srgb.r),
-      g: srgbToLinear(srgb.g),
-      b: srgbToLinear(srgb.b),
-    };
+        ? {
+            r: cctLinear.r * intensity,
+            g: cctLinear.g * intensity,
+            b: cctLinear.b * intensity,
+          }
+        : {
+            r: srgbToLinear(clamp(rgb.r / 255)),
+            g: srgbToLinear(clamp(rgb.g / 255)),
+            b: srgbToLinear(clamp(rgb.b / 255)),
+          };
+
+    const baseSrgb =
+      inputMode === "cct"
+        ? {
+            r: clamp(linearToSrgb(baseLinear.r)),
+            g: clamp(linearToSrgb(baseLinear.g)),
+            b: clamp(linearToSrgb(baseLinear.b)),
+          }
+        : {
+            r: clamp(rgb.r / 255),
+            g: clamp(rgb.g / 255),
+            b: clamp(rgb.b / 255),
+          };
+
+    const linear = baseLinear;
 
     const maxLinear = Math.max(linear.r, linear.g, linear.b);
     const minLinear = Math.min(linear.r, linear.g, linear.b);
@@ -204,37 +247,28 @@ export function DmxColorTool() {
     let cctMode = false;
 
     if (inputMode === "cct" && supportsWwCw) {
-      const parsedCct = cctInput.trim() ? Number(cctInput) : null;
-      cctValue = parsedCct && Number.isFinite(parsedCct) ? clamp(parsedCct, 1800, 10000) : 3200;
+      cctValue = clampedCct;
       cctMode = !rgbOnly;
     }
 
     if (supportsWwCw && cctMode && cctValue) {
-      const intensity = clamp(cctIntensity / 100);
       const scaledIntensity = intensity * whiteScale;
-      const blend = clamp((cctValue - 2700) / (6500 - 2700));
       outR = 0;
       outG = 0;
       outB = 0;
-      outWw = scaledIntensity * (1 - blend);
-      outCw = scaledIntensity * blend;
+      const weights = mixWwCw(cctValue);
+      outWw = scaledIntensity * weights.warmWeight;
+      outCw = scaledIntensity * weights.coolWeight;
     } else {
       if (supportsWwCw && shouldUseWhite) {
         const baseCct = estimateCct(linear.r, linear.g, linear.b);
-        const blend = clamp((baseCct - 2700) / (6500 - 2700));
-        const useBoth = Math.abs(blend - 0.5) < 0.12;
         const neutralScaled = neutral * whiteScale;
         outR = Math.max(0, outR - neutralScaled);
         outG = Math.max(0, outG - neutralScaled);
         outB = Math.max(0, outB - neutralScaled);
-        if (useBoth) {
-          outWw = neutralScaled * (1 - blend);
-          outCw = neutralScaled * blend;
-        } else if (blend < 0.5) {
-          outWw = neutralScaled;
-        } else {
-          outCw = neutralScaled;
-        }
+        const weights = mixWwCw(baseCct);
+        outWw = neutralScaled * weights.warmWeight;
+        outCw = neutralScaled * weights.coolWeight;
       }
 
       if (supportsWhite && shouldUseWhite) {
@@ -246,8 +280,8 @@ export function DmxColorTool() {
       }
 
       if (supportsAmber && canOptimize) {
-        const hue = rgbToHue(srgb.r, srgb.g, srgb.b);
-        const saturationRgb = rgbToSaturation(srgb.r, srgb.g, srgb.b);
+        const hue = rgbToHue(baseSrgb.r, baseSrgb.g, baseSrgb.b);
+        const saturationRgb = rgbToSaturation(baseSrgb.r, baseSrgb.g, baseSrgb.b);
         if (hue >= 20 && hue <= 60 && saturationRgb > 0.2) {
           const amberFactor = 1 - Math.abs(hue - 40) / 20;
           const amberAmount = Math.min(outR, outG) * amberFactor * 0.6;
@@ -271,6 +305,8 @@ export function DmxColorTool() {
     return {
       channels,
       cctMode,
+      cctInputActive: inputMode === "cct",
+      cctUsesWhite: supportsWwCw,
     };
   }, [
     rgb,
@@ -303,14 +339,16 @@ export function DmxColorTool() {
   }, [tool.channels, supportsWhite, supportsWwCw, supportsAmber]);
 
   const previewRgb =
-    supportsWwCw && inputMode === "cct"
+    inputMode === "cct"
       ? (() => {
-          const base = cctToRgb(cctInput.trim() ? Number(cctInput) : 3200);
+          const cctValue = cctInput.trim() ? Number(cctInput) : 3200;
+          const clampedCct = Number.isFinite(cctValue) ? clamp(cctValue, 1800, 10000) : 3200;
+          const linearRgb = cctToLinearRgb(clampedCct);
           const intensity = clamp(cctIntensity / 100);
           return {
-            r: clampChannel(base.r * intensity),
-            g: clampChannel(base.g * intensity),
-            b: clampChannel(base.b * intensity),
+            r: clampChannel(linearToSrgb(linearRgb.r * intensity) * 255),
+            g: clampChannel(linearToSrgb(linearRgb.g * intensity) * 255),
+            b: clampChannel(linearToSrgb(linearRgb.b * intensity) * 255),
           };
         })()
       : rgb;
@@ -530,7 +568,11 @@ export function DmxColorTool() {
           </div>
         </div>
 
-        {output.cctMode ? <p className="text-xs text-muted-foreground">{tool.notices.cctOverride}</p> : null}
+        {output.cctInputActive ? (
+          <p className="text-xs text-muted-foreground">
+            {output.cctUsesWhite ? tool.notices.cctOverride : tool.notices.cctRgbBlend}
+          </p>
+        ) : null}
 
         <div className="grid gap-6 md:grid-cols-2">
           <div className="rounded-lg border border-border/40 bg-background p-4">

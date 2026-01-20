@@ -1029,7 +1029,8 @@
           "amber": "A"
         },
         "notices": {
-          "cctOverride": "CCT-modus aktiv: RGB settes til 0, kun WW/CW."
+          "cctOverride": "CCT-modus aktiv: RGB settes til 0, kun WW/CW.",
+          "cctRgbBlend": "CCT-modus aktiv: RGB blandes for å matche Kelvin."
         }
       },
       "cta": {
