@@ -322,7 +322,15 @@ export function LightingPowerTool() {
                   <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(230)}>
                     {tool.circuits.voltagePresetNeutral}
                   </Button>
-                  <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(400)}>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setVoltage(400);
+                      setPhaseCount(3);
+                    }}
+                  >
                     {tool.circuits.voltagePresetLine}
                   </Button>
                 </div>
