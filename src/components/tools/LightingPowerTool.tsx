@@ -345,7 +345,7 @@ export function LightingPowerTool() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {[1, 2, 3].map((value) => (
+                    {[1, 3].map((value) => (
                       <SelectItem key={value} value={String(value)}>
                         {value}
                       </SelectItem>
