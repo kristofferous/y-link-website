@@ -193,62 +193,65 @@ export function DmxAddressPlannerTool() {
               {tool.status.noFixtures}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{tool.fixtures.name}</TableHead>
-                  <TableHead>{tool.fixtures.channels}</TableHead>
-                  <TableHead>{tool.fixtures.type}</TableHead>
-                  <TableHead>{tool.fixtures.status}</TableHead>
-                  <TableHead className="text-right">{tool.fixtures.actions}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <>
+              <div className="space-y-4 sm:hidden">
                 {fixtures.map((fixture) => {
                   const placement = placements[fixture.id];
                   const isActive = fixture.id === activeFixtureId;
                   return (
-                    <TableRow key={fixture.id} className={isActive ? "bg-card/60" : undefined}>
-                      <TableCell>
-                        <Input
-                          value={fixture.name}
-                          onChange={(event) => updateFixture(fixture.id, { name: event.target.value })}
-                          placeholder={defaults.placeholderName}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          min={1}
-                          value={fixture.channels}
-                          onChange={(event) =>
-                            updateFixture(fixture.id, { channels: clampInt(Number(event.target.value || 1)) })
-                          }
-                          className="w-24"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Select
-                          value={fixture.type}
-                          onValueChange={(value) => updateFixture(fixture.id, { type: value as FixtureType })}
-                        >
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {fixtureTypeOrder.map((type) => (
-                              <SelectItem key={type} value={type}>
-                                {tool.types[type]}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {placement ? tool.fixtures.placed : tool.fixtures.unplaced}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
+                    <div
+                      key={fixture.id}
+                      className={`rounded-lg border border-border/40 bg-background p-4 ${
+                        isActive ? "ring-1 ring-foreground/20" : ""
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <Label className="text-xs text-muted-foreground">{tool.fixtures.name}</Label>
+                          <Input
+                            value={fixture.name}
+                            onChange={(event) => updateFixture(fixture.id, { name: event.target.value })}
+                            placeholder={defaults.placeholderName}
+                          />
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <div className="space-y-2">
+                            <Label className="text-xs text-muted-foreground">{tool.fixtures.channels}</Label>
+                            <Input
+                              type="number"
+                              min={1}
+                              value={fixture.channels}
+                              onChange={(event) =>
+                                updateFixture(fixture.id, { channels: clampInt(Number(event.target.value || 1)) })
+                              }
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-xs text-muted-foreground">{tool.fixtures.type}</Label>
+                            <Select
+                              value={fixture.type}
+                              onValueChange={(value) => updateFixture(fixture.id, { type: value as FixtureType })}
+                            >
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {fixtureTypeOrder.map((type) => (
+                                  <SelectItem key={type} value={type}>
+                                    {tool.types[type]}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {tool.fixtures.status}:{" "}
+                          <span className="text-foreground">
+                            {placement ? tool.fixtures.placed : tool.fixtures.unplaced}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
                           <Button
                             type="button"
                             size="sm"
@@ -276,12 +279,104 @@ export function DmxAddressPlannerTool() {
                             {tool.fixtures.remove}
                           </Button>
                         </div>
-                      </TableCell>
-                    </TableRow>
+                      </div>
+                    </div>
                   );
                 })}
-              </TableBody>
-            </Table>
+              </div>
+
+              <div className="hidden sm:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{tool.fixtures.name}</TableHead>
+                      <TableHead>{tool.fixtures.channels}</TableHead>
+                      <TableHead>{tool.fixtures.type}</TableHead>
+                      <TableHead>{tool.fixtures.status}</TableHead>
+                      <TableHead className="text-right">{tool.fixtures.actions}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {fixtures.map((fixture) => {
+                      const placement = placements[fixture.id];
+                      const isActive = fixture.id === activeFixtureId;
+                      return (
+                        <TableRow key={fixture.id} className={isActive ? "bg-card/60" : undefined}>
+                          <TableCell>
+                            <Input
+                              value={fixture.name}
+                              onChange={(event) => updateFixture(fixture.id, { name: event.target.value })}
+                              placeholder={defaults.placeholderName}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              min={1}
+                              value={fixture.channels}
+                              onChange={(event) =>
+                                updateFixture(fixture.id, { channels: clampInt(Number(event.target.value || 1)) })
+                              }
+                              className="w-24"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={fixture.type}
+                              onValueChange={(value) => updateFixture(fixture.id, { type: value as FixtureType })}
+                            >
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {fixtureTypeOrder.map((type) => (
+                                  <SelectItem key={type} value={type}>
+                                    {tool.types[type]}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            {placement ? tool.fixtures.placed : tool.fixtures.unplaced}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant={isActive ? "default" : "outline"}
+                                onClick={() => setActiveFixtureId(fixture.id)}
+                              >
+                                {isActive ? tool.fixtures.selected : tool.fixtures.select}
+                              </Button>
+                              {placement ? (
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => clearPlacement(fixture.id)}
+                                >
+                                  {tool.actions.clearPlacement}
+                                </Button>
+                              ) : null}
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => removeFixture(fixture.id)}
+                              >
+                                {tool.fixtures.remove}
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
           )}
         </div>
       </SectionCard>
