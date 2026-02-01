@@ -319,48 +319,50 @@ export function DmxAddressPlannerTool() {
 
           <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
             <div className="rounded-lg border border-border/40 bg-background p-4">
-              <div
-                className="grid w-full max-w-[680px] gap-px rounded-md bg-border/40 p-1"
-                style={{
-                  gridTemplateColumns: "repeat(16, minmax(0, 1fr))",
-                  gridTemplateRows: "repeat(32, minmax(0, 1fr))",
-                  aspectRatio: "1 / 2",
-                }}
-              >
-                {cellFixtures.map((fixturesAtCell, index) => {
-                  const channel = index + 1;
-                  const ids = Array.from(fixturesAtCell);
-                  const primary = ids[0];
-                  const fixture = primary ? fixtureById.get(primary) : null;
-                  const isOverlap = ids.length > 1;
-                  const isSelected =
-                    activeFixtureId && fixture && fixture.id === activeFixtureId && !isOverlap;
-                  const placementLabel = fixture
-                    ? `${fixture.name} (${tool.types[fixture.type]}, ch ${channel})`
-                    : `${tool.grid.channel} ${channel}`;
+              <div className="max-h-[420px] overflow-auto rounded-md md:max-h-[520px]">
+                <div
+                  className="grid gap-px rounded-md bg-border/40 p-1 [--cell-size:22px] [--grid-columns:16] [--grid-rows:32] md:[--cell-size:18px] md:[--grid-columns:32] md:[--grid-rows:16]"
+                  style={{
+                    gridTemplateColumns: "repeat(var(--grid-columns), var(--cell-size))",
+                    gridTemplateRows: "repeat(var(--grid-rows), var(--cell-size))",
+                    width: "fit-content",
+                  }}
+                >
+                  {cellFixtures.map((fixturesAtCell, index) => {
+                    const channel = index + 1;
+                    const ids = Array.from(fixturesAtCell);
+                    const primary = ids[0];
+                    const fixture = primary ? fixtureById.get(primary) : null;
+                    const isOverlap = ids.length > 1;
+                    const isSelected =
+                      activeFixtureId && fixture && fixture.id === activeFixtureId && !isOverlap;
+                    const placementLabel = fixture
+                      ? `${fixture.name} (${tool.types[fixture.type]}, ch ${channel})`
+                      : `${tool.grid.channel} ${channel}`;
 
-                  return (
-                    <button
-                      key={`channel-${channel}`}
-                      type="button"
-                      className={[
-                        "h-full w-full rounded-[2px] border border-border/40 text-[10px] leading-none text-muted-foreground transition-colors",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                        fixture ? fixtureTypeTone[fixture.type] : "bg-background",
-                        isSelected ? "ring-2 ring-foreground/40" : "",
-                        isOverlap ? "border-destructive/70 bg-destructive/20 text-destructive" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      aria-label={placementLabel}
-                      title={placementLabel}
-                      onClick={() => {
-                        if (!activeFixtureId) return;
-                        placeFixture(activeFixtureId, channel);
-                      }}
-                    />
-                  );
-                })}
+                    return (
+                      <button
+                        key={`channel-${channel}`}
+                        type="button"
+                        className={[
+                          "h-[var(--cell-size)] w-[var(--cell-size)] rounded-[2px] border border-border/40 text-[10px] leading-none text-muted-foreground transition-colors",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          fixture ? fixtureTypeTone[fixture.type] : "bg-background",
+                          isSelected ? "ring-2 ring-foreground/40" : "",
+                          isOverlap ? "border-destructive/70 bg-destructive/20 text-destructive" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        aria-label={placementLabel}
+                        title={placementLabel}
+                        onClick={() => {
+                          if (!activeFixtureId) return;
+                          placeFixture(activeFixtureId, channel);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
