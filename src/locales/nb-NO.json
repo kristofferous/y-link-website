@@ -216,7 +216,7 @@
           "description": "Identiske input gir identisk lysoutput på tvers av kjøringer, venues og enheter."
         }
       ],
-      "helper": "Ingen prosenter, ingen pilotmålinger â€” kun runtime-reglene systemet følger."
+      "helper": "Ingen prosenter, ingen pilotmålinger — kun runtime-reglene systemet følger."
     },
     "applications": {
       "eyebrow": "Bruksområder",
@@ -260,7 +260,7 @@
       "title": "Hvorfor Y-Link",
       "points": [
         "Mindre bemanning, høyere tempo.",
-        "Show som treffer hver gang â€“ ikke tilfeldige effekter.",
+        "Show som treffer hver gang - ikke tilfeldige effekter.",
         "Raskt oppsett for små venues og mobile rigger."
       ],
       "note": "Målet er at solide lyssekvenser skal være standard, ikke et sideprosjekt."
@@ -348,8 +348,8 @@
       "items": [
         "Validere stabilitet, timing og drift i ekte venue-miljøer.",
         "Samle strukturert teknisk og operasjonell feedback.",
-        "Kontrollert pilot med få partnere â€“ ikke en åpen beta.",
-        "Tidsbegrenset periode: omtrent 4â€“8 uker.",
+        "Kontrollert pilot med få partnere - ikke en åpen beta.",
+        "Tidsbegrenset periode: omtrent 4-8 uker.",
         "Y1-hardware lånes ut, eies av Y-Link og returneres etter piloten. Hardware og programvare er under aktiv utvikling."
       ]
     },
@@ -358,7 +358,7 @@
       "items": [
         "Ikke et ferdig kommersielt produkt.",
         "Ingen gratis hardware-giveaway.",
-        "Ingen full produksjonsdekning â€“ fokuset er pilotverifisering."
+        "Ingen full produksjonsdekning - fokuset er pilotverifisering."
       ]
     },
     "partnersGet": {
@@ -422,7 +422,7 @@
       },
       {
         "q": "Hvordan blir jeg med i piloten eller forhåndsbestiller?",
-        "a": "Bruk skjemaet på forsiden eller pilotsiden. Y-Link er under utvikling, og piloten er tidsbegrenset (ca. 4â€“8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
+        "a": "Bruk skjemaet på forsiden eller pilotsiden. Y-Link er under utvikling, og piloten er tidsbegrenset (ca. 4-8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
       },
       {
         "q": "Hvordan avslutter jeg e-poster?",
@@ -591,7 +591,7 @@
         "detail": "Last opp spor, verifiser timing og gå live raskt med rekkverk."
       }
     ],
-    "readMore": "Les mer â†’",
+    "readMore": "Les mer →",
     "musicReactive": {
       "metadata": {
         "title": "Musikkreaktivt DMX-lys for klubber",
@@ -754,7 +754,7 @@
         "href": "/guides/dmx-basics"
       },
       {
-        "title": "AdresseÂ­ring av lamper",
+        "title": "Adressering av lamper",
         "href": "/guides/dmx-addressing"
       },
       {
@@ -798,20 +798,20 @@
         "modes": {
           "title": "Fixture-modi",
           "body": "Velg modi som balanserer kontroll mot kanalbruk. Høyere modi gir mer kontroll men bruker flere kanaler. AI-planleggeren trenger korrekt patch for å unngå metning.",
-          "linkLabel": "adresseÂ­ring av lamper"
+          "linkLabel": "adressering av lamper"
         }
       }
     },
     "dmxAddressing": {
       "metadata": {
-        "title": "AdresseÂ­ring av lamper",
-        "description": "Lær korrekt adresseÂ­ring for stabile, AI-drevne lyssekvenser."
+        "title": "Adressering av lamper",
+        "description": "Lær korrekt adressering for stabile, AI-drevne lyssekvenser."
       },
-      "breadcrumb": "AdresseÂ­ring",
+      "breadcrumb": "Adressering",
       "hero": {
         "label": "Guide",
         "title": "Fixture Addressing",
-        "body": "Riktig adresseÂ­ring sikrer at AI-planlagte cues treffer riktig kanal hver gang."
+        "body": "Riktig adressering sikrer at AI-planlagte cues treffer riktig kanal hver gang."
       },
       "plan": {
         "title": "Planlegg patchen",
@@ -921,14 +921,14 @@
         "title": "Vanlige feil",
         "items": [
           "Signalfall: sjekk kabler, terminering og noder.",
-          "Feil mapping: verifiser patch og adresseÂ­ring.",
+          "Feil mapping: verifiser patch og adressering.",
           "Timing-glitch: se på nettverkslast og node-helse."
         ]
       },
       "checklist": {
         "title": "Hurtigsjekk",
         "items": [
-          "Bekreft univers- og adresseÂ­oppsett.",
+          "Bekreft univers- og adresseoppsett.",
           "Sjekk at rekkverk og sikkerhetsgrenser er aktive.",
           "Start noder på feiltilstand, logg hendelsen."
         ],
