@@ -321,11 +321,10 @@ export function DmxAddressPlannerTool() {
             <div className="rounded-lg border border-border/40 bg-background p-4">
               <div className="max-h-[420px] overflow-auto rounded-md md:max-h-[520px]">
                 <div
-                  className="grid gap-px rounded-md bg-border/40 p-1 [--cell-size:22px] [--grid-columns:16] [--grid-rows:32] md:[--cell-size:18px] md:[--grid-columns:32] md:[--grid-rows:16]"
+                  className="grid gap-px rounded-md bg-border/40 p-1 [--cell-size:clamp(14px,calc((100vw-5rem)/16),22px)] [--grid-columns:16] [--grid-rows:32] md:[--cell-size:18px] md:[--grid-columns:32] md:[--grid-rows:16]"
                   style={{
                     gridTemplateColumns: "repeat(var(--grid-columns), var(--cell-size))",
                     gridTemplateRows: "repeat(var(--grid-rows), var(--cell-size))",
-                    width: "fit-content",
                   }}
                 >
                   {cellFixtures.map((fixturesAtCell, index) => {
