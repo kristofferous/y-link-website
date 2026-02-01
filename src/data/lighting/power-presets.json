@@ -1,62 +1,62 @@
 [
   {
-    "name": "Generic LED PAR 50W",
-    "watts": 50
+    "name": "Chauvet DJ SlimPAR Pro H USB",
+    "watts": 42
   },
   {
-    "name": "Generic LED PAR 100W",
-    "watts": 100
+    "name": "Apex Eclipse Par (TU/DY)",
+    "watts": 207
   },
   {
-    "name": "Generic LED PAR 200W",
-    "watts": 200
+    "name": "Volux CUEPAR X2 IP65",
+    "watts": 80
   },
   {
-    "name": "Generic LED PAR 400W",
-    "watts": 400
-  },
-  {
-    "name": "Generic LED BAR 100W",
-    "watts": 100
-  },
-  {
-    "name": "Generic LED BAR 200W",
-    "watts": 200
-  },
-  {
-    "name": "Generic LED BAR 400W",
-    "watts": 400
-  },
-  {
-    "name": "Generic Mover 250W",
-    "watts": 250
-  },
-  {
-    "name": "Generic Mover 400W",
-    "watts": 400
-  },
-  {
-    "name": "Generic Mover 700W",
-    "watts": 700
-  },
-  {
-    "name": "Generic Mover 1000W",
-    "watts": 1000
-  },
-  {
-    "name": "Generic Strobe 150W",
-    "watts": 150
-  },
-  {
-    "name": "Generic Strobe 300W",
+    "name": "Martin ELP PAR",
     "watts": 300
   },
   {
-    "name": "Generic Haze 700W",
+    "name": "Robe Robin 800",
+    "watts": 780
+  },
+  {
+    "name": "Chauvet Intimidator Spot 260",
+    "watts": 350
+  },
+  {
+    "name": "Ayrton Perseo Profile S",
+    "watts": 1150
+  },
+  {
+    "name": "Elation Platinum Series 5R",
+    "watts": 450
+  },
+  {
+    "name": "Claypaky Sharpy Plus",
+    "watts": 450
+  },
+  {
+    "name": "Godox VL300 LED",
+    "watts": 300
+  },
+  {
+    "name": "SolaWash 19 (LED Bar)",
+    "watts": 500
+  },
+  {
+    "name": "Chauvet Blizzard Storm Strobe",
+    "watts": 300
+  },
+  {
+    "name": "Look Solutions Viper NT",
+    "watts": 1200
+  },
+  {
+    "name": "ADJ Entour Haze Pro",
     "watts": 700
   },
   {
-    "name": "Generic Haze 1500W",
+    "name": "DMX Fog Machine Pro",
     "watts": 1500
   }
 ]

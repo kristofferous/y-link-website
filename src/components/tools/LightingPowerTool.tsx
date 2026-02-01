@@ -340,13 +340,18 @@ export function LightingPowerTool() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="power-phases">{tool.circuits.phases}</Label>
-                <Input
-                  id="power-phases"
-                  type="number"
-                  min={1}
-                  value={phaseCount}
-                  onChange={(event) => setPhaseCount(Math.max(1, Math.floor(Number(event.target.value || 1))))}
-                />
+                <Select value={String(phaseCount)} onValueChange={(value) => setPhaseCount(Number(value))}>
+                  <SelectTrigger id="power-phases">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3].map((value) => (
+                      <SelectItem key={value} value={String(value)}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label>{tool.circuits.safety}</Label>
