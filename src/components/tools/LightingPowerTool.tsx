@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SectionCard } from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,10 @@ type FixtureRow = {
 };
 
 const PRESET_CUSTOM = "custom";
+const BREAKER_PRESETS = [15, 20, 30, 50];
+const POWER_FACTOR_PRESETS = [0.85, 0.9, 0.95];
+const DIVERSITY_PRESETS = [0.6, 0.7, 0.8, 1];
+const circuitLetter = (index: number) => String.fromCharCode(65 + (index % 26));
 
 const clampNumber = (value: number, min = 0) => {
   if (!Number.isFinite(value)) return min;
@@ -54,9 +58,21 @@ export function LightingPowerTool() {
   ]);
 
   const [voltage, setVoltage] = useState(230);
-  const [breakerAmps, setBreakerAmps] = useState(16);
   const [circuitCount, setCircuitCount] = useState(6);
   const [phaseCount, setPhaseCount] = useState(3);
+  const [breakerSizes, setBreakerSizes] = useState<number[]>(() => Array.from({ length: 6 }, () => 20));
+  const [powerFactor, setPowerFactor] = useState(0.9);
+  const [diversity, setDiversity] = useState(0.8);
+
+  useEffect(() => {
+    setBreakerSizes((current) => {
+      const next = [...current];
+      while (next.length < circuitCount) {
+        next.push(current[current.length - 1] ?? 20);
+      }
+      return next.slice(0, circuitCount);
+    });
+  }, [circuitCount]);
 
   const updateFixture = (id: string, patch: Partial<FixtureRow>) => {
     setFixtures((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
@@ -95,53 +111,63 @@ export function LightingPowerTool() {
   const results = useMemo(() => {
     const safeVoltage = clampNumber(voltage, 1);
     const safeCircuits = Math.max(1, Math.floor(circuitCount));
-    const safeBreaker = clampNumber(breakerAmps, 1);
     const safePhases = Math.max(1, Math.min(Math.floor(phaseCount), safeCircuits));
+    const safePowerFactor = Math.min(1, Math.max(0.6, powerFactor));
+    const safeDiversity = Math.min(1, Math.max(0.4, diversity));
 
-    const units: Array<{ watts: number; amps: number }> = [];
+    const units: Array<{ name: string; watts: number }> = [];
     fixtures.forEach((row) => {
       const quantity = Math.max(0, Math.floor(row.quantity));
       const watts = clampNumber(row.watts);
-      const resolvedWatts = watts;
-      const resolvedAmps = resolvedWatts / safeVoltage;
 
       for (let i = 0; i < quantity; i += 1) {
-        units.push({ watts: resolvedWatts, amps: resolvedAmps });
+        units.push({ name: row.name.trim() || tool.defaults.newName, watts });
       }
     });
 
     const totalWatts = units.reduce((sum, unit) => sum + unit.watts, 0);
-    const totalAmps = units.reduce((sum, unit) => sum + unit.amps, 0);
+    const totalVa = safePowerFactor > 0 ? totalWatts / safePowerFactor : totalWatts;
+    const totalAmps = totalVa / safeVoltage;
 
     const circuitLoads = Array.from({ length: safeCircuits }, () => 0);
+    const circuitFixtures = Array.from({ length: safeCircuits }, () => new Map<string, number>());
     units.forEach((unit, index) => {
       const circuitIndex = index % safeCircuits;
-      circuitLoads[circuitIndex] += unit.amps;
+      const unitVa = safePowerFactor > 0 ? unit.watts / safePowerFactor : unit.watts;
+      circuitLoads[circuitIndex] += unitVa;
+      const count = circuitFixtures[circuitIndex].get(unit.name) ?? 0;
+      circuitFixtures[circuitIndex].set(unit.name, count + 1);
     });
 
-    const safeLimit = safeBreaker * 0.8;
     const phaseLoads = Array.from({ length: safePhases }, () => 0);
     circuitLoads.forEach((load, index) => {
-      phaseLoads[index % safePhases] += load;
+      const amps = load / safeVoltage;
+      phaseLoads[index % safePhases] += amps;
     });
 
     const maxPhase = Math.max(...phaseLoads);
     const minPhase = Math.min(...phaseLoads);
     const imbalance = maxPhase > 0 ? (maxPhase - minPhase) / maxPhase : 0;
+    const balanceScore = maxPhase > 0 ? Math.round((1 - imbalance) * 100) : 100;
+    const averageWatts = totalWatts * safeDiversity;
 
     return {
       totalWatts,
+      totalVa,
       totalAmps,
       circuitLoads,
-      safeLimit,
       safeVoltage,
       safeCircuits,
-      safeBreaker,
       safePhases,
       phaseLoads,
       imbalance,
+      balanceScore,
+      circuitFixtures,
+      safePowerFactor,
+      safeDiversity,
+      averageWatts,
     };
-  }, [fixtures, voltage, breakerAmps, circuitCount, phaseCount]);
+  }, [fixtures, voltage, circuitCount, phaseCount, powerFactor, diversity, tool.defaults.newName]);
 
   return (
     <div className="space-y-8">
@@ -311,16 +337,12 @@ export function LightingPowerTool() {
               <div className="space-y-2">
                 <Label htmlFor="power-voltage">{tool.circuits.voltage}</Label>
                 <p className="text-xs text-muted-foreground">{tool.circuits.voltageHelp}</p>
-                <Input
-                  id="power-voltage"
-                  type="number"
-                  min={1}
-                  value={voltage}
-                  onChange={(event) => setVoltage(clampNumber(Number(event.target.value || 0), 1))}
-                />
                 <div className="flex flex-wrap items-center gap-2">
+                  <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(120)}>
+                    {tool.circuits.voltagePresetUs}
+                  </Button>
                   <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(230)}>
-                    {tool.circuits.voltagePresetNeutral}
+                    {tool.circuits.voltagePresetEu}
                   </Button>
                   <Button
                     type="button"
@@ -334,16 +356,34 @@ export function LightingPowerTool() {
                     {tool.circuits.voltagePresetLine}
                   </Button>
                 </div>
+                <Input
+                  id="power-voltage"
+                  type="number"
+                  min={1}
+                  value={voltage}
+                  onChange={(event) => setVoltage(clampNumber(Number(event.target.value || 0), 1))}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="power-breaker">{tool.circuits.breaker}</Label>
-                <Input
-                  id="power-breaker"
-                  type="number"
-                  min={1}
-                  value={breakerAmps}
-                  onChange={(event) => setBreakerAmps(clampNumber(Number(event.target.value || 0), 1))}
-                />
+                <Select
+                  value={String(breakerSizes[0] ?? 20)}
+                  onValueChange={(value) => {
+                    const nextValue = Number(value);
+                    setBreakerSizes(Array.from({ length: circuitCount }, () => nextValue));
+                  }}
+                >
+                  <SelectTrigger id="power-breaker">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {BREAKER_PRESETS.map((value) => (
+                      <SelectItem key={value} value={String(value)}>
+                        {value}A
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="power-circuits">{tool.circuits.count}</Label>
@@ -371,6 +411,36 @@ export function LightingPowerTool() {
                 </Select>
               </div>
               <div className="space-y-2">
+                <Label htmlFor="power-factor">{tool.circuits.powerFactor}</Label>
+                <Select value={String(powerFactor)} onValueChange={(value) => setPowerFactor(Number(value))}>
+                  <SelectTrigger id="power-factor">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {POWER_FACTOR_PRESETS.map((value) => (
+                      <SelectItem key={value} value={String(value)}>
+                        {value.toFixed(2)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="diversity-factor">{tool.circuits.diversity}</Label>
+                <Select value={String(diversity)} onValueChange={(value) => setDiversity(Number(value))}>
+                  <SelectTrigger id="diversity-factor">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {DIVERSITY_PRESETS.map((value) => (
+                      <SelectItem key={value} value={String(value)}>
+                        {Math.round(value * 100)}%
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
                 <Label>{tool.circuits.safety}</Label>
                 <div className="rounded-lg border border-border/40 bg-background px-3 py-2 text-sm text-muted-foreground">
                   {tool.circuits.safetyValue.replace("{value}", "80")}
@@ -381,17 +451,47 @@ export function LightingPowerTool() {
             <div className="rounded-lg border border-border/40 bg-background p-4">
               <p className="text-sm font-semibold text-foreground">{tool.circuits.perCircuit}</p>
               <div className="mt-4 space-y-3">
-                {results.circuitLoads.map((amps, index) => {
-                  const loadRatio = results.safeLimit > 0 ? amps / results.safeLimit : 0;
+                {results.circuitLoads.map((va, index) => {
+                  const breaker = breakerSizes[index] ?? breakerSizes[0] ?? 20;
+                  const maxVa = breaker * results.safeVoltage;
+                  const safeVa = maxVa * 0.8;
+                  const loadRatio = safeVa > 0 ? va / safeVa : 0;
                   const loadPct = Math.min(100, Math.round(loadRatio * 100));
                   const color =
                     loadRatio > 1 ? "bg-destructive" : loadRatio > 0.8 ? "bg-foreground/40" : "bg-foreground/20";
+                  const phaseLabel = phaseCount === 1 ? tool.circuits.phaseSingle : `L${(index % phaseCount) + 1}`;
+                  const label = tool.circuits.circuitLabel.replace("{index}", circuitLetter(index));
                   return (
                     <div key={`circuit-${index}`} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{tool.circuits.circuitLabel.replace("{index}", String(index + 1))}</span>
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <span>{label}</span>
+                          <span className="text-[11px] uppercase tracking-[0.15em]">{phaseLabel}</span>
+                        </div>
+                        <div className="min-w-[120px]">
+                          <Select
+                            value={String(breaker)}
+                            onValueChange={(value) => {
+                              const next = Number(value);
+                              setBreakerSizes((current) =>
+                                current.map((size, i) => (i === index ? next : size)),
+                              );
+                            }}
+                          >
+                            <SelectTrigger className="h-7 w-full text-xs">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {BREAKER_PRESETS.map((value) => (
+                                <SelectItem key={value} value={String(value)}>
+                                  {value}A
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                         <span>
-                          {amps.toFixed(1)}A / {results.safeLimit.toFixed(1)}A
+                          {va.toFixed(0)}VA / {safeVa.toFixed(0)}VA
                         </span>
                       </div>
                       <div className="h-2 rounded-full bg-border/50">
@@ -408,6 +508,9 @@ export function LightingPowerTool() {
                 {tool.circuits.phaseWarning.replace("{value}", String(Math.round(results.imbalance * 100)))}
               </div>
             ) : null}
+            <div className="rounded-lg border border-border/40 bg-background px-4 py-3 text-sm text-muted-foreground">
+              {tool.circuits.phaseBalance.replace("{value}", String(results.balanceScore))}
+            </div>
           </div>
         </SectionCard>
 
@@ -424,6 +527,15 @@ export function LightingPowerTool() {
                   <span className="text-foreground">{results.totalWatts.toFixed(0)} W</span>
                 </div>
                 <div>
+                  {tool.results.totalVa}: <span className="text-foreground">{results.totalVa.toFixed(0)} VA</span>
+                </div>
+                <div>
+                  {tool.results.realToApparent}:{" "}
+                  <span className="text-foreground">
+                    {results.totalWatts.toFixed(0)}W → {results.totalVa.toFixed(0)}VA
+                  </span>
+                </div>
+                <div>
                   {tool.results.totalAmps}:{" "}
                   <span className="text-foreground">{results.totalAmps.toFixed(1)} A</span>
                 </div>
@@ -431,6 +543,12 @@ export function LightingPowerTool() {
                   {tool.results.perCircuit}:{" "}
                   <span className="text-foreground">
                     {(results.totalAmps / results.safeCircuits).toFixed(1)} A
+                  </span>
+                </div>
+                <div>
+                  {tool.results.averageDraw}:{" "}
+                  <span className="text-foreground">
+                    {results.averageWatts.toFixed(0)} W ({Math.round(results.safeDiversity * 100)}%)
                   </span>
                 </div>
               </div>
@@ -447,6 +565,54 @@ export function LightingPowerTool() {
                     <span className="text-foreground">{load.toFixed(1)} A</span>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border/40 bg-card p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                {tool.results.exportTitle}
+              </p>
+              <div className="mt-3 rounded-md border border-border/40 bg-background p-3 text-xs text-muted-foreground">
+                {results.circuitLoads.map((va, index) => {
+                  const breaker = breakerSizes[index] ?? breakerSizes[0] ?? 20;
+                  const maxVa = breaker * results.safeVoltage;
+                  const safeVa = maxVa * 0.8;
+                  const phaseLabel = phaseCount === 1 ? tool.circuits.phaseSingle : `L${(index % phaseCount) + 1}`;
+                  const label = tool.results.exportCircuit
+                    .replace("{index}", circuitLetter(index))
+                    .replace("{breaker}", String(breaker))
+                    .replace("{voltage}", String(results.safeVoltage))
+                    .replace("{phase}", phaseLabel)
+                    .replace("{load}", va.toFixed(0))
+                    .replace("{max}", maxVa.toFixed(0))
+                    .replace("{safe}", safeVa.toFixed(0));
+                  const fixturesMap = results.circuitFixtures[index];
+                  return (
+                    <div key={`export-${index}`} className="space-y-1">
+                      <p className="text-foreground">{label}</p>
+                      {[...fixturesMap.entries()].map(([name, count]) => {
+                        const fixture = fixtures.find((row) => row.name === name);
+                        const watts = fixture?.watts ?? 0;
+                        const line = tool.results.exportFixture
+                          .replace("{name}", name)
+                          .replace("{count}", String(count))
+                          .replace("{watts}", String(Math.round(watts * count)));
+                        const warn = watts > safeVa * 0.5 ? " (!)" : "";
+                        return (
+                          <p key={`${index}-${name}`} className="pl-3">
+                            {line}
+                            {warn}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+                <p className="pt-2 text-foreground">
+                  {tool.results.exportSummary
+                    .replace("{count}", String(results.safeCircuits))
+                    .replace("{safety}", "80")}
+                </p>
               </div>
             </div>
           </div>

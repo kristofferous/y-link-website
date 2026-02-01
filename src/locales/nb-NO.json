@@ -1642,7 +1642,13 @@
           "phaseWarning": "Ujevn fasebalanse: {value}% forskjell.",
           "voltageHelp": "Bruk armaturspenning (fase-til-n?ytral p? 3-fase).",
           "voltagePresetNeutral": "Fase-til-n?ytral 230V",
-          "voltagePresetLine": "Fase-til-fase 400V"
+          "voltagePresetLine": "Fase-til-fase 400V",
+          "voltagePresetUs": "120V US",
+          "voltagePresetEu": "230V EU",
+          "powerFactor": "Effektfaktor (PF)",
+          "diversity": "Diversitetsfaktor",
+          "phaseBalance": "Fasebalanse: {value}% jevnt.",
+          "phaseSingle": "L/N"
         },
         "results": {
           "title": "Totalt",
@@ -1651,7 +1657,14 @@
           "totalAmps": "Total ampere",
           "perCircuit": "Gjennomsnitt per kurs",
           "phaseTitle": "Fasebalanse",
-          "phaseLabel": "Fase {index}"
+          "phaseLabel": "Fase {index}",
+          "totalVa": "Total tilsynelatende effekt",
+          "averageDraw": "Gjennomsnittlig forbruk",
+          "exportTitle": "Eksport-forh?ndsvisning",
+          "exportCircuit": "KURS {index} ({breaker}A {voltage}V {phase}): {load}VA / {max}VA (trygt {safe}VA)",
+          "exportFixture": "- {name} x{count} = {watts}W",
+          "realToApparent": "Reell til tilsynelatende",
+          "exportSummary": "Totalt: {count} kurser @ {safety}% sikkerhet"
         }
       },
       "details": {

@@ -1642,7 +1642,13 @@
           "phaseWarning": "Phase imbalance detected: {value}% spread.",
           "voltageHelp": "Use fixture voltage (line-to-neutral for 3-phase systems).",
           "voltagePresetNeutral": "Line-to-neutral 230V",
-          "voltagePresetLine": "Line-to-line 400V"
+          "voltagePresetLine": "Line-to-line 400V",
+          "voltagePresetUs": "120V US",
+          "voltagePresetEu": "230V EU",
+          "powerFactor": "Power factor (PF)",
+          "diversity": "Diversity factor",
+          "phaseBalance": "Phase balance: {value}% even.",
+          "phaseSingle": "L/N"
         },
         "results": {
           "title": "Totals",
@@ -1651,7 +1657,14 @@
           "totalAmps": "Total amps",
           "perCircuit": "Average per-circuit",
           "phaseTitle": "Phase balance",
-          "phaseLabel": "Phase {index}"
+          "phaseLabel": "Phase {index}",
+          "totalVa": "Total apparent power",
+          "averageDraw": "Average draw",
+          "exportTitle": "Export preview",
+          "exportCircuit": "CIRCUIT {index} ({breaker}A {voltage}V {phase}): {load}VA / {max}VA (safe {safe}VA)",
+          "exportFixture": "- {name} x{count} = {watts}W",
+          "realToApparent": "Real to apparent",
+          "exportSummary": "Total: {count} circuits @ {safety}% safety"
         }
       },
       "details": {
