@@ -318,7 +318,7 @@ export function DmxAddressPlannerTool() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
-            <div className="rounded-lg border border-border/40 bg-background p-3 sm:p-4">
+            <div className="w-fit max-w-full justify-self-start rounded-lg border border-border/40 bg-background p-3 sm:p-4">
               <div className="max-h-[420px] overflow-x-auto overflow-y-auto rounded-md md:max-h-[520px]">
                 <div
                   className="grid gap-px rounded-md bg-border/40 p-1 [--cell-size:clamp(14px,calc((100vw-3.5rem)/16),22px)] [--grid-columns:16] [--grid-rows:32] md:[--cell-size:18px] md:[--grid-columns:32] md:[--grid-rows:16]"
