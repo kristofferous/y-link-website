@@ -1068,6 +1068,12 @@
         "description": "See how many fixtures fit per universe and how many universes you need.",
         "href": "/tools/dmx-capacity",
         "tag": "Free tool"
+      },
+      {
+        "title": "Stage Lighting Power/Load Calculator",
+        "description": "Estimate power draw per circuit with safety margins and phase balance.",
+        "href": "/tools/lighting-power-load",
+        "tag": "Free tool"
       }
     ],
     "dmxColor": {
@@ -1585,6 +1591,79 @@
         "title": "Need a printable patch sheet?",
         "body": "Export a clean patch sheet once your plan is locked.",
         "link": "Open DMX Patch Sheet Generator"
+      }
+    },
+    "lightingPower": {
+      "metadata": {
+        "title": "Stage Lighting Power/Load Calculator",
+        "description": "Calculate lighting load per circuit with an 80% safety margin and phase balance view."
+      },
+      "breadcrumb": "Power/Load Calculator",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "Balance lighting power safely",
+        "body": "Estimate watts, amps, and circuit headroom before load-in."
+      },
+      "howTo": {
+        "title": "How to use the calculator",
+        "steps": [
+          "Add fixtures from presets or enter custom wattage.",
+          "Set breaker size, circuit count, and phases.",
+          "Review per-circuit load and phase balance."
+        ]
+      },
+      "tool": {
+        "defaults": {
+          "newName": "Fixture",
+          "customName": "Custom fixture"
+        },
+        "inputs": {
+          "title": "Fixtures",
+          "subtitle": "Presets speed up common rigs. Enter custom values when needed.",
+          "preset": "Preset",
+          "quantity": "Quantity",
+          "watts": "Watts",
+          "amps": "Amps",
+          "add": "Add fixture",
+          "bulkAdd": "Add 10x",
+          "remove": "Remove",
+          "actions": "Actions"
+        },
+        "circuits": {
+          "title": "Circuits",
+          "subtitle": "Set your available power and phase count.",
+          "voltage": "Voltage (V)",
+          "breaker": "Breaker (A)",
+          "count": "Circuits",
+          "phases": "Phases",
+          "safety": "Safety margin",
+          "safetyValue": "{value}% of breaker",
+          "perCircuit": "Per-circuit load",
+          "circuitLabel": "Circuit {index}",
+          "phaseWarning": "Phase imbalance detected: {value}% spread."
+        },
+        "results": {
+          "title": "Totals",
+          "subtitle": "Quick view of total demand and average circuit load.",
+          "totalWatts": "Total watts",
+          "totalAmps": "Total amps",
+          "perCircuit": "Average per-circuit",
+          "phaseTitle": "Phase balance",
+          "phaseLabel": "Phase {index}"
+        }
+      },
+      "details": {
+        "title": "Planning notes",
+        "sections": [
+          {
+            "title": "Safety margin",
+            "body": "Use 80% of breaker capacity for continuous loads."
+          },
+          {
+            "title": "Phase balance",
+            "body": "Even distribution reduces nuisance trips and keeps power stable."
+          }
+        ]
       }
     }
   },

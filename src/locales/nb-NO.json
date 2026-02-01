@@ -1068,6 +1068,12 @@
         "description": "Se hvor mange armaturer som får plass per univers og hvor mange univers du trenger.",
         "href": "/tools/dmx-capacity",
         "tag": "Gratis verktøy"
+      },
+      {
+        "title": "Str?m- og lastkalkulator for scenelys",
+        "description": "Estimer effekt per kurs med sikkerhetsmargin og fasebalanse.",
+        "href": "/tools/lighting-power-load",
+        "tag": "Gratis verkt?y"
       }
     ],
     "dmxColor": {
@@ -1585,6 +1591,79 @@
         "title": "Trenger du en patchliste?",
         "body": "Eksporter en ren patchliste n?r planen er l?st.",
         "link": "?pne DMX patch sheet generator"
+      }
+    },
+    "lightingPower": {
+      "metadata": {
+        "title": "Str?m- og lastkalkulator for scenelys",
+        "description": "Beregn last per kurs med 80% sikkerhetsmargin og fasebalanse."
+      },
+      "breadcrumb": "Str?m/Last-kalkulator",
+      "intro": {
+        "eyebrow": "DMX-verkt?y",
+        "title": "Balanser str?mforbruk trygt",
+        "body": "Estimer watt, ampere og kursmargin f?r rigg."
+      },
+      "howTo": {
+        "title": "Slik bruker du kalkulatoren",
+        "steps": [
+          "Legg til armaturer fra presets eller skriv inn egne verdier.",
+          "Angi sikringsst?rrelse, antall kurser og faser.",
+          "Se last per kurs og fasebalanse."
+        ]
+      },
+      "tool": {
+        "defaults": {
+          "newName": "Armatur",
+          "customName": "Egendefinert armatur"
+        },
+        "inputs": {
+          "title": "Armaturer",
+          "subtitle": "Presets gir raske oppsett. Skriv inn egne verdier n?r du trenger det.",
+          "preset": "Preset",
+          "quantity": "Antall",
+          "watts": "Watt",
+          "amps": "Ampere",
+          "add": "Legg til",
+          "bulkAdd": "Legg til 10x",
+          "remove": "Fjern",
+          "actions": "Handlinger"
+        },
+        "circuits": {
+          "title": "Kurser",
+          "subtitle": "Angi tilgjengelig str?m og antall faser.",
+          "voltage": "Spenning (V)",
+          "breaker": "Sikring (A)",
+          "count": "Kurser",
+          "phases": "Faser",
+          "safety": "Sikkerhetsmargin",
+          "safetyValue": "{value}% av sikring",
+          "perCircuit": "Last per kurs",
+          "circuitLabel": "Kurs {index}",
+          "phaseWarning": "Ujevn fasebalanse: {value}% forskjell."
+        },
+        "results": {
+          "title": "Totalt",
+          "subtitle": "Rask oversikt over total belastning og gjennomsnitt per kurs.",
+          "totalWatts": "Total watt",
+          "totalAmps": "Total ampere",
+          "perCircuit": "Gjennomsnitt per kurs",
+          "phaseTitle": "Fasebalanse",
+          "phaseLabel": "Fase {index}"
+        }
+      },
+      "details": {
+        "title": "Planleggingsnotater",
+        "sections": [
+          {
+            "title": "Sikkerhetsmargin",
+            "body": "Bruk 80% av sikringskapasitet for kontinuerlig last."
+          },
+          {
+            "title": "Fasebalanse",
+            "body": "Jevn fordeling reduserer utkoblinger og holder str?mmen stabil."
+          }
+        ]
       }
     }
   },
