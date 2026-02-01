@@ -83,20 +83,39 @@ export function DmxDipSwitchTool() {
               {tool.inputs.switches}
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-5">
-              {DIP_VALUES.map((value, index) => (
-                <label
-                  key={value}
-                  className="flex items-center justify-between rounded-md border border-border/40 bg-card px-3 py-2 text-sm text-muted-foreground"
-                >
-                  <span>{value}</span>
-                  <input
-                    type="checkbox"
-                    checked={switches[index]}
-                    onChange={() => toggleSwitch(index)}
-                    className="h-4 w-4 accent-foreground"
-                  />
-                </label>
-              ))}
+              {DIP_VALUES.map((value, index) => {
+                const isOn = switches[index];
+                return (
+                  <div
+                    key={value}
+                    className="flex items-center justify-between rounded-md border border-border/40 bg-card px-3 py-2 text-sm text-muted-foreground"
+                  >
+                    <span>{value}</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleSwitch(index)}
+                      aria-pressed={isOn}
+                      aria-label={`${tool.inputs.switches} ${value}`}
+                      className={[
+                        "relative h-10 w-6 rounded-full border border-border/50 bg-background transition-colors",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        isOn ? "border-foreground/60 bg-foreground/10" : "bg-background",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      <span
+                        className={[
+                          "absolute left-1/2 h-4 w-4 -translate-x-1/2 rounded-full transition-transform",
+                          isOn ? "translate-y-1 bg-foreground" : "-translate-y-3 bg-muted-foreground/60",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
