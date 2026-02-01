@@ -82,15 +82,14 @@ export function DmxDipSwitchTool() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               {tool.inputs.switches}
             </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-5">
+            <div className="mt-4 grid gap-3 grid-cols-2 sm:grid-cols-5 lg:grid-cols-10">
               {DIP_VALUES.map((value, index) => {
                 const isOn = switches[index];
                 return (
                   <div
                     key={value}
-                    className="flex items-center justify-between rounded-md border border-border/40 bg-card px-3 py-2 text-sm text-muted-foreground"
+                    className="flex flex-col items-center gap-2 rounded-md border border-border/40 bg-card px-3 py-3 text-sm text-muted-foreground"
                   >
-                    <span>{value}</span>
                     <button
                       type="button"
                       onClick={() => toggleSwitch(index)}
@@ -113,6 +112,7 @@ export function DmxDipSwitchTool() {
                           .join(" ")}
                       />
                     </button>
+                    <span className="text-xs text-muted-foreground">{value}</span>
                   </div>
                 );
               })}
