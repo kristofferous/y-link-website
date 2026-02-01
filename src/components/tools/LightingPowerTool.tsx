@@ -13,7 +13,6 @@ import presets from "@/data/lighting/power-presets.json";
 type Preset = {
   name: string;
   watts: number;
-  amps: number;
 };
 
 type FixtureRow = {
@@ -22,7 +21,6 @@ type FixtureRow = {
   presetName: string;
   quantity: number;
   watts: number;
-  amps: number;
 };
 
 const PRESET_CUSTOM = "custom";
@@ -52,7 +50,6 @@ export function LightingPowerTool() {
       presetName: defaultPreset?.name ?? PRESET_CUSTOM,
       quantity: 4,
       watts: defaultPreset?.watts ?? 50,
-      amps: defaultPreset?.amps ?? 0.42,
     },
   ]);
 
@@ -74,7 +71,6 @@ export function LightingPowerTool() {
         presetName: PRESET_CUSTOM,
         quantity: 1,
         watts: 0,
-        amps: 0,
       },
     ]);
   };
@@ -93,7 +89,6 @@ export function LightingPowerTool() {
       presetName,
       name: preset.name,
       watts: preset.watts,
-      amps: preset.amps,
     });
   };
 
@@ -107,9 +102,8 @@ export function LightingPowerTool() {
     fixtures.forEach((row) => {
       const quantity = Math.max(0, Math.floor(row.quantity));
       const watts = clampNumber(row.watts);
-      const amps = clampNumber(row.amps);
-      const resolvedWatts = watts > 0 ? watts : amps * safeVoltage;
-      const resolvedAmps = amps > 0 ? amps : resolvedWatts / safeVoltage;
+      const resolvedWatts = watts;
+      const resolvedAmps = resolvedWatts / safeVoltage;
 
       for (let i = 0; i < quantity; i += 1) {
         units.push({ watts: resolvedWatts, amps: resolvedAmps });
@@ -208,17 +202,6 @@ export function LightingPowerTool() {
                         }
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs text-muted-foreground">{tool.inputs.amps}</Label>
-                      <Input
-                        type="number"
-                        min={0}
-                        value={row.amps}
-                        onChange={(event) =>
-                          updateFixture(row.id, { amps: clampNumber(Number(event.target.value || 0)) })
-                        }
-                      />
-                    </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Button
@@ -247,7 +230,6 @@ export function LightingPowerTool() {
                   <TableHead>{tool.inputs.preset}</TableHead>
                   <TableHead>{tool.inputs.quantity}</TableHead>
                   <TableHead>{tool.inputs.watts}</TableHead>
-                  <TableHead>{tool.inputs.amps}</TableHead>
                   <TableHead className="text-right">{tool.inputs.actions}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -289,17 +271,6 @@ export function LightingPowerTool() {
                         value={row.watts}
                         onChange={(event) =>
                           updateFixture(row.id, { watts: clampNumber(Number(event.target.value || 0)) })
-                        }
-                        className="w-28"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        type="number"
-                        min={0}
-                        value={row.amps}
-                        onChange={(event) =>
-                          updateFixture(row.id, { amps: clampNumber(Number(event.target.value || 0)) })
                         }
                         className="w-28"
                       />

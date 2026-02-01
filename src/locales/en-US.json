@@ -1623,7 +1623,6 @@
           "preset": "Preset",
           "quantity": "Quantity",
           "watts": "Watts",
-          "amps": "Amps",
           "add": "Add fixture",
           "bulkAdd": "Add 10x",
           "remove": "Remove",

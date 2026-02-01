@@ -1,77 +1,62 @@
 [
   {
     "name": "Generic LED PAR 50W",
-    "watts": 50,
-    "amps": 0.42
+    "watts": 50
   },
   {
     "name": "Generic LED PAR 100W",
-    "watts": 100,
-    "amps": 0.83
+    "watts": 100
   },
   {
     "name": "Generic LED PAR 200W",
-    "watts": 200,
-    "amps": 1.67
+    "watts": 200
   },
   {
     "name": "Generic LED PAR 400W",
-    "watts": 400,
-    "amps": 3.33
+    "watts": 400
   },
   {
     "name": "Generic LED BAR 100W",
-    "watts": 100,
-    "amps": 0.83
+    "watts": 100
   },
   {
     "name": "Generic LED BAR 200W",
-    "watts": 200,
-    "amps": 1.67
+    "watts": 200
   },
   {
     "name": "Generic LED BAR 400W",
-    "watts": 400,
-    "amps": 3.33
+    "watts": 400
   },
   {
     "name": "Generic Mover 250W",
-    "watts": 250,
-    "amps": 2.08
+    "watts": 250
   },
   {
     "name": "Generic Mover 400W",
-    "watts": 400,
-    "amps": 3.33
+    "watts": 400
   },
   {
     "name": "Generic Mover 700W",
-    "watts": 700,
-    "amps": 5.83
+    "watts": 700
   },
   {
     "name": "Generic Mover 1000W",
-    "watts": 1000,
-    "amps": 8.33
+    "watts": 1000
   },
   {
     "name": "Generic Strobe 150W",
-    "watts": 150,
-    "amps": 1.25
+    "watts": 150
   },
   {
     "name": "Generic Strobe 300W",
-    "watts": 300,
-    "amps": 2.5
+    "watts": 300
   },
   {
     "name": "Generic Haze 700W",
-    "watts": 700,
-    "amps": 5.83
+    "watts": 700
   },
   {
     "name": "Generic Haze 1500W",
-    "watts": 1500,
-    "amps": 12.5
+    "watts": 1500
   }
 ]
