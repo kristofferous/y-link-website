@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +34,13 @@ type Settings = {
 
 type PrintMode = "patch" | "labels";
 type PrintIntent = "print" | "pdf";
+
+type ImportedPatchRow = {
+  name: string;
+  channels: number;
+  universe: number;
+  address: number;
+};
 
 const createId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -67,6 +75,8 @@ const escapeHtml = (value: string) =>
 export function DmxPatchSheetTool() {
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.dmxPatch.tool;
+  const searchParams = useSearchParams();
+  const importAppliedRef = useRef(false);
 
   const [settings, setSettings] = useState<Settings>({
     startUniverse: 1,
@@ -98,6 +108,78 @@ export function DmxPatchSheetTool() {
     });
     return map;
   }, [fixtures]);
+
+  useEffect(() => {
+    if (importAppliedRef.current) return;
+    const importParam = searchParams.get("import");
+    if (!importParam) return;
+
+    try {
+      const decoded = JSON.parse(decodeURIComponent(escape(atob(importParam)))) as ImportedPatchRow[];
+      if (!Array.isArray(decoded) || decoded.length === 0) return;
+
+      const entries = decoded
+        .filter((row) => row && typeof row.name === "string")
+        .map((row) => ({
+          name: row.name.trim() || tool.defaults.fallbackName,
+          channels: clampInt(Number(row.channels || 1)),
+          universe: clampInt(Number(row.universe || 1)),
+          address: clampInt(Number(row.address || 1)),
+        }))
+        .filter((row) => row.channels > 0);
+
+      if (entries.length === 0) return;
+
+      const grouped = new Map<string, { name: string; channels: number; count: number }>();
+      entries.forEach((entry) => {
+        const key = `${entry.name}__${entry.channels}`;
+        const current = grouped.get(key);
+        if (current) {
+          current.count += 1;
+        } else {
+          grouped.set(key, { name: entry.name, channels: entry.channels, count: 1 });
+        }
+      });
+
+      const nextFixtures: FixtureRow[] = Array.from(grouped.values()).map((entry) => ({
+        id: createId(),
+        name: entry.name,
+        channelCount: entry.channels,
+        quantity: entry.count,
+      }));
+
+      const nameCounts = new Map<string, number>();
+      const nameTotals = new Map<string, number>();
+      entries.forEach((entry) => {
+        nameTotals.set(entry.name, (nameTotals.get(entry.name) ?? 0) + 1);
+      });
+      const nextRows = entries
+        .sort((a, b) => (a.universe - b.universe) || (a.address - b.address))
+        .map((entry) => {
+          const nextCount = (nameCounts.get(entry.name) ?? 0) + 1;
+          nameCounts.set(entry.name, nextCount);
+          const padWidth = Math.max(2, String(nameTotals.get(entry.name) ?? nextCount).length);
+          const indexLabel = padNumber(nextCount, padWidth);
+          return {
+            fixtureLabel: `${entry.name} ${indexLabel}`,
+            fixtureName: entry.name,
+            indexLabel,
+            universe: entry.universe,
+            address: entry.address,
+            addressLabel: padNumber(entry.address, 3),
+            channels: entry.channels,
+          };
+        });
+
+      setSettings({ startUniverse: 1, startAddress: 1, channelsPerUniverse: 512 });
+      setFixtures(nextFixtures.length > 0 ? nextFixtures : fixtures);
+      setPatchRows(nextRows);
+      setWarnings([]);
+      importAppliedRef.current = true;
+    } catch {
+      // Ignore import errors.
+    }
+  }, [fixtures, searchParams, tool.defaults.fallbackName]);
 
   const validationErrors = useMemo(() => {
     const errors: string[] = [];

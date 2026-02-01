@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
+import { prefixLocale } from "@/lib/i18n/routing";
 import { CHANNELS_PER_UNIVERSE, checkOverlap, clampInt, nextFreeAddress } from "@/lib/tools/dmx";
 
 type FixtureType = "wash" | "spot" | "beam" | "fx" | "other";
@@ -43,7 +44,7 @@ const fixtureTypeTone: Record<FixtureType, string> = {
 };
 
 export function DmxAddressPlannerTool() {
-  const { dictionary } = useTranslations();
+  const { dictionary, locale } = useTranslations();
   const tool = dictionary.tools.dmxAddressPlanner.tool;
   const defaults = dictionary.tools.dmxAddressPlanner.defaults;
 
@@ -172,6 +173,30 @@ export function DmxAddressPlannerTool() {
       return;
     }
     placeFixture(activeFixture.id, next);
+  };
+
+  const sendToPatchSheet = () => {
+    const payload = Object.values(placements)
+      .map((placement) => {
+        const fixture = fixtureById.get(placement.fixtureId);
+        if (!fixture) return null;
+        return {
+          name: fixture.name.trim() || defaults.fallbackName,
+          channels: fixture.channels,
+          universe: placement.universe,
+          address: placement.startAddress,
+        };
+      })
+      .filter((entry): entry is { name: string; channels: number; universe: number; address: number } => Boolean(entry));
+
+    if (payload.length === 0) {
+      setWarning(tool.warnings.noFixturesPlaced);
+      return;
+    }
+
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const destination = `${prefixLocale(locale, "/tools/dmx-patch-sheet")}?import=${encoded}`;
+    window.location.href = destination;
   };
 
   return (
@@ -477,6 +502,15 @@ export function DmxAddressPlannerTool() {
                     {tool.summary.utilization}: <span className="text-foreground">{utilization}%</span>
                   </div>
                 </div>
+                <Button
+                  type="button"
+                  size="sm"
+                  className="mt-4 w-full"
+                  variant="outline"
+                  onClick={sendToPatchSheet}
+                >
+                  {tool.actions.sendToPatch}
+                </Button>
               </div>
 
               <div className="rounded-lg border border-border/40 bg-background p-4 text-sm text-muted-foreground">

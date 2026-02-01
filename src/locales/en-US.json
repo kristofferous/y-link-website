@@ -1531,7 +1531,8 @@
         },
         "actions": {
           "nextFree": "Next free address",
-          "clearPlacement": "Clear"
+          "clearPlacement": "Clear",
+          "sendToPatch": "Send to patch sheet"
         },
         "summary": {
           "title": "Patch summary",
@@ -1542,7 +1543,8 @@
         "warnings": {
           "overlap": "Overlap: {a} overlaps {b} at ch {start}-{end}.",
           "outOfRange": "Placement exceeds universe limit.",
-          "noSpace": "No space available for this fixture."
+          "noSpace": "No space available for this fixture.",
+          "noFixturesPlaced": "Place at least one fixture before sending."
         },
         "status": {
           "selectFixture": "Select a fixture to place it.",

@@ -1531,7 +1531,8 @@
         },
         "actions": {
           "nextFree": "Neste ledige adresse",
-          "clearPlacement": "Fjern"
+          "clearPlacement": "Fjern",
+          "sendToPatch": "Send til patch sheet"
         },
         "summary": {
           "title": "Patch-oppsummering",
@@ -1542,7 +1543,8 @@
         "warnings": {
           "overlap": "Overlapp: {a} overlapper {b} p? kanal {start}-{end}.",
           "outOfRange": "Plasseringen g?r utenfor universgrensen.",
-          "noSpace": "Ingen ledig plass til denne armaturen."
+          "noSpace": "Ingen ledig plass til denne armaturen.",
+          "noFixturesPlaced": "Plasser minst ?n armatur f?r du sender videre."
         },
         "status": {
           "selectFixture": "Velg en armatur for ? plassere den.",
