@@ -310,6 +310,7 @@ export function LightingPowerTool() {
             <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="power-voltage">{tool.circuits.voltage}</Label>
+                <p className="text-xs text-muted-foreground">{tool.circuits.voltageHelp}</p>
                 <Input
                   id="power-voltage"
                   type="number"
@@ -317,6 +318,14 @@ export function LightingPowerTool() {
                   value={voltage}
                   onChange={(event) => setVoltage(clampNumber(Number(event.target.value || 0), 1))}
                 />
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(230)}>
+                    {tool.circuits.voltagePresetNeutral}
+                  </Button>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setVoltage(400)}>
+                    {tool.circuits.voltagePresetLine}
+                  </Button>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="power-breaker">{tool.circuits.breaker}</Label>

@@ -1639,7 +1639,10 @@
           "safetyValue": "{value}% of breaker",
           "perCircuit": "Per-circuit load",
           "circuitLabel": "Circuit {index}",
-          "phaseWarning": "Phase imbalance detected: {value}% spread."
+          "phaseWarning": "Phase imbalance detected: {value}% spread.",
+          "voltageHelp": "Use fixture voltage (line-to-neutral for 3-phase systems).",
+          "voltagePresetNeutral": "Line-to-neutral 230V",
+          "voltagePresetLine": "Line-to-line 400V"
         },
         "results": {
           "title": "Totals",

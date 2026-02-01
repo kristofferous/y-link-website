@@ -1639,7 +1639,10 @@
           "safetyValue": "{value}% av sikring",
           "perCircuit": "Last per kurs",
           "circuitLabel": "Kurs {index}",
-          "phaseWarning": "Ujevn fasebalanse: {value}% forskjell."
+          "phaseWarning": "Ujevn fasebalanse: {value}% forskjell.",
+          "voltageHelp": "Bruk armaturspenning (fase-til-n?ytral p? 3-fase).",
+          "voltagePresetNeutral": "Fase-til-n?ytral 230V",
+          "voltagePresetLine": "Fase-til-fase 400V"
         },
         "results": {
           "title": "Totalt",
