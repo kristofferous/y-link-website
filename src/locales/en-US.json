@@ -1523,16 +1523,19 @@
           "other": "Other"
         },
         "grid": {
-          "title": "Universe 1 grid",
+          "title": "Universe {universe} grid",
           "subtitle": "Select a fixture, then click a channel to place it.",
           "legend": "Legend",
           "overlap": "Overlap",
-          "channel": "Channel"
+          "channel": "Channel",
+          "universeLabel": "Active universe",
+          "universeOption": "Universe {universe}"
         },
         "actions": {
           "nextFree": "Next free address",
           "clearPlacement": "Clear",
-          "sendToPatch": "Send to patch sheet"
+          "sendToPatch": "Send to patch sheet",
+          "addUniverse": "Add universe"
         },
         "summary": {
           "title": "Patch summary",
@@ -1541,7 +1544,7 @@
           "utilization": "Utilization"
         },
         "warnings": {
-          "overlap": "Overlap: {a} overlaps {b} at ch {start}-{end}.",
+          "overlap": "Universe {universe}: {a} overlaps {b} at ch {start}-{end}.",
           "outOfRange": "Placement exceeds universe limit.",
           "noSpace": "No space available for this fixture.",
           "noFixturesPlaced": "Place at least one fixture before sending."

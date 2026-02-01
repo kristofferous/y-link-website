@@ -1523,16 +1523,19 @@
           "other": "Andre"
         },
         "grid": {
-          "title": "Univers 1 rutenett",
+          "title": "Univers {universe} rutenett",
           "subtitle": "Velg en armatur, og klikk en kanal for ? plassere den.",
           "legend": "Forklaring",
           "overlap": "Overlapp",
-          "channel": "Kanal"
+          "channel": "Kanal",
+          "universeLabel": "Aktivt univers",
+          "universeOption": "Univers {universe}"
         },
         "actions": {
           "nextFree": "Neste ledige adresse",
           "clearPlacement": "Fjern",
-          "sendToPatch": "Send til patch sheet"
+          "sendToPatch": "Send til patch sheet",
+          "addUniverse": "Legg til univers"
         },
         "summary": {
           "title": "Patch-oppsummering",
@@ -1541,7 +1544,7 @@
           "utilization": "Utnyttelse"
         },
         "warnings": {
-          "overlap": "Overlapp: {a} overlapper {b} p? kanal {start}-{end}.",
+          "overlap": "Univers {universe}: {a} overlapper {b} p? kanal {start}-{end}.",
           "outOfRange": "Plasseringen g?r utenfor universgrensen.",
           "noSpace": "Ingen ledig plass til denne armaturen.",
           "noFixturesPlaced": "Plasser minst ?n armatur f?r du sender videre."

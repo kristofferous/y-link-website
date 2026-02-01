@@ -60,6 +60,8 @@ export function DmxAddressPlannerTool() {
   const [activeFixtureId, setActiveFixtureId] = useState<string | null>(initialFixtureId);
   const [placements, setPlacements] = useState<Record<string, Placement>>({});
   const [warning, setWarning] = useState<string | null>(null);
+  const [universes, setUniverses] = useState<number[]>([1]);
+  const [activeUniverse, setActiveUniverse] = useState(1);
 
   useEffect(() => {
     if (activeFixtureId && fixtures.some((fixture) => fixture.id === activeFixtureId)) return;
@@ -105,7 +107,7 @@ export function DmxAddressPlannerTool() {
     });
   };
 
-  const placeFixture = (fixtureId: string, startAddress: number) => {
+  const placeFixture = (fixtureId: string, startAddress: number, universe = activeUniverse) => {
     const fixture = fixtureById.get(fixtureId);
     if (!fixture) return;
     const maxAddress = CHANNELS_PER_UNIVERSE - fixture.channels + 1;
@@ -115,64 +117,86 @@ export function DmxAddressPlannerTool() {
     }
     setPlacements((current) => ({
       ...current,
-      [fixtureId]: { fixtureId, universe: 1, startAddress },
+      [fixtureId]: { fixtureId, universe, startAddress },
     }));
     setWarning(null);
   };
 
   const { cellFixtures, usedChannels, overlapMessages, occupancy } = useMemo(() => {
-    const grid = Array.from({ length: CHANNELS_PER_UNIVERSE }, () => new Set<string>());
-    const ranges = Object.values(placements)
-      .map((placement) => {
-        const fixture = fixtureById.get(placement.fixtureId);
-        if (!fixture) return null;
-        const start = placement.startAddress;
-        const end = placement.startAddress + fixture.channels - 1;
-        for (let channel = start; channel <= end; channel += 1) {
-          if (channel >= 1 && channel <= CHANNELS_PER_UNIVERSE) {
-            grid[channel - 1].add(fixture.id);
-          }
-        }
-        return { id: fixture.id, start, end };
-      })
-      .filter((range): range is { id: string; start: number; end: number } => Boolean(range));
+    const grids = new Map<number, Array<Set<string>>>();
+    const rangesByUniverse = new Map<number, Array<{ id: string; start: number; end: number }>>();
 
-    const overlaps = checkOverlap(ranges);
-    const messages = overlaps.map((overlap) => {
-      const a = fixtureById.get(overlap.aId)?.name ?? defaults.fallbackName;
-      const b = fixtureById.get(overlap.bId)?.name ?? defaults.fallbackName;
-      return tool.warnings.overlap
-        .replace("{a}", a)
-        .replace("{b}", b)
-        .replace("{start}", String(overlap.start))
-        .replace("{end}", String(overlap.end));
+    universes.forEach((universe) => {
+      grids.set(universe, Array.from({ length: CHANNELS_PER_UNIVERSE }, () => new Set<string>()));
+      rangesByUniverse.set(universe, []);
     });
 
-    const used = grid.filter((cell) => cell.size > 0).length;
-    const occupied = grid.map((cell) => cell.size > 0);
+    Object.values(placements).forEach((placement) => {
+      const fixture = fixtureById.get(placement.fixtureId);
+      if (!fixture) return;
+      const grid = grids.get(placement.universe);
+      if (!grid) return;
+      const start = placement.startAddress;
+      const end = placement.startAddress + fixture.channels - 1;
+      for (let channel = start; channel <= end; channel += 1) {
+        if (channel >= 1 && channel <= CHANNELS_PER_UNIVERSE) {
+          grid[channel - 1].add(fixture.id);
+        }
+      }
+      const ranges = rangesByUniverse.get(placement.universe);
+      ranges?.push({ id: fixture.id, start, end });
+    });
+
+    const messages: string[] = [];
+    rangesByUniverse.forEach((ranges, universe) => {
+      const overlaps = checkOverlap(ranges);
+      overlaps.forEach((overlap) => {
+        const a = fixtureById.get(overlap.aId)?.name ?? defaults.fallbackName;
+        const b = fixtureById.get(overlap.bId)?.name ?? defaults.fallbackName;
+        messages.push(
+          tool.warnings.overlap
+            .replace("{a}", a)
+            .replace("{b}", b)
+            .replace("{start}", String(overlap.start))
+            .replace("{end}", String(overlap.end))
+            .replace("{universe}", String(universe)),
+        );
+      });
+    });
+
+    let used = 0;
+    grids.forEach((grid) => {
+      used += grid.filter((cell) => cell.size > 0).length;
+    });
+
+    const activeGrid =
+      grids.get(activeUniverse) ?? Array.from({ length: CHANNELS_PER_UNIVERSE }, () => new Set<string>());
+    const occupied = activeGrid.map((cell) => cell.size > 0);
 
     return {
-      cellFixtures: grid,
+      cellFixtures: activeGrid,
       usedChannels: used,
       overlapMessages: messages,
       occupancy: occupied,
     };
-  }, [placements, fixtureById, defaults.fallbackName, tool.warnings.overlap]);
+  }, [placements, fixtureById, defaults.fallbackName, tool.warnings.overlap, universes, activeUniverse]);
 
   const activeFixture = activeFixtureId ? fixtureById.get(activeFixtureId) ?? null : null;
 
-  const utilization = CHANNELS_PER_UNIVERSE
-    ? Math.round((usedChannels / CHANNELS_PER_UNIVERSE) * 100)
-    : 0;
+  const totalChannels = CHANNELS_PER_UNIVERSE * universes.length;
+  const utilization = totalChannels ? Math.round((usedChannels / totalChannels) * 100) : 0;
 
   const handleNextFree = () => {
     if (!activeFixture) return;
     const next = nextFreeAddress(occupancy, activeFixture.channels, 1);
     if (!next) {
-      setWarning(tool.warnings.noSpace);
+      const nextUniverse = Math.max(...universes) + 1;
+      setUniverses((current) => [...current, nextUniverse]);
+      setActiveUniverse(nextUniverse);
+      placeFixture(activeFixture.id, 1, nextUniverse);
       return;
     }
-    placeFixture(activeFixture.id, next);
+    placeFixture(activeFixture.id, next, activeUniverse);
   };
 
   const sendToPatchSheet = () => {
@@ -197,6 +221,12 @@ export function DmxAddressPlannerTool() {
     const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     const destination = `${prefixLocale(locale, "/tools/dmx-patch-sheet")}?import=${encoded}`;
     window.location.href = destination;
+  };
+
+  const addUniverse = () => {
+    const nextUniverse = Math.max(...universes) + 1;
+    setUniverses((current) => [...current, nextUniverse]);
+    setActiveUniverse(nextUniverse);
   };
 
   return (
@@ -410,10 +440,30 @@ export function DmxAddressPlannerTool() {
         <div className="space-y-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-title text-foreground">{tool.grid.title}</p>
+              <p className="text-title text-foreground">
+                {tool.grid.title.replace("{universe}", String(activeUniverse))}
+              </p>
               <p className="text-sm text-muted-foreground">{tool.grid.subtitle}</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              <div className="min-w-[160px]">
+                <Label className="text-xs text-muted-foreground">{tool.grid.universeLabel}</Label>
+                <Select value={String(activeUniverse)} onValueChange={(value) => setActiveUniverse(Number(value))}>
+                  <SelectTrigger className="mt-1 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {universes.map((universe) => (
+                      <SelectItem key={universe} value={String(universe)}>
+                        {tool.grid.universeOption.replace("{universe}", String(universe))}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button type="button" variant="outline" onClick={addUniverse}>
+                {tool.actions.addUniverse}
+              </Button>
               <Button type="button" variant="outline" onClick={handleNextFree} disabled={!activeFixture}>
                 {tool.actions.nextFree}
               </Button>
@@ -476,7 +526,7 @@ export function DmxAddressPlannerTool() {
                         title={placementLabel}
                         onClick={() => {
                           if (!activeFixtureId) return;
-                          placeFixture(activeFixtureId, channel);
+                          placeFixture(activeFixtureId, channel, activeUniverse);
                         }}
                       />
                     );
@@ -490,12 +540,12 @@ export function DmxAddressPlannerTool() {
                 <p className="text-sm font-semibold text-foreground">{tool.summary.title}</p>
                 <div className="mt-3 space-y-2 text-sm text-muted-foreground">
                   <div>
-                    {tool.summary.universes}: <span className="text-foreground">1</span>
+                    {tool.summary.universes}: <span className="text-foreground">{universes.length}</span>
                   </div>
                   <div>
                     {tool.summary.channelsUsed}:{" "}
                     <span className="text-foreground">
-                      {usedChannels}/{CHANNELS_PER_UNIVERSE}
+                      {usedChannels}/{totalChannels}
                     </span>
                   </div>
                   <div>
