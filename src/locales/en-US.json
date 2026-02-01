@@ -7,22 +7,58 @@
   },
   "navigation": {
     "main": [
-      { "label": "Home", "href": "/" },
-      { "label": "Platform", "href": "/ai-dmx-controller" },
-      { "label": "Tools", "href": "/tools" },
-      { "label": "Use Cases", "href": "/use-cases" },
-      { "label": "Guides", "href": "/guides" },
-      { "label": "Blog", "href": "/blog" },
-      { "label": "FAQ", "href": "/faq" }
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Platform",
+        "href": "/ai-dmx-controller"
+      },
+      {
+        "label": "Tools",
+        "href": "/tools"
+      },
+      {
+        "label": "Use Cases",
+        "href": "/use-cases"
+      },
+      {
+        "label": "Guides",
+        "href": "/guides"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "FAQ",
+        "href": "/faq"
+      }
     ],
     "secondary": [
-      { "label": "Pilot Program", "href": "/pilot" },
-      { "label": "Technical", "href": "/teknisk" },
-      { "label": "About Y-Link", "href": "/om" }
+      {
+        "label": "Pilot Program",
+        "href": "/pilot"
+      },
+      {
+        "label": "Technical",
+        "href": "/teknisk"
+      },
+      {
+        "label": "About Y-Link",
+        "href": "/om"
+      }
     ],
     "utility": [
-      { "label": "Pilot Access", "href": "/access" },
-      { "label": "Privacy", "href": "/privacy" }
+      {
+        "label": "Pilot Access",
+        "href": "/access"
+      },
+      {
+        "label": "Privacy",
+        "href": "/privacy"
+      }
     ],
     "cta": "Join Pilot",
     "mobile": {
@@ -251,7 +287,13 @@
     },
     "who": {
       "title": "Who It's For",
-      "audiences": ["Club/Venue", "Small Stages", "Rental/Event", "Mobile Rigs", "Operators Saving Time"],
+      "audiences": [
+        "Club/Venue",
+        "Small Stages",
+        "Rental/Event",
+        "Mobile Rigs",
+        "Operators Saving Time"
+      ],
       "ctaPrefix": "See details in",
       "ctaUseCases": "use cases",
       "ctaConnector": "or read",
@@ -313,7 +355,11 @@
     },
     "whatNot": {
       "title": "What It Is Not",
-      "items": ["Not a finished commercial product.", "Not a free hardware giveaway.", "Not full production coverage - focus is on pilot verification."]
+      "items": [
+        "Not a finished commercial product.",
+        "Not a free hardware giveaway.",
+        "Not full production coverage - focus is on pilot verification."
+      ]
     },
     "partnersGet": {
       "title": "What Pilot Partners Get",
@@ -455,7 +501,11 @@
       "title": "AI DMX Controller",
       "subtitle": "for Music-Reactive Lighting",
       "body": "Y-Link is a fully autonomous AI DMX controller in development that converts audio to room-aware lighting sequences that follow tempo, phrasing, and energy. Low latency, guardrails, and a co-pilot layer ensure your show is predictable, not random.",
-      "tags": ["AI DMX Controller", "Music Reactive", "Low Latency"]
+      "tags": [
+        "AI DMX Controller",
+        "Music Reactive",
+        "Low Latency"
+      ]
     },
     "summary": {
       "title": "Product Summary",
@@ -468,9 +518,21 @@
     "how": {
       "title": "How It Works",
       "steps": [
-        { "step": "01", "title": "Audio Input", "body": "Upload music or use live audio. The system captures tempo, phrases, and energy." },
-        { "step": "02", "title": "Planning", "body": "AI plans room-aware cues, transitions, and safety limits tailored to your rig." },
-        { "step": "03", "title": "Deterministic Playback", "body": "Signals are timed and monitored before output. Co-pilot cues and triggers stay inside guardrails." }
+        {
+          "step": "01",
+          "title": "Audio Input",
+          "body": "Upload music or use live audio. The system captures tempo, phrases, and energy."
+        },
+        {
+          "step": "02",
+          "title": "Planning",
+          "body": "AI plans room-aware cues, transitions, and safety limits tailored to your rig."
+        },
+        {
+          "step": "03",
+          "title": "Deterministic Playback",
+          "body": "Signals are timed and monitored before output. Co-pilot cues and triggers stay inside guardrails."
+        }
       ]
     },
     "who": {
@@ -542,10 +604,22 @@
         "body": "Deliver a tight, music-driven show without programming each track by hand. Y-Link analyzes audio and controls DMX with low latency, so the operator can follow the room instead of the console."
       },
       "features": [
-        { "title": "Audio-Driven Cues", "body": "Upload playlists or use a live mix. The controller follows tempo, phrasing, and energy." },
-        { "title": "Predictable Timing", "body": "Latency budget is monitored. No surprises when the room fills and load changes." },
-        { "title": "Guardrails for Operators", "body": "Intensity limits, blackout rules, and approvals keep the rig safe." },
-        { "title": "Quick Switches", "body": "Repertoire can be rehearsed, cues locked, and playlists swapped quickly between DJs." }
+        {
+          "title": "Audio-Driven Cues",
+          "body": "Upload playlists or use a live mix. The controller follows tempo, phrasing, and energy."
+        },
+        {
+          "title": "Predictable Timing",
+          "body": "Latency budget is monitored. No surprises when the room fills and load changes."
+        },
+        {
+          "title": "Guardrails for Operators",
+          "body": "Intensity limits, blackout rules, and approvals keep the rig safe."
+        },
+        {
+          "title": "Quick Switches",
+          "body": "Repertoire can be rehearsed, cues locked, and playlists swapped quickly between DJs."
+        }
       ],
       "stepsTitle": "How to Set Up in a Club",
       "steps": [
@@ -574,10 +648,22 @@
         "body": "Small venues need quick setups and predictable operation. Y-Link builds light sequences from music, keeps timing stable, and lets operators adjust without breaking automation."
       },
       "features": [
-        { "title": "Quick Setup", "body": "Import playlists, add rig data, and run preflight in minutes." },
-        { "title": "Stable Shows", "body": "Low latency and guardrails ensure the expression holds, even with minimal staffing." },
-        { "title": "Override When You Want", "body": "Operator can dim, change looks, or lock sections without automation collapsing." },
-        { "title": "Low Maintenance", "body": "Planning controls saturation and safety limits before show start." }
+        {
+          "title": "Quick Setup",
+          "body": "Import playlists, add rig data, and run preflight in minutes."
+        },
+        {
+          "title": "Stable Shows",
+          "body": "Low latency and guardrails ensure the expression holds, even with minimal staffing."
+        },
+        {
+          "title": "Override When You Want",
+          "body": "Operator can dim, change looks, or lock sections without automation collapsing."
+        },
+        {
+          "title": "Low Maintenance",
+          "body": "Planning controls saturation and safety limits before show start."
+        }
       ],
       "stepsTitle": "How to Use Y-Link",
       "steps": [
@@ -606,10 +692,22 @@
         "body": "Y-Link analyzes tempo, phrases, and energy in your tracks, generates light sequences, and locks timing before output. Skip manual programming but still override live."
       },
       "features": [
-        { "title": "Upload or Live Feed", "body": "Import playlists or connect live audio. The system extracts structure automatically." },
-        { "title": "Preflight Before Show", "body": "Timing, jitter, and saturation are checked before output. Guardrails are set per rig." },
-        { "title": "Live Adjustment", "body": "Change intensity and looks without losing locked timing." },
-        { "title": "Quick Execution", "body": "Ready for show without building cue-by-cue, but still with control surfaces for operator." }
+        {
+          "title": "Upload or Live Feed",
+          "body": "Import playlists or connect live audio. The system extracts structure automatically."
+        },
+        {
+          "title": "Preflight Before Show",
+          "body": "Timing, jitter, and saturation are checked before output. Guardrails are set per rig."
+        },
+        {
+          "title": "Live Adjustment",
+          "body": "Change intensity and looks without losing locked timing."
+        },
+        {
+          "title": "Quick Execution",
+          "body": "Ready for show without building cue-by-cue, but still with control surfaces for operator."
+        }
       ],
       "stepsTitle": "Start Quickly",
       "steps": [
@@ -651,15 +749,36 @@
       "body": "Build a solid foundation so AI-based DMX automation lands safely in your space. Each guide links back to the main AI DMX controller page for context."
     },
     "list": [
-      { "title": "DMX Basics", "href": "/guides/dmx-basics" },
-      { "title": "Fixture Addressing", "href": "/guides/dmx-addressing" },
-      { "title": "Universes and Scaling", "href": "/guides/dmx-universes" },
-      { "title": "Latency and Jitter", "href": "/guides/dmx-latency-jitter" },
-      { "title": "Best Practices", "href": "/guides/dmx-best-practices" },
-      { "title": "Troubleshooting", "href": "/guides/dmx-troubleshooting" }
+      {
+        "title": "DMX Basics",
+        "href": "/guides/dmx-basics"
+      },
+      {
+        "title": "Fixture Addressing",
+        "href": "/guides/dmx-addressing"
+      },
+      {
+        "title": "Universes and Scaling",
+        "href": "/guides/dmx-universes"
+      },
+      {
+        "title": "Latency and Jitter",
+        "href": "/guides/dmx-latency-jitter"
+      },
+      {
+        "title": "Best Practices",
+        "href": "/guides/dmx-best-practices"
+      },
+      {
+        "title": "Troubleshooting",
+        "href": "/guides/dmx-troubleshooting"
+      }
     ],
     "dmxBasics": {
-      "metadata": { "title": "DMX Basics", "description": "Understand DMX signals, universes, and fixtures as a foundation for AI-driven light." },
+      "metadata": {
+        "title": "DMX Basics",
+        "description": "Understand DMX signals, universes, and fixtures as a foundation for AI-driven light."
+      },
       "breadcrumb": "DMX Basics",
       "hero": {
         "label": "Guide",
@@ -684,7 +803,10 @@
       }
     },
     "dmxAddressing": {
-      "metadata": { "title": "Fixture Addressing", "description": "Learn to address fixtures correctly for stable AI-driven light sequences." },
+      "metadata": {
+        "title": "Fixture Addressing",
+        "description": "Learn to address fixtures correctly for stable AI-driven light sequences."
+      },
       "breadcrumb": "Addressing",
       "hero": {
         "label": "Guide",
@@ -706,7 +828,10 @@
       }
     },
     "dmxUniverses": {
-      "metadata": { "title": "DMX Universes and Scaling", "description": "How to plan universes and scale the rig without losing timing." },
+      "metadata": {
+        "title": "DMX Universes and Scaling",
+        "description": "How to plan universes and scale the rig without losing timing."
+      },
       "breadcrumb": "Universes and Scaling",
       "hero": {
         "label": "Guide",
@@ -728,7 +853,10 @@
       }
     },
     "dmxLatency": {
-      "metadata": { "title": "Latency and Jitter in DMX", "description": "How to measure and control latency and jitter in an AI-controlled DMX rig." },
+      "metadata": {
+        "title": "Latency and Jitter in DMX",
+        "description": "How to measure and control latency and jitter in an AI-controlled DMX rig."
+      },
       "breadcrumb": "Latency and Jitter",
       "hero": {
         "label": "Guide",
@@ -750,7 +878,10 @@
       }
     },
     "dmxBest": {
-      "metadata": { "title": "DMX Best Practices", "description": "Practical tips for stable DMX rigs when AI controls the light sequences." },
+      "metadata": {
+        "title": "DMX Best Practices",
+        "description": "Practical tips for stable DMX rigs when AI controls the light sequences."
+      },
       "breadcrumb": "Best Practices",
       "hero": {
         "label": "Guide",
@@ -776,7 +907,10 @@
       }
     },
     "dmxTroubleshooting": {
-      "metadata": { "title": "DMX Troubleshooting", "description": "Common errors in DMX rigs and how to solve them when AI drives the light sequences." },
+      "metadata": {
+        "title": "DMX Troubleshooting",
+        "description": "Common errors in DMX rigs and how to solve them when AI drives the light sequences."
+      },
       "breadcrumb": "Troubleshooting",
       "hero": {
         "label": "Guide",
@@ -833,10 +967,26 @@
       "body": "Use this overview to evaluate whether you need AI automation with guardrails, or a more traditional console with audio triggers."
     },
     "options": [
-      { "name": "Y-Link", "focus": "AI-driven, music-reactive DMX with low latency and operator guardrails.", "bestFor": "Clubs, small venues, and mobile rigs with minimal staffing." },
-      { "name": "MaestroDMX", "focus": "Audio analysis and lighting automation for DJ sets.", "bestFor": "DJ-focused setups where music cues drive the scenes." },
-      { "name": "Lightkey (sound active)", "focus": "Manual programming + audio triggers on macOS.", "bestFor": "Operators wanting deep manual control with simple audio response." },
-      { "name": "Onyx + add-on modules", "focus": "Full console with optional audio triggers.", "bestFor": "Larger rigs with dedicated LDs who still want to follow music." }
+      {
+        "name": "Y-Link",
+        "focus": "AI-driven, music-reactive DMX with low latency and operator guardrails.",
+        "bestFor": "Clubs, small venues, and mobile rigs with minimal staffing."
+      },
+      {
+        "name": "MaestroDMX",
+        "focus": "Audio analysis and lighting automation for DJ sets.",
+        "bestFor": "DJ-focused setups where music cues drive the scenes."
+      },
+      {
+        "name": "Lightkey (sound active)",
+        "focus": "Manual programming + audio triggers on macOS.",
+        "bestFor": "Operators wanting deep manual control with simple audio response."
+      },
+      {
+        "name": "Onyx + add-on modules",
+        "focus": "Full console with optional audio triggers.",
+        "bestFor": "Larger rigs with dedicated LDs who still want to follow music."
+      }
     ],
     "consider": {
       "title": "What to Consider",
@@ -861,9 +1011,21 @@
       "body": "Two different approaches to music-reactive lighting. Here's how they differ."
     },
     "comparison": [
-      { "label": "Focus", "ylink": "AI-planned light sequences with guardrails and low latency.", "maestro": "Audio analysis and automation for DJ sets." },
-      { "label": "Operator Control", "ylink": "Approvals, locks, and override without losing structure.", "maestro": "DJ-oriented workflow with more manual control." },
-      { "label": "Best For", "ylink": "Clubs/small venues with minimal staffing needing predictability.", "maestro": "DJ-focused rooms wanting to trigger lights directly from music." }
+      {
+        "label": "Focus",
+        "ylink": "AI-planned light sequences with guardrails and low latency.",
+        "maestro": "Audio analysis and automation for DJ sets."
+      },
+      {
+        "label": "Operator Control",
+        "ylink": "Approvals, locks, and override without losing structure.",
+        "maestro": "DJ-oriented workflow with more manual control."
+      },
+      {
+        "label": "Best For",
+        "ylink": "Clubs/small venues with minimal staffing needing predictability.",
+        "maestro": "DJ-focused rooms wanting to trigger lights directly from music."
+      }
     ],
     "cta": {
       "prefix": "For details on Y-Link, see the main page for the",
@@ -883,6 +1045,12 @@
       "cta": "Open tool"
     },
     "cards": [
+      {
+        "title": "DMX Address + Universe Planner",
+        "description": "Plan addresses on a live 512-channel grid and catch overlaps before patching.",
+        "href": "/tools/dmx-address-planner",
+        "tag": "Free tool"
+      },
       {
         "title": "DMX Patch Sheet Generator",
         "description": "Auto-pack fixtures across universes and export clean patch sheets.",
@@ -1303,6 +1471,115 @@
           "title": "Ready to generate a full patch sheet?",
           "link": "Open DMX Patch Sheet Generator"
         }
+      }
+    },
+    "dmxAddressPlanner": {
+      "metadata": {
+        "title": "DMX Address + Universe Planner",
+        "description": "Plan DMX addresses on a live 512-channel grid with overlap detection and universe summary."
+      },
+      "breadcrumb": "DMX Address Planner",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "Plan addresses visually",
+        "body": "Place fixtures on a 512-channel grid, see overlaps instantly, and keep universes clean."
+      },
+      "howTo": {
+        "title": "How to use the address planner",
+        "steps": [
+          "Add fixtures with name, channel count, and type.",
+          "Select a fixture and click a channel to place it.",
+          "Use Next free address to auto-pack the grid.",
+          "Review overlaps and the universe summary."
+        ]
+      },
+      "defaults": {
+        "sampleName": "Wash",
+        "newName": "Fixture",
+        "placeholderName": "Fixture name",
+        "fallbackName": "Fixture"
+      },
+      "tool": {
+        "fixtures": {
+          "title": "Fixtures",
+          "subtitle": "Define fixtures before placing them on the grid.",
+          "add": "Add fixture",
+          "name": "Name",
+          "channels": "Channels",
+          "type": "Type",
+          "status": "Status",
+          "actions": "Actions",
+          "select": "Select",
+          "selected": "Selected",
+          "remove": "Remove",
+          "placed": "Placed",
+          "unplaced": "Not placed"
+        },
+        "types": {
+          "wash": "Wash",
+          "spot": "Spot",
+          "beam": "Beam",
+          "fx": "FX",
+          "other": "Other"
+        },
+        "grid": {
+          "title": "Universe 1 grid",
+          "subtitle": "Select a fixture, then click a channel to place it.",
+          "legend": "Legend",
+          "overlap": "Overlap",
+          "channel": "Channel"
+        },
+        "actions": {
+          "nextFree": "Next free address",
+          "clearPlacement": "Clear"
+        },
+        "summary": {
+          "title": "Patch summary",
+          "universes": "Universes",
+          "channelsUsed": "Channels used",
+          "utilization": "Utilization"
+        },
+        "warnings": {
+          "overlap": "Overlap: {a} overlaps {b} at ch {start}-{end}.",
+          "outOfRange": "Placement exceeds universe limit.",
+          "noSpace": "No space available for this fixture."
+        },
+        "status": {
+          "selectFixture": "Select a fixture to place it.",
+          "selected": "Selected fixture:",
+          "noFixtures": "Add a fixture to start planning."
+        }
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "question": "Does this prevent overlapping addresses?",
+            "answer": "Overlaps are highlighted on the grid and listed below so you can fix them immediately."
+          },
+          {
+            "question": "What if a fixture does not fit in the universe?",
+            "answer": "You'll see a warning if the placement exceeds the 512-channel limit."
+          }
+        ]
+      },
+      "details": {
+        "title": "Planner notes",
+        "sections": [
+          {
+            "title": "Universe size",
+            "body": "Each universe holds 512 channels. This grid visualizes one universe at a time."
+          },
+          {
+            "title": "Packing strategy",
+            "body": "Use Next free address to find the first contiguous space for the selected fixture."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Need a printable patch sheet?",
+        "body": "Export a clean patch sheet once your plan is locked.",
+        "link": "Open DMX Patch Sheet Generator"
       }
     }
   },

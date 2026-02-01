@@ -7,22 +7,58 @@
   },
   "navigation": {
     "main": [
-      { "label": "Hjem", "href": "/" },
-      { "label": "Plattform", "href": "/ai-dmx-controller" },
-      { "label": "Verktøy", "href": "/tools" },
-      { "label": "Bruksområder", "href": "/use-cases" },
-      { "label": "Guider", "href": "/guides" },
-      { "label": "Blogg", "href": "/blog" },
-      { "label": "FAQ", "href": "/faq" }
+      {
+        "label": "Hjem",
+        "href": "/"
+      },
+      {
+        "label": "Plattform",
+        "href": "/ai-dmx-controller"
+      },
+      {
+        "label": "Verktøy",
+        "href": "/tools"
+      },
+      {
+        "label": "Bruksområder",
+        "href": "/use-cases"
+      },
+      {
+        "label": "Guider",
+        "href": "/guides"
+      },
+      {
+        "label": "Blogg",
+        "href": "/blog"
+      },
+      {
+        "label": "FAQ",
+        "href": "/faq"
+      }
     ],
     "secondary": [
-      { "label": "Pilotprogram", "href": "/pilot" },
-      { "label": "Teknisk", "href": "/teknisk" },
-      { "label": "Om Y-Link", "href": "/om" }
+      {
+        "label": "Pilotprogram",
+        "href": "/pilot"
+      },
+      {
+        "label": "Teknisk",
+        "href": "/teknisk"
+      },
+      {
+        "label": "Om Y-Link",
+        "href": "/om"
+      }
     ],
     "utility": [
-      { "label": "Pilottilgang", "href": "/access" },
-      { "label": "Personvern", "href": "/privacy" }
+      {
+        "label": "Pilottilgang",
+        "href": "/access"
+      },
+      {
+        "label": "Personvern",
+        "href": "/privacy"
+      }
     ],
     "cta": "Bli med i pilot",
     "mobile": {
@@ -251,7 +287,13 @@
     },
     "who": {
       "title": "Hvem det passer for",
-      "audiences": ["Klubb/Venue", "Små scener", "Utleie/arrangement", "Mobile rigger", "Operatører som sparer tid"],
+      "audiences": [
+        "Klubb/Venue",
+        "Små scener",
+        "Utleie/arrangement",
+        "Mobile rigger",
+        "Operatører som sparer tid"
+      ],
       "ctaPrefix": "Se detaljer i",
       "ctaUseCases": "bruksområder",
       "ctaConnector": "eller les",
@@ -313,7 +355,11 @@
     },
     "whatNot": {
       "title": "Hva den ikke er",
-      "items": ["Ikke et ferdig kommersielt produkt.", "Ingen gratis hardware-giveaway.", "Ingen full produksjonsdekning – fokuset er pilotverifisering."]
+      "items": [
+        "Ikke et ferdig kommersielt produkt.",
+        "Ingen gratis hardware-giveaway.",
+        "Ingen full produksjonsdekning – fokuset er pilotverifisering."
+      ]
     },
     "partnersGet": {
       "title": "Hva pilotpartnere får",
@@ -455,7 +501,11 @@
       "title": "AI DMX-kontroller",
       "subtitle": "for musikkreaktivt lys",
       "body": "Y-Link er en fullt autonom AI DMX-kontroller under utvikling som gjør lyd om til romtilpassede lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og et co-pilot-lag gjør showet forutsigbart i stedet for tilfeldig.",
-      "tags": ["AI DMX-kontroller", "Musikkreaktiv", "Lav latency"]
+      "tags": [
+        "AI DMX-kontroller",
+        "Musikkreaktiv",
+        "Lav latency"
+      ]
     },
     "summary": {
       "title": "Produktoppsummering",
@@ -468,9 +518,21 @@
     "how": {
       "title": "Slik fungerer det",
       "steps": [
-        { "step": "01", "title": "Lydinn", "body": "Last opp musikk eller bruk live-lyd. Systemet fanger tempo, fraser og energi." },
-        { "step": "02", "title": "Planlegging", "body": "AI planlegger romtilpassede cues, overganger og sikkerhetsgrenser tilpasset riggen din." },
-        { "step": "03", "title": "Deterministisk avspilling", "body": "Signaler tidssettes og overvåkes før output. Co-pilot-cues og triggere holder seg innenfor rekkverk." }
+        {
+          "step": "01",
+          "title": "Lydinn",
+          "body": "Last opp musikk eller bruk live-lyd. Systemet fanger tempo, fraser og energi."
+        },
+        {
+          "step": "02",
+          "title": "Planlegging",
+          "body": "AI planlegger romtilpassede cues, overganger og sikkerhetsgrenser tilpasset riggen din."
+        },
+        {
+          "step": "03",
+          "title": "Deterministisk avspilling",
+          "body": "Signaler tidssettes og overvåkes før output. Co-pilot-cues og triggere holder seg innenfor rekkverk."
+        }
       ]
     },
     "who": {
@@ -542,10 +604,22 @@
         "body": "Lever et stramt, musikkdrevet show uten å programmere hvert spor. Y-Link analyserer lyd og styrer DMX med lav latency, slik at operatøren kan følge rommet i stedet for konsollen."
       },
       "features": [
-        { "title": "Lyddrevne cues", "body": "Last opp spillelister eller bruk live-miks. Kontrolleren følger tempo, fraser og energi." },
-        { "title": "Forutsigbar timing", "body": "Latency-budsjett overvåkes. Ingen overraskelser når rommet fylles og lasten endres." },
-        { "title": "Rekkverk for operatører", "body": "Intensitetsgrenser, blackout-regler og godkjenninger holder riggen trygg." },
-        { "title": "Raske bytter", "body": "Repertoar kan øves, cues låses og spillelister byttes raskt mellom DJ-er." }
+        {
+          "title": "Lyddrevne cues",
+          "body": "Last opp spillelister eller bruk live-miks. Kontrolleren følger tempo, fraser og energi."
+        },
+        {
+          "title": "Forutsigbar timing",
+          "body": "Latency-budsjett overvåkes. Ingen overraskelser når rommet fylles og lasten endres."
+        },
+        {
+          "title": "Rekkverk for operatører",
+          "body": "Intensitetsgrenser, blackout-regler og godkjenninger holder riggen trygg."
+        },
+        {
+          "title": "Raske bytter",
+          "body": "Repertoar kan øves, cues låses og spillelister byttes raskt mellom DJ-er."
+        }
       ],
       "stepsTitle": "Slik setter du opp i en klubb",
       "steps": [
@@ -574,10 +648,22 @@
         "body": "Små venues trenger raske oppsett og forutsigbar drift. Y-Link lager lyssekvenser fra musikk, holder timing stabil og lar operatører justere uten å knekke automasjon."
       },
       "features": [
-        { "title": "Raskt oppsett", "body": "Importer spillelister, legg inn riggdata og kjør preflight på få minutter." },
-        { "title": "Stabile show", "body": "Lav latency og rekkverk sikrer uttrykket selv med minimal bemanning." },
-        { "title": "Overstyr når du vil", "body": "Operatør kan dimme, endre looks eller låse seksjoner uten at automasjon kollapser." },
-        { "title": "Lite vedlikehold", "body": "Planlegging kontrollerer metning og sikkerhetsgrenser før showstart." }
+        {
+          "title": "Raskt oppsett",
+          "body": "Importer spillelister, legg inn riggdata og kjør preflight på få minutter."
+        },
+        {
+          "title": "Stabile show",
+          "body": "Lav latency og rekkverk sikrer uttrykket selv med minimal bemanning."
+        },
+        {
+          "title": "Overstyr når du vil",
+          "body": "Operatør kan dimme, endre looks eller låse seksjoner uten at automasjon kollapser."
+        },
+        {
+          "title": "Lite vedlikehold",
+          "body": "Planlegging kontrollerer metning og sikkerhetsgrenser før showstart."
+        }
       ],
       "stepsTitle": "Slik bruker du Y-Link",
       "steps": [
@@ -606,10 +692,22 @@
         "body": "Y-Link analyserer tempo, fraser og energi i sporene dine, genererer lyssekvenser og låser timing før output. Hopp over manuell programmering, men behold live-overstyring."
       },
       "features": [
-        { "title": "Opplasting eller live-feed", "body": "Importer spillelister eller koble live-lyd. Systemet henter struktur automatisk." },
-        { "title": "Preflight før show", "body": "Timing, jitter og metning sjekkes før output. Rekkverk settes per rigg." },
-        { "title": "Live-justering", "body": "Endre intensitet og looks uten å miste låst timing." },
-        { "title": "Rask kjøring", "body": "Klar for show uten cue-for-cue bygging, men med kontrollflater for operatør." }
+        {
+          "title": "Opplasting eller live-feed",
+          "body": "Importer spillelister eller koble live-lyd. Systemet henter struktur automatisk."
+        },
+        {
+          "title": "Preflight før show",
+          "body": "Timing, jitter og metning sjekkes før output. Rekkverk settes per rigg."
+        },
+        {
+          "title": "Live-justering",
+          "body": "Endre intensitet og looks uten å miste låst timing."
+        },
+        {
+          "title": "Rask kjøring",
+          "body": "Klar for show uten cue-for-cue bygging, men med kontrollflater for operatør."
+        }
       ],
       "stepsTitle": "Kom i gang raskt",
       "steps": [
@@ -651,15 +749,36 @@
       "body": "Bygg et solid grunnlag slik at AI-basert DMX-automasjon lander trygt. Hver guide lenker til hovedsiden for AI DMX-kontrolleren."
     },
     "list": [
-      { "title": "DMX-grunnlag", "href": "/guides/dmx-basics" },
-      { "title": "Adresse­ring av lamper", "href": "/guides/dmx-addressing" },
-      { "title": "Universer og skalering", "href": "/guides/dmx-universes" },
-      { "title": "Latency og jitter", "href": "/guides/dmx-latency-jitter" },
-      { "title": "Beste praksis", "href": "/guides/dmx-best-practices" },
-      { "title": "Feilsøking", "href": "/guides/dmx-troubleshooting" }
+      {
+        "title": "DMX-grunnlag",
+        "href": "/guides/dmx-basics"
+      },
+      {
+        "title": "Adresse­ring av lamper",
+        "href": "/guides/dmx-addressing"
+      },
+      {
+        "title": "Universer og skalering",
+        "href": "/guides/dmx-universes"
+      },
+      {
+        "title": "Latency og jitter",
+        "href": "/guides/dmx-latency-jitter"
+      },
+      {
+        "title": "Beste praksis",
+        "href": "/guides/dmx-best-practices"
+      },
+      {
+        "title": "Feilsøking",
+        "href": "/guides/dmx-troubleshooting"
+      }
     ],
     "dmxBasics": {
-      "metadata": { "title": "DMX-grunnlag", "description": "Forstå DMX-signaler, universer og fixture-styring som grunnlag for AI-drevet lys." },
+      "metadata": {
+        "title": "DMX-grunnlag",
+        "description": "Forstå DMX-signaler, universer og fixture-styring som grunnlag for AI-drevet lys."
+      },
       "breadcrumb": "DMX-grunnlag",
       "hero": {
         "label": "Guide",
@@ -684,7 +803,10 @@
       }
     },
     "dmxAddressing": {
-      "metadata": { "title": "Adresse­ring av lamper", "description": "Lær korrekt adresse­ring for stabile, AI-drevne lyssekvenser." },
+      "metadata": {
+        "title": "Adresse­ring av lamper",
+        "description": "Lær korrekt adresse­ring for stabile, AI-drevne lyssekvenser."
+      },
       "breadcrumb": "Adresse­ring",
       "hero": {
         "label": "Guide",
@@ -706,7 +828,10 @@
       }
     },
     "dmxUniverses": {
-      "metadata": { "title": "DMX-universer og skalering", "description": "Hvordan planlegge universer og skalere riggen uten å miste timing." },
+      "metadata": {
+        "title": "DMX-universer og skalering",
+        "description": "Hvordan planlegge universer og skalere riggen uten å miste timing."
+      },
       "breadcrumb": "Universer og skalering",
       "hero": {
         "label": "Guide",
@@ -728,7 +853,10 @@
       }
     },
     "dmxLatency": {
-      "metadata": { "title": "Latency og jitter i DMX", "description": "Slik måler og kontrollerer du latency og jitter i en AI-styrt DMX-rigg." },
+      "metadata": {
+        "title": "Latency og jitter i DMX",
+        "description": "Slik måler og kontrollerer du latency og jitter i en AI-styrt DMX-rigg."
+      },
       "breadcrumb": "Latency og jitter",
       "hero": {
         "label": "Guide",
@@ -750,7 +878,10 @@
       }
     },
     "dmxBest": {
-      "metadata": { "title": "Beste praksis for DMX", "description": "Praktiske tips for stabile DMX-rigger når AI styrer lyssekvensene." },
+      "metadata": {
+        "title": "Beste praksis for DMX",
+        "description": "Praktiske tips for stabile DMX-rigger når AI styrer lyssekvensene."
+      },
       "breadcrumb": "Beste praksis",
       "hero": {
         "label": "Guide",
@@ -776,7 +907,10 @@
       }
     },
     "dmxTroubleshooting": {
-      "metadata": { "title": "DMX-feilsøking", "description": "Vanlige feil i DMX-rigger og hvordan løse dem når AI styrer lyssekvensene." },
+      "metadata": {
+        "title": "DMX-feilsøking",
+        "description": "Vanlige feil i DMX-rigger og hvordan løse dem når AI styrer lyssekvensene."
+      },
       "breadcrumb": "Feilsøking",
       "hero": {
         "label": "Guide",
@@ -833,10 +967,26 @@
       "body": "Bruk denne oversikten for å vurdere om du trenger AI-automasjon med rekkverk, eller et mer tradisjonelt konsoll med lydtriggere."
     },
     "options": [
-      { "name": "Y-Link", "focus": "AI-drevet, musikkreaktiv DMX med lav latency og rekkverk for operatør.", "bestFor": "Klubber, små venues og mobile rigger med minimal bemanning." },
-      { "name": "MaestroDMX", "focus": "Lydanalyse og lysautomasjon for DJ-sett.", "bestFor": "DJ-fokuserte oppsett der musikk-cues styrer scenene." },
-      { "name": "Lightkey (sound active)", "focus": "Manuell programmering + lydbaserte triggere på macOS.", "bestFor": "Operatører som vil ha dyp manuell kontroll med enkel lydrespons." },
-      { "name": "Onyx + tilleggsmoduler", "focus": "Fullt konsoll med valgfrie lydtriggere.", "bestFor": "Større rigger med dedikerte LD-er som vil følge musikk." }
+      {
+        "name": "Y-Link",
+        "focus": "AI-drevet, musikkreaktiv DMX med lav latency og rekkverk for operatør.",
+        "bestFor": "Klubber, små venues og mobile rigger med minimal bemanning."
+      },
+      {
+        "name": "MaestroDMX",
+        "focus": "Lydanalyse og lysautomasjon for DJ-sett.",
+        "bestFor": "DJ-fokuserte oppsett der musikk-cues styrer scenene."
+      },
+      {
+        "name": "Lightkey (sound active)",
+        "focus": "Manuell programmering + lydbaserte triggere på macOS.",
+        "bestFor": "Operatører som vil ha dyp manuell kontroll med enkel lydrespons."
+      },
+      {
+        "name": "Onyx + tilleggsmoduler",
+        "focus": "Fullt konsoll med valgfrie lydtriggere.",
+        "bestFor": "Større rigger med dedikerte LD-er som vil følge musikk."
+      }
     ],
     "consider": {
       "title": "Dette bør du vurdere",
@@ -861,9 +1011,21 @@
       "body": "To ulike tilnærminger til musikkreaktivt lys. Slik skiller de seg."
     },
     "comparison": [
-      { "label": "Fokus", "ylink": "AI-planlagte lyssekvenser med rekkverk og lav latency.", "maestro": "Lydanalyse og automasjon for DJ-sett." },
-      { "label": "Operatørkontroll", "ylink": "Godkjenninger, låser og overstyring uten å miste struktur.", "maestro": "DJ-orientert arbeidsflyt med mer manuell kontroll." },
-      { "label": "Best for", "ylink": "Klubber/små venues med liten bemanning som trenger forutsigbarhet.", "maestro": "DJ-rom som vil trigge lys direkte fra musikk." }
+      {
+        "label": "Fokus",
+        "ylink": "AI-planlagte lyssekvenser med rekkverk og lav latency.",
+        "maestro": "Lydanalyse og automasjon for DJ-sett."
+      },
+      {
+        "label": "Operatørkontroll",
+        "ylink": "Godkjenninger, låser og overstyring uten å miste struktur.",
+        "maestro": "DJ-orientert arbeidsflyt med mer manuell kontroll."
+      },
+      {
+        "label": "Best for",
+        "ylink": "Klubber/små venues med liten bemanning som trenger forutsigbarhet.",
+        "maestro": "DJ-rom som vil trigge lys direkte fra musikk."
+      }
     ],
     "cta": {
       "prefix": "For detaljer om Y-Link, se hovedsiden for",
@@ -883,6 +1045,12 @@
       "cta": "Åpne verktøy"
     },
     "cards": [
+      {
+        "title": "DMX adresse- og universplanlegger",
+        "description": "Planlegg adresser p? et live 512-kanals rutenett og oppdag overlapp f?r patching.",
+        "href": "/tools/dmx-address-planner",
+        "tag": "Gratis verkt?y"
+      },
       {
         "title": "DMX Patch Sheet Generator",
         "description": "Pakk armaturer automatisk i univers og eksporter en ryddig patchliste.",
@@ -1303,6 +1471,115 @@
           "title": "Klar for å lage en full patchliste?",
           "link": "Aapne DMX Patch Sheet Generator"
         }
+      }
+    },
+    "dmxAddressPlanner": {
+      "metadata": {
+        "title": "DMX adresse- og universplanlegger",
+        "description": "Planlegg DMX-adresser p? et live 512-kanals rutenett med overlappvarsler og universoversikt."
+      },
+      "breadcrumb": "DMX adresseplanlegger",
+      "intro": {
+        "eyebrow": "DMX-verkt?y",
+        "title": "Planlegg adresser visuelt",
+        "body": "Plasser armaturer p? et 512-kanals rutenett, se overlapp umiddelbart og hold universene ryddige."
+      },
+      "howTo": {
+        "title": "Slik bruker du adresseplanleggeren",
+        "steps": [
+          "Legg til armaturer med navn, kanalantall og type.",
+          "Velg en armatur og klikk en kanal for ? plassere den.",
+          "Bruk Neste ledige adresse for ? pakke automatisk.",
+          "Sjekk overlapp og universoppsummeringen."
+        ]
+      },
+      "defaults": {
+        "sampleName": "Wash",
+        "newName": "Armatur",
+        "placeholderName": "Armatur navn",
+        "fallbackName": "Armatur"
+      },
+      "tool": {
+        "fixtures": {
+          "title": "Armaturer",
+          "subtitle": "Definer armaturer f?r du plasserer dem i rutenettet.",
+          "add": "Legg til armatur",
+          "name": "Navn",
+          "channels": "Kanaler",
+          "type": "Type",
+          "status": "Status",
+          "actions": "Handlinger",
+          "select": "Velg",
+          "selected": "Valgt",
+          "remove": "Fjern",
+          "placed": "Plassert",
+          "unplaced": "Ikke plassert"
+        },
+        "types": {
+          "wash": "Wash",
+          "spot": "Spot",
+          "beam": "Beam",
+          "fx": "FX",
+          "other": "Andre"
+        },
+        "grid": {
+          "title": "Univers 1 rutenett",
+          "subtitle": "Velg en armatur, og klikk en kanal for ? plassere den.",
+          "legend": "Forklaring",
+          "overlap": "Overlapp",
+          "channel": "Kanal"
+        },
+        "actions": {
+          "nextFree": "Neste ledige adresse",
+          "clearPlacement": "Fjern"
+        },
+        "summary": {
+          "title": "Patch-oppsummering",
+          "universes": "Univers",
+          "channelsUsed": "Kanaler brukt",
+          "utilization": "Utnyttelse"
+        },
+        "warnings": {
+          "overlap": "Overlapp: {a} overlapper {b} p? kanal {start}-{end}.",
+          "outOfRange": "Plasseringen g?r utenfor universgrensen.",
+          "noSpace": "Ingen ledig plass til denne armaturen."
+        },
+        "status": {
+          "selectFixture": "Velg en armatur for ? plassere den.",
+          "selected": "Valgt armatur:",
+          "noFixtures": "Legg til en armatur for ? starte planleggingen."
+        }
+      },
+      "faq": {
+        "title": "Ofte stilte sp?rsm?l",
+        "items": [
+          {
+            "question": "Forhindrer dette overlappende adresser?",
+            "answer": "Overlapp markeres i rutenettet og listes under, slik at du kan rette dem med en gang."
+          },
+          {
+            "question": "Hva om en armatur ikke f?r plass i universet?",
+            "answer": "Du f?r et varsel hvis plasseringen g?r over 512 kanaler."
+          }
+        ]
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "Universst?rrelse",
+            "body": "Hvert univers har 512 kanaler. Dette rutenettet viser ett univers om gangen."
+          },
+          {
+            "title": "Pakkestrategi",
+            "body": "Bruk Neste ledige adresse for ? finne f?rste sammenhengende plass for valgt armatur."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Trenger du en patchliste?",
+        "body": "Eksporter en ren patchliste n?r planen er l?st.",
+        "link": "?pne DMX patch sheet generator"
       }
     }
   },
