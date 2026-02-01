@@ -1046,6 +1046,12 @@
     },
     "cards": [
       {
+        "title": "DMX DIP-bryter / binær konverter",
+        "description": "Slå DIP-brytere og konverter desimal til binær DMX-adresse.",
+        "href": "/tools/dmx-dip",
+        "tag": "Gratis verktøy"
+      },
+      {
         "title": "DMX adresse- og universplanlegger",
         "description": "Planlegg adresser på et live 512-kanals rutenett og oppdag overlapp før patching.",
         "href": "/tools/dmx-address-planner",
@@ -1597,7 +1603,56 @@
       "metadata": {
         "title": "Strøm- og lastkalkulator for scenelys",
         "description": "Beregn last per kurs med 80% sikkerhetsmargin og fasebalanse."
+    },
+    "dmxDip": {
+      "metadata": {
+        "title": "DMX DIP-bryter / binær konverter",
+        "description": "Konverter DMX-adresser mellom desimal og binær med et interaktivt DIP-rutenett."
       },
+      "breadcrumb": "DMX DIP-bryter",
+      "intro": {
+        "eyebrow": "DMX-verktøy",
+        "title": "Sett DMX-adresser raskt",
+        "body": "Flipp DIP-brytere eller skriv inn en desimaladresse for å se riktig binærmønster."
+      },
+      "howTo": {
+        "title": "Slik bruker du DIP-verktøyet",
+        "steps": [
+          "Skriv inn en desimaladresse eller slå brytere.",
+          "Les binærmønsteret med ledende nuller.",
+          "Bruk presets for vanlige startadresser."
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Adresseinput",
+          "subtitle": "Støtter 10 DIP-brytere (1-1023).",
+          "decimal": "Desimaladresse",
+          "decimalHelp": "Bruk 1-512 for ett univers, eller 513+ for høyere start.",
+          "switches": "DIP-brytere"
+        },
+        "outputs": {
+          "binary": "Binær output"
+        },
+        "presets": {
+          "title": "Vanlige presets",
+          "items": [1, 513, 9, 25, 33, 257]
+        }
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "Brytervekter",
+            "body": "Hver bryter er en toerpotens. Summer aktive brytere for adressen."
+          },
+          {
+            "title": "Univers-offset",
+            "body": "Adresse 513 tilsvarer univers 2, kanal 1."
+          }
+        ]
+      }
+    },
       "breadcrumb": "Strøm/Last-kalkulator",
       "intro": {
         "eyebrow": "DMX-verktøy",

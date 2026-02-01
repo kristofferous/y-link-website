@@ -1046,6 +1046,12 @@
     },
     "cards": [
       {
+        "title": "DMX DIP Switch / Binary Converter",
+        "description": "Toggle DIP switches and convert decimal to binary DMX addresses.",
+        "href": "/tools/dmx-dip",
+        "tag": "Free tool"
+      },
+      {
         "title": "DMX Address + Universe Planner",
         "description": "Plan addresses on a live 512-channel grid and catch overlaps before patching.",
         "href": "/tools/dmx-address-planner",
@@ -1597,7 +1603,56 @@
       "metadata": {
         "title": "Stage Lighting Power/Load Calculator",
         "description": "Calculate lighting load per circuit with an 80% safety margin and phase balance view."
+    },
+    "dmxDip": {
+      "metadata": {
+        "title": "DMX DIP Switch / Binary Converter",
+        "description": "Convert DMX addresses between decimal and binary with an interactive DIP switch grid."
       },
+      "breadcrumb": "DMX DIP Switch",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "Set DMX addresses fast",
+        "body": "Flip DIP switches or enter a decimal address to get the matching binary pattern."
+      },
+      "howTo": {
+        "title": "How to use the DIP switch tool",
+        "steps": [
+          "Enter a decimal DMX address or toggle switches.",
+          "Read the binary pattern with leading zeros.",
+          "Use presets for common fixture starts."
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Address input",
+          "subtitle": "Values support 10 DIP switches (1-1023).",
+          "decimal": "Decimal address",
+          "decimalHelp": "Use 1-512 for a single universe, or 513+ for higher starts.",
+          "switches": "DIP switches"
+        },
+        "outputs": {
+          "binary": "Binary output"
+        },
+        "presets": {
+          "title": "Common presets",
+          "items": [1, 513, 9, 25, 33, 257]
+        }
+      },
+      "details": {
+        "title": "Notes",
+        "sections": [
+          {
+            "title": "Switch weights",
+            "body": "Each switch represents a power of two. Add the active switches to get the address."
+          },
+          {
+            "title": "Universe offsets",
+            "body": "Address 513 corresponds to universe 2, channel 1."
+          }
+        ]
+      }
+    },
       "breadcrumb": "Power/Load Calculator",
       "intro": {
         "eyebrow": "DMX Tool",

@@ -16,6 +16,7 @@ const staticRoutes = [
   "/blog",
   "/guides",
   "/tools",
+  "/tools/dmx-dip",
   "/tools/lighting-power-load",
   "/tools/dmx-address-planner",
   "/tools/dmx-patch-sheet",
