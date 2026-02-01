@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "siteName": "Y-Link",
     "title": "Autonom AI DMX-kontroller for romtilpasset, musikkreaktivt lys",
@@ -216,7 +216,7 @@
           "description": "Identiske input gir identisk lysoutput på tvers av kjøringer, venues og enheter."
         }
       ],
-      "helper": "Ingen prosenter, ingen pilotmålinger — kun runtime-reglene systemet følger."
+      "helper": "Ingen prosenter, ingen pilotmålinger â€” kun runtime-reglene systemet følger."
     },
     "applications": {
       "eyebrow": "Bruksområder",
@@ -260,7 +260,7 @@
       "title": "Hvorfor Y-Link",
       "points": [
         "Mindre bemanning, høyere tempo.",
-        "Show som treffer hver gang – ikke tilfeldige effekter.",
+        "Show som treffer hver gang â€“ ikke tilfeldige effekter.",
         "Raskt oppsett for små venues og mobile rigger."
       ],
       "note": "Målet er at solide lyssekvenser skal være standard, ikke et sideprosjekt."
@@ -348,8 +348,8 @@
       "items": [
         "Validere stabilitet, timing og drift i ekte venue-miljøer.",
         "Samle strukturert teknisk og operasjonell feedback.",
-        "Kontrollert pilot med få partnere – ikke en åpen beta.",
-        "Tidsbegrenset periode: omtrent 4–8 uker.",
+        "Kontrollert pilot med få partnere â€“ ikke en åpen beta.",
+        "Tidsbegrenset periode: omtrent 4â€“8 uker.",
         "Y1-hardware lånes ut, eies av Y-Link og returneres etter piloten. Hardware og programvare er under aktiv utvikling."
       ]
     },
@@ -358,7 +358,7 @@
       "items": [
         "Ikke et ferdig kommersielt produkt.",
         "Ingen gratis hardware-giveaway.",
-        "Ingen full produksjonsdekning – fokuset er pilotverifisering."
+        "Ingen full produksjonsdekning â€“ fokuset er pilotverifisering."
       ]
     },
     "partnersGet": {
@@ -422,7 +422,7 @@
       },
       {
         "q": "Hvordan blir jeg med i piloten eller forhåndsbestiller?",
-        "a": "Bruk skjemaet på forsiden eller pilotsiden. Y-Link er under utvikling, og piloten er tidsbegrenset (ca. 4–8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
+        "a": "Bruk skjemaet på forsiden eller pilotsiden. Y-Link er under utvikling, og piloten er tidsbegrenset (ca. 4â€“8 uker), med Y1-hardware som lånes ut og leveres tilbake etterpå. Vi tar inn en liten, kuratert gruppe for å teste stabilitet, timing og brukeropplevelse."
       },
       {
         "q": "Hvordan avslutter jeg e-poster?",
@@ -591,7 +591,7 @@
         "detail": "Last opp spor, verifiser timing og gå live raskt med rekkverk."
       }
     ],
-    "readMore": "Les mer →",
+    "readMore": "Les mer â†’",
     "musicReactive": {
       "metadata": {
         "title": "Musikkreaktivt DMX-lys for klubber",
@@ -754,7 +754,7 @@
         "href": "/guides/dmx-basics"
       },
       {
-        "title": "Adresse­ring av lamper",
+        "title": "AdresseÂ­ring av lamper",
         "href": "/guides/dmx-addressing"
       },
       {
@@ -798,20 +798,20 @@
         "modes": {
           "title": "Fixture-modi",
           "body": "Velg modi som balanserer kontroll mot kanalbruk. Høyere modi gir mer kontroll men bruker flere kanaler. AI-planleggeren trenger korrekt patch for å unngå metning.",
-          "linkLabel": "adresse­ring av lamper"
+          "linkLabel": "adresseÂ­ring av lamper"
         }
       }
     },
     "dmxAddressing": {
       "metadata": {
-        "title": "Adresse­ring av lamper",
-        "description": "Lær korrekt adresse­ring for stabile, AI-drevne lyssekvenser."
+        "title": "AdresseÂ­ring av lamper",
+        "description": "Lær korrekt adresseÂ­ring for stabile, AI-drevne lyssekvenser."
       },
-      "breadcrumb": "Adresse­ring",
+      "breadcrumb": "AdresseÂ­ring",
       "hero": {
         "label": "Guide",
         "title": "Fixture Addressing",
-        "body": "Riktig adresse­ring sikrer at AI-planlagte cues treffer riktig kanal hver gang."
+        "body": "Riktig adresseÂ­ring sikrer at AI-planlagte cues treffer riktig kanal hver gang."
       },
       "plan": {
         "title": "Planlegg patchen",
@@ -921,14 +921,14 @@
         "title": "Vanlige feil",
         "items": [
           "Signalfall: sjekk kabler, terminering og noder.",
-          "Feil mapping: verifiser patch og adresse­ring.",
+          "Feil mapping: verifiser patch og adresseÂ­ring.",
           "Timing-glitch: se på nettverkslast og node-helse."
         ]
       },
       "checklist": {
         "title": "Hurtigsjekk",
         "items": [
-          "Bekreft univers- og adresse­oppsett.",
+          "Bekreft univers- og adresseÂ­oppsett.",
           "Sjekk at rekkverk og sikkerhetsgrenser er aktive.",
           "Start noder på feiltilstand, logg hendelsen."
         ],
@@ -1047,9 +1047,9 @@
     "cards": [
       {
         "title": "DMX adresse- og universplanlegger",
-        "description": "Planlegg adresser p? et live 512-kanals rutenett og oppdag overlapp f?r patching.",
+        "description": "Planlegg adresser på et live 512-kanals rutenett og oppdag overlapp før patching.",
         "href": "/tools/dmx-address-planner",
-        "tag": "Gratis verkt?y"
+        "tag": "Gratis verktøy"
       },
       {
         "title": "DMX Patch Sheet Generator",
@@ -1070,10 +1070,10 @@
         "tag": "Gratis verktøy"
       },
       {
-        "title": "Str?m- og lastkalkulator for scenelys",
+        "title": "Strøm- og lastkalkulator for scenelys",
         "description": "Estimer effekt per kurs med sikkerhetsmargin og fasebalanse.",
         "href": "/tools/lighting-power-load",
-        "tag": "Gratis verkt?y"
+        "tag": "Gratis verktøy"
       }
     ],
     "dmxColor": {
@@ -1263,7 +1263,7 @@
             "linkHref": "/guides/8-bit-vs-16-bit-dmx"
           },
           {
-            "title": "Usikker pa hvor mange armaturer som får plass?",
+            "title": "Usikker på hvor mange armaturer som får plass?",
             "body": "Bruk kapasitetskalkulatoren for å estimere armaturer per univers før du lager en full patchliste.",
             "linkLabel": "DMX kapasitetskalkulator",
             "linkHref": "/tools/dmx-capacity"
@@ -1482,20 +1482,20 @@
     "dmxAddressPlanner": {
       "metadata": {
         "title": "DMX adresse- og universplanlegger",
-        "description": "Planlegg DMX-adresser p? et live 512-kanals rutenett med overlappvarsler og universoversikt."
+        "description": "Planlegg DMX-adresser på et live 512-kanals rutenett med overlappvarsler og universoversikt."
       },
       "breadcrumb": "DMX adresseplanlegger",
       "intro": {
-        "eyebrow": "DMX-verkt?y",
+        "eyebrow": "DMX-verktøy",
         "title": "Planlegg adresser visuelt",
-        "body": "Plasser armaturer p? et 512-kanals rutenett, se overlapp umiddelbart og hold universene ryddige."
+        "body": "Plasser armaturer på et 512-kanals rutenett, se overlapp umiddelbart og hold universene ryddige."
       },
       "howTo": {
         "title": "Slik bruker du adresseplanleggeren",
         "steps": [
           "Legg til armaturer med navn, kanalantall og type.",
-          "Velg en armatur og klikk en kanal for ? plassere den.",
-          "Bruk Neste ledige adresse for ? pakke automatisk.",
+          "Velg en armatur og klikk en kanal for å plassere den.",
+          "Bruk Neste ledige adresse for å pakke automatisk.",
           "Sjekk overlapp og universoppsummeringen."
         ]
       },
@@ -1508,7 +1508,7 @@
       "tool": {
         "fixtures": {
           "title": "Armaturer",
-          "subtitle": "Definer armaturer f?r du plasserer dem i rutenettet.",
+          "subtitle": "Definer armaturer før du plasserer dem i rutenettet.",
           "add": "Legg til armatur",
           "name": "Navn",
           "channels": "Kanaler",
@@ -1530,7 +1530,7 @@
         },
         "grid": {
           "title": "Univers {universe} rutenett",
-          "subtitle": "Velg en armatur, og klikk en kanal for ? plassere den.",
+          "subtitle": "Velg en armatur, og klikk en kanal for å plassere den.",
           "legend": "Forklaring",
           "overlap": "Overlapp",
           "channel": "Kanal",
@@ -1550,27 +1550,27 @@
           "utilization": "Utnyttelse"
         },
         "warnings": {
-          "overlap": "Univers {universe}: {a} overlapper {b} p? kanal {start}-{end}.",
-          "outOfRange": "Plasseringen g?r utenfor universgrensen.",
+          "overlap": "Univers {universe}: {a} overlapper {b} på kanal {start}-{end}.",
+          "outOfRange": "Plasseringen går utenfor universgrensen.",
           "noSpace": "Ingen ledig plass til denne armaturen.",
-          "noFixturesPlaced": "Plasser minst ?n armatur f?r du sender videre."
+          "noFixturesPlaced": "Plasser minst én armatur før du sender videre."
         },
         "status": {
-          "selectFixture": "Velg en armatur for ? plassere den.",
+          "selectFixture": "Velg en armatur for å plassere den.",
           "selected": "Valgt armatur:",
-          "noFixtures": "Legg til en armatur for ? starte planleggingen."
+          "noFixtures": "Legg til en armatur for å starte planleggingen."
         }
       },
       "faq": {
-        "title": "Ofte stilte sp?rsm?l",
+        "title": "Ofte stilte spørsmål",
         "items": [
           {
             "question": "Forhindrer dette overlappende adresser?",
             "answer": "Overlapp markeres i rutenettet og listes under, slik at du kan rette dem med en gang."
           },
           {
-            "question": "Hva om en armatur ikke f?r plass i universet?",
-            "answer": "Du f?r et varsel hvis plasseringen g?r over 512 kanaler."
+            "question": "Hva om en armatur ikke får plass i universet?",
+            "answer": "Du får et varsel hvis plasseringen går over 512 kanaler."
           }
         ]
       },
@@ -1578,37 +1578,37 @@
         "title": "Notater",
         "sections": [
           {
-            "title": "Universst?rrelse",
+            "title": "Universstørrelse",
             "body": "Hvert univers har 512 kanaler. Dette rutenettet viser ett univers om gangen."
           },
           {
             "title": "Pakkestrategi",
-            "body": "Bruk Neste ledige adresse for ? finne f?rste sammenhengende plass for valgt armatur."
+            "body": "Bruk Neste ledige adresse for å finne første sammenhengende plass for valgt armatur."
           }
         ]
       },
       "cta": {
         "title": "Trenger du en patchliste?",
-        "body": "Eksporter en ren patchliste n?r planen er l?st.",
-        "link": "?pne DMX patch sheet generator"
+        "body": "Eksporter en ren patchliste når planen er låst.",
+        "link": "Åpne DMX patch sheet generator"
       }
     },
     "lightingPower": {
       "metadata": {
-        "title": "Str?m- og lastkalkulator for scenelys",
+        "title": "Strøm- og lastkalkulator for scenelys",
         "description": "Beregn last per kurs med 80% sikkerhetsmargin og fasebalanse."
       },
-      "breadcrumb": "Str?m/Last-kalkulator",
+      "breadcrumb": "Strøm/Last-kalkulator",
       "intro": {
-        "eyebrow": "DMX-verkt?y",
-        "title": "Balanser str?mforbruk trygt",
-        "body": "Estimer watt, ampere og kursmargin f?r rigg."
+        "eyebrow": "DMX-verktøy",
+        "title": "Balanser strømforbruk trygt",
+        "body": "Estimer watt, ampere og kursmargin før rigg."
       },
       "howTo": {
         "title": "Slik bruker du kalkulatoren",
         "steps": [
           "Legg til armaturer fra presets eller skriv inn egne verdier.",
-          "Angi sikringsst?rrelse, antall kurser og faser.",
+          "Angi sikringsstørrelse, antall kurser og faser.",
           "Se last per kurs og fasebalanse."
         ]
       },
@@ -1619,7 +1619,7 @@
         },
         "inputs": {
           "title": "Armaturer",
-          "subtitle": "Presets gir raske oppsett. Skriv inn egne verdier n?r du trenger det.",
+          "subtitle": "Presets gir raske oppsett. Skriv inn egne verdier når du trenger det.",
           "preset": "Preset",
           "quantity": "Antall",
           "watts": "Watt",
@@ -1630,7 +1630,7 @@
         },
         "circuits": {
           "title": "Kurser",
-          "subtitle": "Angi tilgjengelig str?m og antall faser.",
+          "subtitle": "Angi tilgjengelig strøm og antall faser.",
           "voltage": "Spenning (V)",
           "breaker": "Sikring (A)",
           "count": "Kurser",
@@ -1640,8 +1640,8 @@
           "perCircuit": "Last per kurs",
           "circuitLabel": "Kurs {index}",
           "phaseWarning": "Ujevn fasebalanse: {value}% forskjell.",
-          "voltageHelp": "Bruk armaturspenning (fase-til-n?ytral p? 3-fase).",
-          "voltagePresetNeutral": "Fase-til-n?ytral 230V",
+          "voltageHelp": "Bruk armaturspenning (fase-til-nøytral på 3-fase).",
+          "voltagePresetNeutral": "Fase-til-nøytral 230V",
           "voltagePresetLine": "Fase-til-fase 400V",
           "voltagePresetUs": "120V US",
           "voltagePresetEu": "230V EU",
@@ -1660,7 +1660,7 @@
           "phaseLabel": "Fase {index}",
           "totalVa": "Total tilsynelatende effekt",
           "averageDraw": "Gjennomsnittlig forbruk",
-          "exportTitle": "Eksport-forh?ndsvisning",
+          "exportTitle": "Eksport-forhåndsvisning",
           "exportCircuit": "KURS {index} ({breaker}A {voltage}V {phase}): {load}VA / {max}VA (trygt {safe}VA)",
           "exportFixture": "- {name} x{count} = {watts}W",
           "realToApparent": "Reell til tilsynelatende",
@@ -1676,7 +1676,7 @@
           },
           {
             "title": "Fasebalanse",
-            "body": "Jevn fordeling reduserer utkoblinger og holder str?mmen stabil."
+            "body": "Jevn fordeling reduserer utkoblinger og holder strømmen stabil."
           }
         ]
       }
@@ -1709,3 +1709,4 @@
     }
   }
 }
+
