@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: LightingPowerPageProps): Prom
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/lighting-power-load"),
         "en-US": prefixLocale("en", "/tools/lighting-power-load"),
+        "x-default": prefixLocale("en", "/tools/lighting-power-load"),
       },
     },
     openGraph: {

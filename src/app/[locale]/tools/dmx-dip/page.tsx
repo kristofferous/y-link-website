@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: DmxDipPageProps): Promise<Met
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-dip"),
         "en-US": prefixLocale("en", "/tools/dmx-dip"),
+        "x-default": prefixLocale("en", "/tools/dmx-dip"),
       },
     },
     openGraph: {

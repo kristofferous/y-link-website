@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: DmxCapacityPageProps): Promis
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-capacity"),
         "en-US": prefixLocale("en", "/tools/dmx-capacity"),
+        "x-default": prefixLocale("en", "/tools/dmx-capacity"),
       },
     },
     openGraph: {

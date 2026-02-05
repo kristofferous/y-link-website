@@ -80,6 +80,7 @@ export async function generateMetadata({ params }: DmxPatchSheetPageProps): Prom
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-patch-sheet"),
         "en-US": prefixLocale("en", "/tools/dmx-patch-sheet"),
+        "x-default": prefixLocale("en", "/tools/dmx-patch-sheet"),
       },
     },
     openGraph: {

@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: DmxColorPageProps): Promise<M
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-color-picker"),
         "en-US": prefixLocale("en", "/tools/dmx-color-picker"),
+        "x-default": prefixLocale("en", "/tools/dmx-color-picker"),
       },
     },
     openGraph: {

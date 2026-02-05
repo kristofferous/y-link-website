@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: ToolsPageProps): Promise<Meta
       languages: {
         "nb-NO": prefixLocale("nb", "/tools"),
         "en-US": prefixLocale("en", "/tools"),
+        "x-default": prefixLocale("en", "/tools"),
       },
     },
   };

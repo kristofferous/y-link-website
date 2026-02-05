@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: DmxAddressPlannerPageProps): 
       languages: {
         "nb-NO": prefixLocale("nb", "/tools/dmx-address-planner"),
         "en-US": prefixLocale("en", "/tools/dmx-address-planner"),
+        "x-default": prefixLocale("en", "/tools/dmx-address-planner"),
       },
     },
     openGraph: {
