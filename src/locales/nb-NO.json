@@ -1035,60 +1035,60 @@
   },
   "tools": {
     "metadata": {
-      "title": "DMX-verktøy",
-      "description": "Raske, praktiske DMX-verktøy for patching og adressering."
+      "title": "DMX-verktøy og kalkulatorer",
+      "description": "Raske, praktiske DMX-kalkulatorer og verktøy for patching og adressering: DIP-bryterkalkulator, adresseplanlegger, patcharkgenerator, fargeplukker, kapasitetskalkulator, belastningskalkulator, og mer."
     },
     "breadcrumb": "Verktøy",
     "hero": {
       "label": "Verktøy",
-      "title": "DMX-verktøy for rask patching",
-      "body": "Praktiske verktøy for lysteknikere og operatører. Start med DMX Patch Sheet Generator.",
+      "title": "DMX‑verktøy for rask patching",
+      "body": "Praktiske verktøy for lysteknikere og operatører. Start med DMX patcharkgeneratoren.",
       "cta": "Åpne verktøy"
     },
     "cards": [
       {
-        "title": "DMX DIP-bryter / binær konverter",
-        "description": "Slå DIP-brytere og konverter desimal til binær DMX-adresse.",
+        "title": "DMX DIP‑bryterkalkulator / binær konverter",
+        "description": "Flipp DIP‑brytere og konverter DMX‑adresser mellom desimal og binær.",
         "href": "/tools/dmx-dip",
         "tag": "Gratis verktøy"
       },
       {
         "title": "DMX adresse- og universplanlegger",
-        "description": "Planlegg adresser på et live 512-kanals rutenett og oppdag overlapp før patching.",
+        "description": "Planlegg adresser på et live 512‑kanals rutenett, oppdag overlapper umiddelbart, og se hvor mange univers du trenger.",
         "href": "/tools/dmx-address-planner",
         "tag": "Gratis verktøy"
       },
       {
-        "title": "DMX Patch Sheet Generator",
-        "description": "Pakk armaturer automatisk i univers og eksporter en ryddig patchliste.",
+        "title": "DMX patcharkgenerator og universplanlegger",
+        "description": "Automatisk pakk armaturer over universer og eksporter rene patchark som CSV eller PDF.",
         "href": "/tools/dmx-patch-sheet",
         "tag": "Gratis verktøy"
       },
       {
-        "title": "DMX Color Picker & RGB til DMX",
-        "description": "Konverter HEX eller RGB til DMX-verdier for RGB, RGBW, RGBWA og RGBWW/CW.",
+        "title": "DMX fargeplukker & RGB til DMX‑kalkulator",
+        "description": "Konverter HEX eller RGB til DMX‑verdier for RGB, RGBW, RGBWA og RGBWW/CW armaturer. Valgfri beregning av CCT‑kanaler med nøyaktig hvitblanding.",
         "href": "/tools/dmx-color-picker",
         "tag": "Gratis verktøy"
       },
       {
-        "title": "DMX kapasitetskalkulator",
-        "description": "Se hvor mange armaturer som får plass per univers og hvor mange univers du trenger.",
+        "title": "DMX universkapasitetskalkulator",
+        "description": "Beregn hvor mange armaturer som passer per univers og hvor mange univers du trenger basert på kanalantall og antall armaturer.",
         "href": "/tools/dmx-capacity",
         "tag": "Gratis verktøy"
       },
       {
         "title": "Strøm- og lastkalkulator for scenelys",
-        "description": "Estimer effekt per kurs med sikkerhetsmargin og fasebalanse.",
+        "description": "Estimer watt, ampere og kurskapasitet med sikkerhetsmarginer og fasebalansering.",
         "href": "/tools/lighting-power-load",
         "tag": "Gratis verktøy"
       }
     ],
     "dmxDip": {
       "metadata": {
-        "title": "DMX DIP-bryter / binær konverter",
-        "description": "Konverter DMX-adresser mellom desimal og binær med et interaktivt DIP-rutenett."
+        "title": "DMX DIP‑bryterkalkulator / binær konverter",
+        "description": "Bruk en interaktiv DIP‑brytermatrise til å konvertere DMX‑adresser mellom desimal og binær. Inkluderer forhåndsinnstillinger for vanlige startadresser."
       },
-      "breadcrumb": "DMX DIP-bryter",
+      "breadcrumb": "DMX DIP‑bryter",
       "intro": {
         "eyebrow": "DMX-verktøy",
         "title": "Sett DMX-adresser raskt",
@@ -1141,10 +1141,10 @@
     },
     "dmxColor": {
       "metadata": {
-        "title": "DMX Color Picker og RGB til DMX-konverter",
-        "description": "DMX color picker og HEX til DMX-konverter. Få DMX-verdier for RGB, RGBW, RGBWA og RGBWW/CW med valgfri CCT-beregning."
+        "title": "DMX fargeplukker og RGB til DMX‑kalkulator",
+        "description": "Konverter HEX eller RGB til DMX‑verdier for RGB, RGBW, RGBWA og RGBWW/CW armaturer. Valgfri beregning av CCT‑kanaler med nøyaktig hvitblanding."
       },
-      "breadcrumb": "DMX Color Picker",
+      "breadcrumb": "DMX fargeplukker",
       "intro": {
         "eyebrow": "DMX-verktøy",
         "title": "Konverter farge til DMX-verdier raskt",
@@ -1279,10 +1279,10 @@
     },
     "dmxPatch": {
       "metadata": {
-        "title": "DMX Patch Sheet Generator",
-        "description": "Pakk armaturer automatisk i DMX-univers og eksporter en ryddig patchliste."
+        "title": "DMX patcharkgenerator og universplanlegger",
+        "description": "Automatisk pakk armaturer over DMX‑univers, unngå overlappende adresser, og eksporter rene patchark som CSV eller PDF."
       },
-      "breadcrumb": "DMX Patch Sheet Generator",
+      "breadcrumb": "DMX patcharkgenerator",
       "intro": {
         "eyebrow": "DMX-verktøy",
         "title": "Hva en DMX patchliste er",
@@ -1469,10 +1469,10 @@
     },
     "dmxCapacity": {
       "metadata": {
-        "title": "DMX kapasitetskalkulator",
-        "description": "Beregn hvor mange armaturer som får plass i et DMX-univers og hvor mange univers du trenger."
+        "title": "DMX universkapasitetskalkulator",
+        "description": "Beregn hvor mange armaturer som passer i et DMX‑univers, resterende kanaler, og universene du trenger basert på kanalantall og antall armaturer."
       },
-      "breadcrumb": "DMX kapasitetskalkulator",
+      "breadcrumb": "DMX universkapasitetskalkulator",
       "intro": {
         "eyebrow": "DMX-verktøy",
         "title": "Hvor mange armaturer får plass i et univers?",
@@ -1545,7 +1545,7 @@
     "dmxAddressPlanner": {
       "metadata": {
         "title": "DMX adresse- og universplanlegger",
-        "description": "Planlegg DMX-adresser på et live 512-kanals rutenett med overlappvarsler og universoversikt."
+        "description": "Planlegg DMX‑adresser på et live 512‑kanals rutenett, oppdag overlapp umiddelbart, og se universutnyttelse."
       },
       "breadcrumb": "DMX adresseplanlegger",
       "intro": {
@@ -1659,9 +1659,9 @@
     "lightingPower": {
       "metadata": {
         "title": "Strøm- og lastkalkulator for scenelys",
-        "description": "Beregn last per kurs med 80% sikkerhetsmargin og fasebalanse."
+        "description": "Estimer lysbelastning per kurs med 80 % sikkerhetsmargin, fasebalanse og total effekt og strøm."
       },
-      "breadcrumb": "Strøm/Last-kalkulator",
+      "breadcrumb": "Strøm/last-kalkulator",
       "intro": {
         "eyebrow": "DMX-verktøy",
         "title": "Balanser strømforbruk trygt",
