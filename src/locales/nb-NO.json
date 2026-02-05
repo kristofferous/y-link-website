@@ -1538,7 +1538,7 @@
         },
         "cta": {
           "title": "Klar for å lage en full patchliste?",
-          "link": "Aapne DMX Patch Sheet Generator"
+          "link": "Åpne DMX patcharkgenerator"
         }
       }
     },
@@ -1653,7 +1653,7 @@
       "cta": {
         "title": "Trenger du en patchliste?",
         "body": "Eksporter en ren patchliste når planen er låst.",
-        "link": "Åpne DMX patch sheet generator"
+        "link": "Åpne DMX patcharkgenerator"
       }
     },
     "lightingPower": {
