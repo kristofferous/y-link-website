@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { StructuredData } from "@/components/StructuredData";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { absoluteUrl } from "@/lib/seo";
 
 type ToolsPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -31,9 +33,24 @@ export default async function ToolsPage({ params }: ToolsPageProps) {
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const { tools, navigation } = dictionary;
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: tools.cards.map((tool, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Thing",
+        name: tool.title,
+        description: tool.description,
+        url: absoluteUrl(prefixLocale(locale, tool.href)),
+      },
+    })),
+  };
 
   return (
     <main>
+      <StructuredData data={itemListSchema} />
       <section className="section-spacing">
         <div className="container-custom">
           <Breadcrumbs
