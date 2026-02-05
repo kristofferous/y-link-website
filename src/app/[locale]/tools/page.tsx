@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
 type ToolsPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -12,16 +13,37 @@ export async function generateMetadata({ params }: ToolsPageProps): Promise<Meta
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
+  const canonicalPath = prefixLocale(locale, "/tools");
+  const ogAlt = dictionary.meta?.ogAlt ?? "Y-Link";
 
   return {
     title: dictionary.tools.metadata.title,
     description: dictionary.tools.metadata.description,
     alternates: {
-      canonical: prefixLocale(locale, "/tools"),
+      canonical: canonicalPath,
       languages: {
         "nb-NO": prefixLocale("nb", "/tools"),
         "en-US": prefixLocale("en", "/tools"),
       },
+    },
+    openGraph: {
+      title: dictionary.tools.metadata.title,
+      description: dictionary.tools.metadata.description,
+      url: absoluteUrl(canonicalPath),
+      images: [
+        {
+          url: defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dictionary.tools.metadata.title,
+      description: dictionary.tools.metadata.description,
+      images: [defaultOgImage],
     },
   };
 }
