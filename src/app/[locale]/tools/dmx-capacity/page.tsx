@@ -58,6 +58,13 @@ export default async function DmxCapacityPage({ params }: DmxCapacityPageProps) 
   const lang = getLanguageTag(locale);
   const { tools, navigation } = dictionary;
   const tool = tools.dmxCapacity;
+  const channelsGuidePath =
+    locale === "en"
+      ? "/guides/getting-started-with-dmx-lighting/channels-addresses-and-universes"
+      : "/guides/kom-i-gang-med-dmx-belysning/channels-addresses-and-universes";
+  const universesGuidePath = "/guides/how-many-dmx-universes-do-you-actually-need";
+  const channelsGuideLabel = locale === "en" ? "Channels, addresses, and universes" : "Kanaler, adresser og univers";
+  const universesGuideLabel = locale === "en" ? "How many DMX universes do you need?" : "Hvor mange DMX-univers trenger du?";
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -108,6 +115,25 @@ export default async function DmxCapacityPage({ params }: DmxCapacityPageProps) 
             >
               {tool.tool.cta.link}
             </Link>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {locale === "en" ? "Related guides" : "Relaterte guider"}
+              </p>
+              <div className="space-y-1">
+                <Link
+                  href={prefixLocale(locale, channelsGuidePath)}
+                  className="block text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  {channelsGuideLabel}
+                </Link>
+                <Link
+                  href={prefixLocale(locale, universesGuidePath)}
+                  className="block text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  {universesGuideLabel}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       }

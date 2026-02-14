@@ -1230,7 +1230,7 @@
     "dmxPatch": {
       "metadata": {
         "title": "DMX Patch Sheet Generator & Universe Planner",
-        "description": "Auto‑pack fixtures across DMX universes, avoid overlapping addresses, and export clean patch sheets as CSV or PDF."
+        "description": "Auto-pack fixtures across DMX universes, avoid overlapping addresses, and export clean patch sheets as CSV or PDF."
       },
       "breadcrumb": "DMX Patch Sheet Generator",
       "intro": {
@@ -1419,8 +1419,8 @@
     },
     "dmxCapacity": {
       "metadata": {
-        "title": "DMX Universe Capacity Calculator",
-        "description": "Calculate how many fixtures fit in a DMX universe, leftover channels, and universes required based on channel count and fixture quantity."
+        "title": "DMX Universe Capacity Calculator (How Many Fixtures Per Universe)",
+        "description": "Calculate fixtures per DMX universe, leftover channels, and total universes needed using channels-per-fixture and fixture count."
       },
       "breadcrumb": "DMX Universe Capacity Calculator",
       "intro": {
@@ -1494,8 +1494,8 @@
     },
     "dmxAddressPlanner": {
       "metadata": {
-        "title": "DMX Address Planner & Universe Calculator",
-        "description": "Plan DMX addresses on a live 512‑channel grid, detect overlaps instantly, and see universe utilisation."
+        "title": "DMX Address Planner (512-Channel Grid + Overlap Checker)",
+        "description": "Plan DMX start addresses on a live 512-channel grid, detect overlap instantly, and validate universe utilization before show time."
       },
       "breadcrumb": "DMX Address Planner",
       "intro": {

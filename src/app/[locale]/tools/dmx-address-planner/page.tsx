@@ -58,6 +58,10 @@ export default async function DmxAddressPlannerPage({ params }: DmxAddressPlanne
   const lang = getLanguageTag(locale);
   const { tools, navigation } = dictionary;
   const tool = tools.dmxAddressPlanner;
+  const dipGuidePath = "/guides/dmx-dip-switch-addressing";
+  const patchGuidePath = "/guides/dmx-patch-lists-channel-planning";
+  const dipGuideLabel = locale === "en" ? "DMX DIP switch addressing" : "DMX DIP-bryter adressering";
+  const patchGuideLabel = locale === "en" ? "DMX patch lists and channel planning" : "DMX patchlister og kanalplanlegging";
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -112,6 +116,25 @@ export default async function DmxAddressPlannerPage({ params }: DmxAddressPlanne
             >
               {tool.cta.link}
             </Link>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {locale === "en" ? "Related guides" : "Relaterte guider"}
+              </p>
+              <div className="space-y-1">
+                <Link
+                  href={prefixLocale(locale, dipGuidePath)}
+                  className="block text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  {dipGuideLabel}
+                </Link>
+                <Link
+                  href={prefixLocale(locale, patchGuidePath)}
+                  className="block text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  {patchGuideLabel}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       }

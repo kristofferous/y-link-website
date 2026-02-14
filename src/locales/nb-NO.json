@@ -1475,8 +1475,8 @@
     },
     "dmxCapacity": {
       "metadata": {
-        "title": "DMX universkapasitetskalkulator",
-        "description": "Beregn hvor mange armaturer som passer i et DMX‑univers, resterende kanaler, og universene du trenger basert på kanalantall og antall armaturer."
+        "title": "DMX universkalkulator (hvor mange armaturer per univers)",
+        "description": "Beregn armaturer per DMX-univers, ledige kanaler og antall univers du trenger basert pa kanalbredde og antall armaturer."
       },
       "breadcrumb": "DMX universkapasitetskalkulator",
       "intro": {
@@ -1550,8 +1550,8 @@
     },
     "dmxAddressPlanner": {
       "metadata": {
-        "title": "DMX adresse- og universplanlegger",
-        "description": "Planlegg DMX‑adresser på et live 512‑kanals rutenett, oppdag overlapp umiddelbart, og se universutnyttelse."
+        "title": "DMX adresseplanlegger (512-kanals grid + overlappskontroll)",
+        "description": "Planlegg DMX startadresser pa et live 512-kanals rutenett, oppdag overlapp umiddelbart og valider universutnyttelse."
       },
       "breadcrumb": "DMX adresseplanlegger",
       "intro": {
