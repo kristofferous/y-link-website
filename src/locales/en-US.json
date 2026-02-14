@@ -3,7 +3,7 @@
     "siteName": "Y-Link",
     "title": "Deterministically autonomous lighting controller for room-aware, music-reactive light",
     "description": "Y-Link is a deterministic autonomous lighting control platform that generates full live DMX shows from audio and configuration without manual programming.",
-    "ogAlt": "Y-Link AI DMX Controller"
+    "ogAlt": "Y-Link Autonomous Lighting Controller"
   },
   "navigation": {
     "main": [
@@ -500,7 +500,7 @@
       "title": "Autonomous Lighting Controller",
       "description": "Y-Link is a deterministic autonomous lighting control platform that generates full live DMX shows from audio and configuration without manual programming."
     },
-    "breadcrumb": "AI DMX Controller",
+    "breadcrumb": "Autonomous Lighting Controller",
     "hero": {
       "label": "Platform",
       "title": "Autonomous Lighting Controller",
@@ -662,8 +662,8 @@
           "body": "Low latency and guardrails ensure the expression holds, even with minimal staffing."
         },
         {
-          "title": "Override When You Want",
-          "body": "Operator can dim, change looks, or lock sections without automation collapsing."
+          "title": "Co-Pilot Controls When Needed",
+          "body": "Operators can modulate intensity and trigger bounded actions without breaking deterministic autonomous flow."
         },
         {
           "title": "Low Maintenance",
@@ -675,12 +675,12 @@
         "Send fixture list and universes.",
         "Connect audio source and set energy levels.",
         "Validate timing and safety limits.",
-        "Define where operator can override.",
+        "Define Co-Pilot Control envelopes for live operation.",
         "Run show with monitoring enabled."
       ],
       "cta": {
         "prefix": "Read more about the",
-        "aiDmx": "AI DMX Controller",
+        "aiDmx": "Autonomous Lighting Controller",
         "connector": "or",
         "pilot": "apply for pilot"
       }
@@ -694,7 +694,7 @@
       "hero": {
         "label": "Use Case",
         "title": "Beat-Synced Lighting Without Programming",
-        "body": "Y-Link analyzes tempo, phrases, and energy in your tracks, generates light sequences, and locks timing before output. Skip manual programming but still override live."
+        "body": "Y-Link analyzes tempo, phrasing, and energy in your tracks, composes room-aware light sequences, and locks timing before output. Skip manual programming and use optional bounded Co-Pilot Controls live."
       },
       "features": [
         {
@@ -719,7 +719,7 @@
         "Share rig data and universes.",
         "Upload tracks or connect audio source.",
         "Run preflight and lock timing.",
-        "Mark where operator can override.",
+        "Set Co-Pilot Control envelopes before going live.",
         "Go live with monitoring."
       ],
       "cta": {
@@ -732,7 +732,7 @@
   "guides": {
     "metadata": {
       "title": "DMX Guides",
-      "description": "Guides that build DMX fundamentals and support AI-driven, music-reactive control."
+      "description": "Guides that build DMX fundamentals for deterministic autonomous lighting control."
     },
     "breadcrumb": "Guides",
     "articleLabel": "Guide",
@@ -750,8 +750,8 @@
     },
     "hero": {
       "label": "Resources",
-      "title": "DMX Guides for AI-Controlled Lighting",
-      "body": "Build a solid foundation so AI-based DMX automation lands safely in your space. Each guide links back to the main AI DMX controller page for context."
+      "title": "DMX Guides for Autonomous Lighting Control",
+      "body": "Build a solid foundation so deterministic autonomous DMX playback lands safely in your space. Each guide links back to the main Autonomous Lighting Controller page for context."
     },
     "list": [
       {
@@ -782,7 +782,7 @@
     "dmxBasics": {
       "metadata": {
         "title": "DMX Basics",
-        "description": "Understand DMX signals, universes, and fixtures as a foundation for AI-driven light."
+        "description": "Understand DMX signals, universes, and fixtures as a foundation for deterministic autonomous light control."
       },
       "breadcrumb": "DMX Basics",
       "hero": {
@@ -962,7 +962,7 @@
   },
   "aiDmxAlternatives": {
     "metadata": {
-      "title": "Alternatives to AI DMX Controller",
+      "title": "Alternatives to Autonomous Lighting Controller",
       "description": "Compare Y-Link with other music-reactive and AI-driven lighting solutions."
     },
     "breadcrumb": "Alternatives",

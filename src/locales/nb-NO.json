@@ -3,7 +3,7 @@
     "siteName": "Y-Link",
     "title": "Deterministisk autonom lyskontroller for romtilpasset, musikkreaktivt lys",
     "description": "Y-Link er en deterministisk autonom lyskontrollplattform som genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering.",
-    "ogAlt": "Y-Link AI DMX-kontroller"
+    "ogAlt": "Y-Link autonom lyskontroller"
   },
   "navigation": {
     "main": [
@@ -247,12 +247,12 @@
   "about": {
     "metadata": {
       "title": "Om Y-Link",
-      "description": "AI-drevet DMX-kontroller for musikkdrevne venues. Hvorfor den finnes, hvem den er for, og hvordan den virker."
+      "description": "Deterministisk autonom lyskontrollplattform for musikkdrevne venues. Hvorfor den finnes, hvem den er for, og hvordan den virker."
     },
     "breadcrumb": "Om",
     "hero": {
       "label": "Om",
-      "title": "AI-drevet DMX-kontroller",
+      "title": "Deterministisk autonom lyskontroller",
       "subtitle": "for musikkstyrte venues",
       "body": "Y-Link lager lyssekvenser automatisk fra musikk med presis timing, rekkverk og et co-pilot-lag for manuelle cues. Bygget for klubber, små scener og mobile oppsett som trenger forutsigbare show.",
       "secondary": "Slik fungerer det"
@@ -500,14 +500,14 @@
       "title": "Autonom lyskontroller",
       "description": "Y-Link er en deterministisk autonom lyskontrollplattform som genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering."
     },
-    "breadcrumb": "AI DMX-kontroller",
+    "breadcrumb": "Autonom lyskontroller",
     "hero": {
       "label": "Plattform",
       "title": "Autonom lyskontroller",
       "subtitle": "for musikkreaktivt lys",
       "body": "Y-Link er deterministisk autonom. Systemet forstår musikkstruktur, tilpasser seg rigg og romkonfigurasjon, og genererer helhetlige DMX-show med repeterbar oppførsel.",
       "tags": [
-        "AI DMX-kontroller",
+        "Autonom lyskontroller",
         "Musikkreaktiv",
         "Lav latency"
       ]
@@ -662,8 +662,8 @@
           "body": "Lav latency og rekkverk sikrer uttrykket selv med minimal bemanning."
         },
         {
-          "title": "Overstyr når du vil",
-          "body": "Operatør kan dimme, endre looks eller låse seksjoner uten at automasjon kollapser."
+          "title": "Co-Pilot Controls ved behov",
+          "body": "Operatør kan modulere intensitet og trigge avgrensede handlinger uten å bryte deterministisk autonom flyt."
         },
         {
           "title": "Lite vedlikehold",
@@ -675,12 +675,12 @@
         "Send fixture-liste og universer.",
         "Koble til lydkilde og sett energinivåer.",
         "Valider timing og sikkerhetsgrenser.",
-        "Definer hvor operatøren kan overstyre.",
+        "Definer Co-Pilot Control-rammer for live-kjøring.",
         "Kjør show med monitorering."
       ],
       "cta": {
         "prefix": "Les mer om",
-        "aiDmx": "AI DMX-kontrolleren",
+        "aiDmx": "autonom lyskontroller",
         "connector": "eller",
         "pilot": "søk pilot"
       }
@@ -719,7 +719,7 @@
         "Del riggdata og universer.",
         "Last opp spor eller koble lydkilde.",
         "Kjør preflight og lås timing.",
-        "Marker hvor operatør kan overstyre.",
+        "Sett Co-Pilot Control-rammer før live-kjøring.",
         "Gå live med monitorering."
       ],
       "cta": {
@@ -732,7 +732,7 @@
   "guides": {
     "metadata": {
       "title": "DMX-guider",
-      "description": "Guider som bygger DMX-grunnlag og støtter AI-drevet, musikkreaktiv kontroll."
+      "description": "Guider som bygger DMX-grunnlag for deterministisk autonom lyskontroll."
     },
     "breadcrumb": "Guider",
     "articleLabel": "Guide",
@@ -750,8 +750,8 @@
     },
     "hero": {
       "label": "Ressurser",
-      "title": "DMX-guider for AI-styrt lys",
-      "body": "Bygg et solid grunnlag slik at AI-basert DMX-automasjon lander trygt. Hver guide lenker til hovedsiden for AI DMX-kontrolleren."
+      "title": "DMX-guider for autonom lyskontroll",
+      "body": "Bygg et solid grunnlag slik at deterministisk autonom DMX-avspilling lander trygt. Hver guide lenker til hovedsiden for autonom lyskontroller."
     },
     "list": [
       {
@@ -782,7 +782,7 @@
     "dmxBasics": {
       "metadata": {
         "title": "DMX-grunnlag",
-        "description": "Forstå DMX-signaler, universer og fixture-styring som grunnlag for AI-drevet lys."
+        "description": "Forstå DMX-signaler, universer og fixture-styring som grunnlag for deterministisk autonom lyskontroll."
       },
       "breadcrumb": "DMX-grunnlag",
       "hero": {
@@ -962,7 +962,7 @@
   },
   "aiDmxAlternatives": {
     "metadata": {
-      "title": "Alternativer til AI DMX-kontroller",
+      "title": "Alternativer til autonom lyskontroller",
       "description": "Sammenlign Y-Link med andre musikkreaktive og AI-baserte lysløsninger."
     },
     "breadcrumb": "Alternativer",
