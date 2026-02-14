@@ -13,6 +13,7 @@ import {
   fetchGuidesForSeries,
   fetchGuidesForSeriesAllStatuses,
   fetchPostTags,
+  fetchTagClusterByTag,
   fetchSeriesTranslationSlugs,
   fetchTranslationSlugs,
 } from "@/lib/blogGuides";
@@ -211,6 +212,13 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
 
   const label = dictionary.guides.articleLabel ?? "Guide";
   const tags = await fetchPostTags(resolved.post.post.id);
+  const cluster = tags[0]
+    ? await fetchTagClusterByTag(locale, tags[0], {
+        includeAllStatuses: isAdmin,
+        excludePostId: resolved.post.post.id,
+        limit: 4,
+      })
+    : null;
   const breadcrumbs = [
     { label: dictionary.navigation.main[0].label, href: prefixLocale(locale, "/") },
     { label: dictionary.guides.breadcrumb, href: prefixLocale(locale, "/guides") },
@@ -243,6 +251,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
       post={resolved.post}
       label={label}
       tags={tags}
+      relatedCluster={cluster ? { tag: cluster.tag, slug: cluster.slug, items: cluster.items } : undefined}
       seriesName={resolved.type === "seriesGuide" ? resolved.series.name : undefined}
       breadcrumbs={breadcrumbs}
       previousGuide={

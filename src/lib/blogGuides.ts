@@ -66,6 +66,22 @@ export type GuideListItem = BlogPost & {
   seriesSlug?: string | null;
 };
 
+export type ClusterListItem = {
+  postId: number;
+  category: "blog" | "guide";
+  status: "draft" | "published" | "scheduled";
+  title: string;
+  summary: string | null;
+  slug: string;
+  path: string;
+};
+
+export type TagCluster = {
+  slug: string;
+  tag: string;
+  items: ClusterListItem[];
+};
+
 export type PaginatedResult<T> = {
   items: T[];
   total: number;
@@ -310,6 +326,14 @@ async function promoteScheduledPostsIfDue(
 
 function eligibilityFilter(nowValue: string) {
   return `status.eq.published,and(status.eq.scheduled,scheduled_at.lte.${nowValue})`;
+}
+
+function toClusterSlug(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 async function fetchSeriesSlug(
@@ -1257,4 +1281,157 @@ export async function fetchPublishedTranslations() {
 
 export async function fetchSeriesTranslations() {
   return fetchSeriesTranslationsCached();
+}
+
+const fetchAllTagsCached = unstable_cache(
+  async () => {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase.from("blog_tags").select("tag").order("tag", { ascending: true });
+    if (error || !data) return [];
+    return Array.from(new Set(data.map((row) => row.tag).filter(Boolean)));
+  },
+  ["all-blog-tags"],
+  { revalidate: CACHE_TTL_SECONDS },
+);
+
+export async function fetchAllClusterTags(): Promise<{ tag: string; slug: string }[]> {
+  const tags = await fetchAllTagsCached();
+  return tags.map((tag) => ({ tag, slug: toClusterSlug(tag) })).filter((item) => item.slug.length > 0);
+}
+
+async function resolveTagFromSlug(slug: string): Promise<string | null> {
+  const normalized = toClusterSlug(slug);
+  if (!normalized) return null;
+  const tags = await fetchAllTagsCached();
+  return tags.find((tag) => toClusterSlug(tag) === normalized) ?? null;
+}
+
+function mapClusterItems(
+  data: JoinedPostRow[],
+  seriesSlugById: Map<string, string>,
+): ClusterListItem[] {
+  return data
+    .map((row) => {
+      const mapped = mapJoined(row);
+      if (!mapped) return null;
+      const seriesSlug = mapped.post.series_id ? seriesSlugById.get(mapped.post.series_id) ?? null : null;
+      const path =
+        mapped.post.category === "blog"
+          ? `/blog/${mapped.translation.slug}`
+          : seriesSlug
+            ? `/guides/${seriesSlug}/${mapped.translation.slug}`
+            : `/guides/${mapped.translation.slug}`;
+
+      return {
+        postId: mapped.post.id,
+        category: mapped.post.category,
+        status: mapped.post.status,
+        title: mapped.translation.title,
+        summary: mapped.translation.summary,
+        slug: mapped.translation.slug,
+        path,
+      } satisfies ClusterListItem;
+    })
+    .filter((item): item is ClusterListItem => Boolean(item));
+}
+
+export async function fetchTagClusterByTag(
+  locale: AppLocale,
+  tag: string,
+  options?: {
+    includeAllStatuses?: boolean;
+    excludePostId?: number;
+    limit?: number;
+  },
+): Promise<TagCluster | null> {
+  const normalizedTag = (tag ?? "").trim();
+  const slug = toClusterSlug(normalizedTag);
+  if (!normalizedTag || !slug) return null;
+
+  const supabase = createServiceClient();
+  const { data: tagRows, error: tagError } = await supabase.from("blog_tags").select("post_id").eq("tag", normalizedTag);
+  if (tagError || !tagRows || tagRows.length === 0) {
+    return { slug, tag: normalizedTag, items: [] };
+  }
+
+  const postIds = Array.from(new Set(tagRows.map((row) => row.post_id).filter(Boolean)));
+  if (postIds.length === 0) {
+    return { slug, tag: normalizedTag, items: [] };
+  }
+
+  let query = supabase
+    .from("blog_posts")
+    .select(
+      `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+    )
+    .in("id", postIds)
+    .eq("translations.locale", locale)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("scheduled_at", { ascending: false, nullsFirst: false })
+    .order("id", { ascending: false });
+
+  if (!options?.includeAllStatuses) {
+    query = query.or(eligibilityFilter(nowIso()));
+  }
+
+  const { data, error } = await query;
+  if (error || !data) {
+    return { slug, tag: normalizedTag, items: [] };
+  }
+
+  const seriesTranslations = await fetchSeriesTranslationsCached();
+  const seriesSlugById = new Map<string, string>();
+  for (const series of seriesTranslations) {
+    if (series.locale !== locale) continue;
+    seriesSlugById.set(series.series_id, series.slug);
+  }
+
+  const excludePostId = options?.excludePostId ?? null;
+  const limit = options?.limit ?? null;
+  let items = mapClusterItems(data as JoinedPostRow[], seriesSlugById);
+  if (excludePostId) {
+    items = items.filter((item) => item.postId !== excludePostId);
+  }
+  if (limit && limit > 0) {
+    items = items.slice(0, limit);
+  }
+
+  return { slug, tag: normalizedTag, items };
+}
+
+export async function fetchTagClusterBySlug(
+  locale: AppLocale,
+  slug: string,
+  options?: { includeAllStatuses?: boolean; excludePostId?: number; limit?: number },
+): Promise<TagCluster | null> {
+  const tag = await resolveTagFromSlug(slug);
+  if (!tag) return null;
+  return fetchTagClusterByTag(locale, tag, options);
 }

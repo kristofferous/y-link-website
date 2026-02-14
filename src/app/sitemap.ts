@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { fetchPublishedTranslations, fetchSeriesTranslations } from "@/lib/blogGuides";
+import { fetchAllClusterTags, fetchPublishedTranslations, fetchSeriesTranslations } from "@/lib/blogGuides";
 import { locales, type AppLocale } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -15,6 +15,7 @@ const staticRoutes = [
   "/use-cases/beat-synced-lighting-without-programming",
   "/blog",
   "/guides",
+  "/clusters",
   "/tools",
   "/tools/dmx-dip",
   "/tools/lighting-power-load",
@@ -35,9 +36,10 @@ function isLocale(value: string): value is AppLocale {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  const [publishedTranslations, seriesTranslations] = await Promise.all([
+  const [publishedTranslations, seriesTranslations, clusterTags] = await Promise.all([
     fetchPublishedTranslations(),
     fetchSeriesTranslations(),
+    fetchAllClusterTags(),
   ]);
 
   const seriesSlugByLocale = new Map<string, Map<string, string>>();
@@ -110,5 +112,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  return [...staticEntries, ...dynamicEntries];
+  const clusterEntries = locales.flatMap((locale) =>
+    clusterTags.map((cluster) => ({
+      url: absoluteUrl(`/${locale}/clusters/${cluster.slug}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  );
+
+  return [...staticEntries, ...dynamicEntries, ...clusterEntries];
 }

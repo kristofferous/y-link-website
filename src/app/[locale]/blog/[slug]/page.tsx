@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchBlogPostBySlug, fetchBlogPostBySlugAllStatuses, fetchPostTags, fetchTranslationSlugs } from "@/lib/blogGuides";
+import {
+  fetchBlogPostBySlug,
+  fetchBlogPostBySlugAllStatuses,
+  fetchPostTags,
+  fetchTagClusterByTag,
+  fetchTranslationSlugs,
+} from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
@@ -93,6 +100,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const tags = await fetchPostTags(post.post.id);
+  const cluster = tags[0]
+    ? await fetchTagClusterByTag(locale, tags[0], { includeAllStatuses: isAdmin, excludePostId: post.post.id, limit: 4 })
+    : null;
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
   const label = dictionary.blog?.breadcrumb ?? "Blog";
@@ -179,6 +189,40 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+      {cluster && cluster.items.length > 0 ? (
+        <section className="border-t border-border/40 py-12">
+          <div className="container-custom">
+            <div className="mx-auto max-w-4xl space-y-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-label text-muted-foreground">In This Cluster</p>
+                  <h2 className="text-heading text-foreground">{cluster.tag}</h2>
+                </div>
+                <Link
+                  href={prefixLocale(locale, `/clusters/${cluster.slug}`)}
+                  className="text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  View cluster
+                </Link>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {cluster.items.map((item) => (
+                  <article key={`${item.category}-${item.postId}`} className="rounded-lg border border-border/40 bg-card p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{item.category}</p>
+                    <h3 className="mt-2 text-base font-semibold text-foreground">{item.title}</h3>
+                    <Link
+                      href={prefixLocale(locale, item.path)}
+                      className="mt-3 inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                    >
+                      Open article
+                    </Link>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

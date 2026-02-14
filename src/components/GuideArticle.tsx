@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { type BlogPost } from "@/lib/blogGuides";
 import { type AppLocale } from "@/lib/i18n/config";
+import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
 
 type GuideArticleProps = {
@@ -12,6 +13,7 @@ type GuideArticleProps = {
   breadcrumbs: { label: string; href?: string }[];
   seriesName?: string;
   tags?: string[];
+  relatedCluster?: { tag: string; slug: string; items: { postId: number; category: "blog" | "guide"; title: string; path: string }[] };
   previousGuide?: { title: string; href: string; label: string };
   nextGuide?: { title: string; href: string; label: string };
 };
@@ -41,6 +43,7 @@ export function GuideArticle({
   breadcrumbs,
   seriesName,
   tags,
+  relatedCluster,
   previousGuide,
   nextGuide,
 }: GuideArticleProps) {
@@ -148,6 +151,36 @@ export function GuideArticle({
                   <p className="mt-2 text-sm font-semibold text-foreground">{nextGuide.title}</p>
                 </Link>
               ) : null}
+            </div>
+          ) : null}
+          {relatedCluster && relatedCluster.items.length > 0 ? (
+            <div className="mx-auto mt-10 max-w-3xl space-y-5 border-t border-border/40 pt-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-label text-muted-foreground">In This Cluster</p>
+                  <h2 className="text-title text-foreground">{relatedCluster.tag}</h2>
+                </div>
+                <Link
+                  href={prefixLocale(locale, `/clusters/${relatedCluster.slug}`)}
+                  className="text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                >
+                  View cluster
+                </Link>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {relatedCluster.items.map((item) => (
+                  <article key={`${item.category}-${item.postId}`} className="rounded-lg border border-border/40 bg-card p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{item.category}</p>
+                    <p className="mt-2 text-sm font-semibold text-foreground">{item.title}</p>
+                    <Link
+                      href={prefixLocale(locale, item.path)}
+                      className="mt-3 inline-flex items-center text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
+                    >
+                      Open article
+                    </Link>
+                  </article>
+                ))}
+              </div>
             </div>
           ) : null}
         </div>
