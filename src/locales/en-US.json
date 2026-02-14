@@ -1035,8 +1035,8 @@
   },
   "tools": {
     "metadata": {
-      "title": "DMX Tools",
-      "description": "Fast, practical DMX tools for patching and addressing."
+      "title": "Free DMX Tools & Calculators",
+      "description": "Fast, practical DMX calculators and tools for patching and addressing: DIP switch calculator, address planner, patch sheet generator, color picker, capacity calculator, lighting power calculator, and more."
     },
     "breadcrumb": "Tools",
     "hero": {
@@ -1047,46 +1047,46 @@
     },
     "cards": [
       {
-        "title": "DMX DIP Switch / Binary Converter",
-        "description": "Toggle DIP switches and convert decimal to binary DMX addresses.",
+        "title": "DMX Dip Switch Calculator & Binary Converter",
+        "description": "Flip DIP switches and convert DMX addresses between decimal and binary.",
         "href": "/tools/dmx-dip",
         "tag": "Free tool"
       },
       {
-        "title": "DMX Address + Universe Planner",
-        "description": "Plan addresses on a live 512-channel grid and catch overlaps before patching.",
+        "title": "DMX Address Planner & Universe Calculator",
+        "description": "Plan addresses on a live 512‑channel grid, detect overlaps instantly, and see universes required.",
         "href": "/tools/dmx-address-planner",
         "tag": "Free tool"
       },
       {
-        "title": "DMX Patch Sheet Generator",
-        "description": "Auto-pack fixtures across universes and export clean patch sheets.",
+        "title": "DMX Patch Sheet Generator & Universe Planner",
+        "description": "Auto‑pack fixtures across universes and export clean patch sheets as CSV or PDF.",
         "href": "/tools/dmx-patch-sheet",
         "tag": "Free tool"
       },
       {
-        "title": "DMX Color Picker & RGB to DMX",
-        "description": "Convert HEX or RGB to DMX values for RGB, RGBW, RGBWA, and RGBWW/CW fixtures.",
+        "title": "DMX Color Picker & RGB to DMX Calculator",
+        "description": "Convert HEX or RGB to DMX values for RGB, RGBW, RGBWA, and RGBWW/CW fixtures. Optionally calculate CCT channels for accurate white blending.",
         "href": "/tools/dmx-color-picker",
         "tag": "Free tool"
       },
       {
-        "title": "DMX Address Capacity Calculator",
-        "description": "See how many fixtures fit per universe and how many universes you need.",
+        "title": "DMX Universe Capacity Calculator",
+        "description": "Calculate how many fixtures fit per universe and how many universes you need for your rig.",
         "href": "/tools/dmx-capacity",
         "tag": "Free tool"
       },
       {
-        "title": "Stage Lighting Power/Load Calculator",
-        "description": "Estimate power draw per circuit with safety margins and phase balance.",
+        "title": "Stage Lighting Power & Load Calculator",
+        "description": "Estimate watts, amps, and circuit headroom with safety margins and phase balancing.",
         "href": "/tools/lighting-power-load",
         "tag": "Free tool"
       }
     ],
     "dmxColor": {
       "metadata": {
-        "title": "DMX Color Picker & RGB to DMX Converter",
-        "description": "DMX color picker and HEX to DMX converter. Get RGB, RGBW, RGBWA, and RGBWW/CW DMX values with optional CCT channel calculation."
+        "title": "DMX Color Picker & RGB to DMX Calculator",
+        "description": "Convert HEX or RGB to DMX values for RGB, RGBW, RGBWA, and RGBWW/CW fixtures. Optionally calculate CCT channels for accurate white blending."
       },
       "breadcrumb": "DMX Color Picker",
       "intro": {
@@ -1223,8 +1223,8 @@
     },
     "dmxPatch": {
       "metadata": {
-        "title": "DMX Patch Sheet Generator",
-        "description": "Auto-pack fixtures across DMX universes and export clean patch sheets."
+        "title": "DMX Patch Sheet Generator & Universe Planner",
+        "description": "Auto‑pack fixtures across DMX universes, avoid overlapping addresses, and export clean patch sheets as CSV or PDF."
       },
       "breadcrumb": "DMX Patch Sheet Generator",
       "intro": {
@@ -1413,10 +1413,10 @@
     },
     "dmxCapacity": {
       "metadata": {
-        "title": "DMX Address Capacity Calculator",
-        "description": "Calculate how many fixtures fit in a DMX universe and how many universes you need."
+        "title": "DMX Universe Capacity Calculator",
+        "description": "Calculate how many fixtures fit in a DMX universe, leftover channels, and universes required based on channel count and fixture quantity."
       },
-      "breadcrumb": "DMX Address Capacity Calculator",
+      "breadcrumb": "DMX Universe Capacity Calculator",
       "intro": {
         "eyebrow": "DMX Tool",
         "title": "How many fixtures fit in a universe?",
@@ -1488,8 +1488,8 @@
     },
     "dmxAddressPlanner": {
       "metadata": {
-        "title": "DMX Address + Universe Planner",
-        "description": "Plan DMX addresses on a live 512-channel grid with overlap detection and universe summary."
+        "title": "DMX Address Planner & Universe Calculator",
+        "description": "Plan DMX addresses on a live 512‑channel grid, detect overlaps instantly, and see universe utilisation."
       },
       "breadcrumb": "DMX Address Planner",
       "intro": {
@@ -1602,8 +1602,8 @@
     },
     "lightingPower": {
       "metadata": {
-        "title": "Stage Lighting Power/Load Calculator",
-        "description": "Calculate lighting load per circuit with an 80% safety margin and phase balance view."
+        "title": "Stage Lighting Power & Load Calculator",
+        "description": "Estimate lighting load per circuit with an 80% safety margin, phase balance view, and total power and current."
       },
       "breadcrumb": "Power/Load Calculator",
       "intro": {
@@ -1690,10 +1690,10 @@
     },
     "dmxDip": {
       "metadata": {
-        "title": "DMX DIP Switch / Binary Converter",
-        "description": "Convert DMX addresses between decimal and binary with an interactive DIP switch grid."
+        "title": "DMX Dip Switch Calculator & Binary Converter",
+        "description": "Use an interactive DIP switch grid to convert DMX addresses between decimal and binary. Includes presets for common start addresses."
       },
-      "breadcrumb": "DMX DIP Switch",
+      "breadcrumb": "DMX Dip Switch",
       "intro": {
         "eyebrow": "DMX Tool",
         "title": "Set DMX addresses fast",
@@ -1720,7 +1720,14 @@
         },
         "presets": {
           "title": "Common presets",
-          "items": [1, 513, 9, 25, 33, 257]
+          "items": [
+            1,
+            513,
+            9,
+            25,
+            33,
+            257
+          ]
         }
       },
       "details": {
