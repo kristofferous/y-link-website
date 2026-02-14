@@ -112,6 +112,8 @@
   "forms": {
     "email": "E-post",
     "emailPlaceholder": "navn@domene.com",
+    "country": "Land",
+    "countryPlaceholder": "Norge",
     "role": "Hva beskriver deg best? (valgfritt)",
     "selectOne": "Velg ett",
     "roleOptions": {
@@ -446,7 +448,7 @@
       "title": "Slik håndterer vi data"
     },
     "body": [
-      "Vi samler navn (valgfritt), e-post og valgt interesse slik at vi kan sende Y-Link-oppdateringer, koordinere pilottilgang eller følge opp forhåndsinteresse.",
+      "Vi samler navn (valgfritt), e-post, land og valgt interesse slik at vi kan sende Y-Link-oppdateringer, koordinere pilottilgang eller følge opp forhåndsinteresse.",
       "Data lagres sikkert i Supabase. E-poster inneholder en avmeldingslenke som stopper videre kommunikasjon umiddelbart. Vi selger eller deler ikke kontaktinformasjon med tredjeparter.",
       "For å slette data, send en e-post til hello@y-link.no så fjerner vi oppføringen."
     ],

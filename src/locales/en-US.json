@@ -112,6 +112,8 @@
   "forms": {
     "email": "Email",
     "emailPlaceholder": "name@domain.com",
+    "country": "Country",
+    "countryPlaceholder": "Norway",
     "role": "What best describes you? (optional)",
     "selectOne": "Select one",
     "roleOptions": {
@@ -446,7 +448,7 @@
       "title": "How we handle data"
     },
     "body": [
-      "We collect name (optional), email, and selected interest so we can send Y-Link updates, coordinate pilot access, or follow up on early interest.",
+      "We collect name (optional), email, country, and selected interest so we can send Y-Link updates, coordinate pilot access, or follow up on early interest.",
       "Data is stored securely in Supabase. Emails include an unsubscribe link that stops communication immediately. We do not sell or share contact information with third parties.",
       "To delete data, email hello@y-link.no and we will remove the record."
     ],

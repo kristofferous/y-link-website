@@ -44,6 +44,7 @@ export async function subscribeAction(
   }
 
   const email = normalizeEmail(formData.get("email") as string | null);
+  const country = normalizeString(formData.get("country") as string | null);
   const name = normalizeString(formData.get("name") as string | null);
   const interest =
     normalizeInterest(formData.get("interest_type") as string | null) ??
@@ -76,6 +77,13 @@ export async function subscribeAction(
     };
   }
 
+  if (!country) {
+    return {
+      status: "error",
+      message: "Please provide your country.",
+    };
+  }
+
   if (!consentGiven) {
     return {
       status: "error",
@@ -100,6 +108,7 @@ export async function subscribeAction(
 
   const basePayload = {
     email,
+    country,
     name,
     interest_type: interest,
     subscribed: true,
@@ -143,6 +152,7 @@ export async function subscribeAction(
           interest_type: interest,
           subscribed: true,
           unsubscribe_token: existing.unsubscribe_token ?? randomUUID(),
+          country,
           role,
           dmx_setup: dmxSetup,
           notes,
@@ -170,6 +180,7 @@ export async function subscribeAction(
           .from("email_subscriptions")
           .insert({
             email,
+            country,
             name,
             interest_type: interest,
             subscribed: true,
@@ -198,6 +209,7 @@ export async function subscribeAction(
           .from("email_subscriptions")
           .update({
             name,
+            country,
             interest_type: interest,
             subscribed: true,
             unsubscribe_token: existing.unsubscribe_token ?? randomUUID(),

@@ -158,6 +158,21 @@ export function InterestSignup({
         </div>
 
         <div className="space-y-2">
+          <label htmlFor={`country-${variant}-${id ?? ""}`} className={labelClass}>
+            {formCopy.country}
+          </label>
+          <input
+            id={`country-${variant}-${id ?? ""}`}
+            name="country"
+            type="text"
+            required
+            autoComplete="country-name"
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
+            placeholder={formCopy.countryPlaceholder}
+          />
+        </div>
+
+        <div className="space-y-2">
           <label htmlFor={`role-${variant}-${id ?? ""}`} className={labelClass}>
             {formCopy.role}
           </label>
