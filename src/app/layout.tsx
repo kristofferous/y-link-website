@@ -5,7 +5,7 @@ import { defaultLocale, isSupportedLocale, localeCookieName } from "@/lib/i18n/c
 
 export const metadata = {
   title: "Y-Link",
-  description: "Y-Link - autonomous AI DMX controller for room-aware lighting",
+  description: "Y-Link - deterministic autonomous lighting control platform for room-aware live DMX shows",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

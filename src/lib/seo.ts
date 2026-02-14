@@ -49,7 +49,8 @@ export function organizationSchema(language: string) {
         availableLanguage: ["no", "en"],
       },
     ],
-    description: "Y-Link builds an autonomous AI-driven DMX controller and lighting software for room-aware, music-reactive shows.",
+    description:
+      "Y-Link builds a deterministic autonomous lighting control platform that generates full room-aware live DMX shows from audio and configuration.",
     inLanguage: language,
   };
 }

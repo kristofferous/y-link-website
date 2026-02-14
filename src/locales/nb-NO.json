@@ -1,8 +1,8 @@
 {
   "meta": {
     "siteName": "Y-Link",
-    "title": "Autonom AI DMX-kontroller for romtilpasset, musikkreaktivt lys",
-    "description": "Y-Link gjør lyd om til stabilt, romtilpasset, musikkreaktivt lys med deterministisk avspilling, sikkerhetsnett og operatørkontroll.",
+    "title": "Deterministisk autonom lyskontroller for romtilpasset, musikkreaktivt lys",
+    "description": "Y-Link er en deterministisk autonom lyskontrollplattform som genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering.",
     "ogAlt": "Y-Link AI DMX-kontroller"
   },
   "navigation": {
@@ -71,8 +71,8 @@
     }
   },
   "footer": {
-    "tagline": "Profesjonell DMX-plattform for lys. Utviklet for presisjon, stabilitet og live-bruk.",
-    "builtOn": "Bygget på ALPINE-protokollen",
+    "tagline": "Deterministisk autonom lyskontrollplattform for profesjonelle DMX-show.",
+    "builtOn": "Bygget på ALPINE-protokollen for sikker, strukturert og deterministisk kommunikasjon",
     "location": "Kristiansand, Norge",
     "product": {
       "title": "Produkt",
@@ -143,7 +143,7 @@
       "badge": "Pilotprogram åpent",
       "title": "Profesjonell DMX-kontroll.",
       "subtitle": "Bygget for live-opptredener.",
-      "body": "Y-Link er en fullt autonom AI DMX-kontroller som gjør lyd om til romtilpassede lyssekvenser med stabil timing. Et co-pilot-lag for manuelle cues og triggere kompletterer AI-en uten å overstyre den."
+      "body": "Y-Link er en deterministisk autonom lyskontrollplattform som genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering."
     },
     "featuresTitle": "Viktige funksjoner",
     "features": [
@@ -157,7 +157,7 @@
       },
       {
         "title": "Co-pilot-lag",
-        "description": "Manuelle cues og triggere som kompletterer AI-en. Trygge justeringer uten å bryte timing eller struktur."
+        "description": "Valgfri Co-Pilot Layer med avgrensede og forhåndsgodkjente handlinger som ikke bryter deterministisk autonom flyt."
       }
     ],
     "howItWorks": {
@@ -411,7 +411,11 @@
       },
       {
         "q": "Kan operatører fortsatt styre riggen?",
-        "a": "Ja. Operatører bruker et co-pilot-lag for manuelle cues og triggere, godkjenner looks, låser intensitet og øver seksjoner. Co-piloten kompletterer AI-en uten å overstyre den, slik at avspillingen forblir forutsigbar."
+        "a": "Ja. Operatører bruker Co-Pilot Controls for avgrensede handlinger som cue-triggere, strobe-modulasjon, fargebias, intensitetslås og midlertidig blackout-vindu. Co-Pilot handlinger holder seg innen definerte kontrollrammer og bryter ikke deterministisk autonom flyt."
+      },
+      {
+        "q": "Er Y-Link bare AI-assistert?",
+        "a": "Nei. Y-Link er autonomt by design. AI er en del av systemet, ikke et assistiv tillegg. Co-Pilot Layer er valgfritt."
       },
       {
         "q": "Hvordan håndteres latency?",
@@ -493,15 +497,15 @@
   },
   "aiDmx": {
     "metadata": {
-      "title": "AI DMX-kontroller",
-      "description": "Y-Link er en fullt autonom AI DMX-kontroller under utvikling som gjør lyd om til romtilpasset, musikkstyrt lys med lav latency og rekkverk."
+      "title": "Autonom lyskontroller",
+      "description": "Y-Link er en deterministisk autonom lyskontrollplattform som genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering."
     },
     "breadcrumb": "AI DMX-kontroller",
     "hero": {
       "label": "Plattform",
-      "title": "AI DMX-kontroller",
+      "title": "Autonom lyskontroller",
       "subtitle": "for musikkreaktivt lys",
-      "body": "Y-Link er en fullt autonom AI DMX-kontroller under utvikling som gjør lyd om til romtilpassede lyssekvenser som følger tempo, fraser og energi. Lav latency, rekkverk og et co-pilot-lag gjør showet forutsigbart i stedet for tilfeldig.",
+      "body": "Y-Link er deterministisk autonom. Systemet forstår musikkstruktur, tilpasser seg rigg og romkonfigurasjon, og genererer helhetlige DMX-show med repeterbar oppførsel.",
       "tags": [
         "AI DMX-kontroller",
         "Musikkreaktiv",
@@ -511,9 +515,9 @@
     "summary": {
       "title": "Produktoppsummering",
       "points": [
-        "Gjør lyd om til deterministiske DMX-cues med stabil timing.",
-        "Co-pilot-lag for manuelle cues og trygge live-justeringer.",
-        "Bygget for klubber, små venues og mobile rigger."
+        "Genererer komplette live DMX-show fra lyd og konfigurasjon uten manuell programmering.",
+        "Repeterbar output for identiske input og konfigurasjon.",
+        "Valgfri Co-Pilot Layer for avgrensede live-handlinger som ikke bryter autonom flyt."
       ]
     },
     "how": {
@@ -573,7 +577,7 @@
     "hero": {
       "label": "Bruksområder",
       "title": "Hvor Y-Link passer best",
-      "body": "Musikkreaktiv automasjon, lav latency og operatør-overstyring gjør Y-Link egnet der bemanningen er liten og timing er kritisk."
+      "body": "Deterministisk autonom avspilling og valgfri avgrenset Co-Pilot Controls gjør Y-Link egnet der bemanningen er liten og timing er kritisk."
     },
     "cards": [
       {
@@ -627,7 +631,7 @@
         "Del fixture-liste, universer og rombegrensninger.",
         "Last opp en start-spilleliste eller koble til live-lyd.",
         "Kjør preflight for timing, metning og sikkerhetsgrenser.",
-        "Øv seksjoner, lås viktige looks og sett operatør-overstyring.",
+        "Øv seksjoner, lås viktige looks og konfigurer Co-Pilot Controls.",
         "Gå live med monitorering; juster intensitet eller looks ved behov."
       ],
       "cta": {
@@ -690,7 +694,7 @@
       "hero": {
         "label": "Bruksområde",
         "title": "Beat-synket lys uten programmering",
-        "body": "Y-Link analyserer tempo, fraser og energi i sporene dine, genererer lyssekvenser og låser timing før output. Hopp over manuell programmering, men behold live-overstyring."
+        "body": "Y-Link analyserer tempo, fraser og energi i sporene dine, genererer lyssekvenser og låser timing før output. Hopp over manuell programmering, men behold avgrensede Co-Pilot Controls live."
       },
       "features": [
         {
@@ -894,7 +898,7 @@
         "items": [
           "Verifiser patch og universer mot riggen.",
           "Kjør preflight på latency, jitter og metning.",
-          "Definer operatør-overstyring og nødprosedyrer."
+          "Definer Co-Pilot Control-rammer og nødprosedyrer."
         ]
       },
       "during": {
@@ -970,12 +974,12 @@
     "options": [
       {
         "name": "Y-Link",
-        "focus": "AI-drevet, musikkreaktiv DMX med lav latency og rekkverk for operatør.",
+        "focus": "Deterministisk autonom showgenerering med valgfri avgrenset Co-Pilot Controls.",
         "bestFor": "Klubber, små venues og mobile rigger med minimal bemanning."
       },
       {
         "name": "MaestroDMX",
-        "focus": "Lydanalyse og lysautomasjon for DJ-sett.",
+        "focus": "Lydanalyse med DJ-orientert automasjonsflyt.",
         "bestFor": "DJ-fokuserte oppsett der musikk-cues styrer scenene."
       },
       {
@@ -995,7 +999,7 @@
         "Latency og jitter under full last.",
         "Hvor tydelige rekkverk er for operatøren.",
         "Hvor raskt riggdata kan patches og valideres.",
-        "Mulighet til å overstyre live uten at automasjon bryter sammen."
+        "Hvordan avgrensede Co-Pilot Controls oppfører seg under live-kjøring."
       ],
       "linkLabel": "Y-Link vs MaestroDMX"
     }
@@ -1009,28 +1013,28 @@
     "hero": {
       "label": "Sammenligning",
       "title": "Y-Link vs MaestroDMX",
-      "body": "To ulike tilnærminger til musikkreaktivt lys. Slik skiller de seg."
+      "body": "To ulike arkitekturvalg for musikkreaktivt lys. Slik skiller de seg."
     },
     "comparison": [
       {
         "label": "Fokus",
-        "ylink": "AI-planlagte lyssekvenser med rekkverk og lav latency.",
-        "maestro": "Lydanalyse og automasjon for DJ-sett."
+        "ylink": "Deterministisk autonom full-show generering fra lyd og konfigurasjon.",
+        "maestro": "Lydanalyse og automasjonsflyt for DJ-sett."
       },
       {
         "label": "Operatørkontroll",
-        "ylink": "Godkjenninger, låser og overstyring uten å miste struktur.",
-        "maestro": "DJ-orientert arbeidsflyt med mer manuell kontroll."
+        "ylink": "Valgfri avgrenset Co-Pilot Controls som ikke bryter deterministisk autonom flyt.",
+        "maestro": "DJ-orientert arbeidsflyt med mer direkte manuelle inngrep."
       },
       {
-        "label": "Best for",
-        "ylink": "Klubber/små venues med liten bemanning som trenger forutsigbarhet.",
-        "maestro": "DJ-rom som vil trigge lys direkte fra musikk."
+        "label": "Arkitektur",
+        "ylink": "Integrert hardware-software plattform bygget på ALPINE-protokollen.",
+        "maestro": "Software-ledet DJ-arbeidsflyt."
       }
     ],
     "cta": {
       "prefix": "For detaljer om Y-Link, se hovedsiden for",
-      "link": "AI DMX-kontrolleren"
+      "link": "autonom lyskontroller"
     }
   },
   "tools": {
