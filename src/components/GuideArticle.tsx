@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { clusterSlugFromTag, type BlogPost } from "@/lib/blogGuides";
+import { normalizeArticleHeadings } from "@/lib/contentUtils";
 import { type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
@@ -49,6 +50,7 @@ export function GuideArticle({
 }: GuideArticleProps) {
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
+  const contentHtml = normalizeArticleHeadings(post.translation.content_html);
   const authorName = post.post.author?.full_name ?? post.post.author_name;
   const authorAvatar = post.post.author?.avatar_url ?? null;
 
@@ -128,7 +130,7 @@ export function GuideArticle({
       <section className="border-t border-border/40 pt-8 pb-16 md:pb-20 lg:pb-24">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
-            <div className="content-html" dangerouslySetInnerHTML={{ __html: post.translation.content_html }} />
+            <div className="content-html" dangerouslySetInnerHTML={{ __html: contentHtml }} />
           </div>
           {previousGuide || nextGuide ? (
             <div className="mx-auto mt-10 grid max-w-3xl gap-4 border-t border-border/40 pt-6 sm:grid-cols-2">

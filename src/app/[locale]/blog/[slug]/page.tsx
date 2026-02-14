@@ -14,7 +14,7 @@ import {
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
-import { buildDescription } from "@/lib/contentUtils";
+import { buildDescription, normalizeArticleHeadings } from "@/lib/contentUtils";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 import { getSessionFromCookie } from "@/lib/session";
 
@@ -106,6 +106,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     : null;
   const publishedAt = formatPublishDate(post.post.published_at, locale);
   const summary = post.translation.summary;
+  const contentHtml = normalizeArticleHeadings(post.translation.content_html);
   const label = dictionary.blog?.breadcrumb ?? "Blog";
   const authorName = post.post.author?.full_name ?? post.post.author_name;
   const authorAvatar = post.post.author?.avatar_url ?? null;
@@ -190,7 +191,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="mx-auto max-w-3xl">
             <div
               className="content-html"
-              dangerouslySetInnerHTML={{ __html: post.translation.content_html }}
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
           </div>
         </div>
