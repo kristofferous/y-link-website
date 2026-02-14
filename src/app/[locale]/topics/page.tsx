@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchAllClusterTags } from "@/lib/blogGuides";
+import { fetchAllClusterTags, fetchTagClusterBySlug } from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
+import { getSessionFromCookie } from "@/lib/session";
 
 type PageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -29,7 +30,22 @@ export default async function TopicsPage({ params }: PageProps) {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
+  const session = await getSessionFromCookie();
+  const isAdmin = session?.role === "admin";
   const clusters = await fetchAllClusterTags();
+
+  const clustersWithTwoOrMoreItems = (
+    await Promise.all(
+      clusters.map(async (cluster) => {
+        const details = await fetchTagClusterBySlug(locale, cluster.slug, {
+          includeAllStatuses: isAdmin,
+          limit: 2,
+        });
+        if (!details || details.items.length < 2) return null;
+        return cluster;
+      }),
+    )
+  ).filter((cluster): cluster is (typeof clusters)[number] => Boolean(cluster));
 
   return (
     <main>
@@ -50,11 +66,11 @@ export default async function TopicsPage({ params }: PageProps) {
             </p>
           </div>
 
-          {clusters.length === 0 ? (
+          {clustersWithTwoOrMoreItems.length === 0 ? (
             <div className="rounded-lg border border-border/40 bg-card p-8 text-muted-foreground">No topics published yet.</div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {clusters.map((cluster) => (
+              {clustersWithTwoOrMoreItems.map((cluster) => (
                 <Link
                   key={cluster.slug}
                   href={prefixLocale(locale, `/topics/${cluster.slug}`)}
