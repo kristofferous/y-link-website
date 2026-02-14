@@ -701,6 +701,70 @@ export async function fetchBlogList(
   };
 }
 
+export async function fetchBlogListAllStatuses(
+  locale: AppLocale,
+  page: number,
+  pageSize = PAGE_SIZE_FALLBACK,
+): Promise<PaginatedResult<BlogListItem>> {
+  const { from, to, page: safePage, pageSize: safePageSize } = toRange(page, pageSize);
+  const supabase = createServiceClient();
+
+  const { data, error, count } = await supabase
+    .from("blog_posts")
+    .select(
+      `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+      { count: "exact" },
+    )
+    .eq("category", "blog")
+    .eq("translations.locale", locale)
+    .order("scheduled_at", { ascending: false, nullsFirst: false })
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("id", { ascending: false })
+    .range(from, to);
+
+  if (error || !data) {
+    return { items: [], total: 0, page: safePage, pageSize: safePageSize };
+  }
+
+  const items = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
+
+  return {
+    items,
+    total: count ?? items.length,
+    page: safePage,
+    pageSize: safePageSize,
+  };
+}
+
 const fetchGuideListCached = unstable_cache(
   async (locale: AppLocale, page: number, pageSize: number) => {
     const nowValue = nowIso();
@@ -800,6 +864,88 @@ export async function fetchGuideList(
   return {
     items,
     total: count ?? mapped.length,
+    page: safePage,
+    pageSize: safePageSize,
+  };
+}
+
+export async function fetchGuideListAllStatuses(
+  locale: AppLocale,
+  page: number,
+  pageSize = PAGE_SIZE_FALLBACK,
+): Promise<PaginatedResult<GuideListItem>> {
+  const { from, to, page: safePage, pageSize: safePageSize } = toRange(page, pageSize);
+  const supabase = createServiceClient();
+
+  const [seriesTranslations, guideResponse] = await Promise.all([
+    fetchSeriesTranslationsCached(),
+    supabase
+      .from("blog_posts")
+      .select(
+        `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+        { count: "exact" },
+      )
+      .eq("category", "guide")
+      .eq("translations.locale", locale)
+      .order("scheduled_at", { ascending: false, nullsFirst: false })
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("id", { ascending: false })
+      .range(from, to),
+  ]);
+
+  const seriesSlugById = new Map<string, string>();
+  for (const series of seriesTranslations) {
+    if (series.locale !== locale) continue;
+    seriesSlugById.set(series.series_id, series.slug);
+  }
+
+  const { data, error, count } = guideResponse;
+  if (error || !data) {
+    return { items: [], total: 0, page: safePage, pageSize: safePageSize };
+  }
+
+  const mapped = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
+
+  const items = mapped
+    .map((item) => {
+      if (!item.post.series_id) return { ...item, seriesSlug: null };
+      const seriesSlug = seriesSlugById.get(item.post.series_id) ?? null;
+      return { ...item, seriesSlug };
+    })
+    .filter((item) => (item.post.series_id ? Boolean(item.seriesSlug) : true));
+
+  return {
+    items,
+    total: count ?? items.length,
     page: safePage,
     pageSize: safePageSize,
   };

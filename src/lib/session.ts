@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 type SessionData = {
   email: string;
   pilotType?: string | null;
+  role?: "pilot" | "admin";
   exp: number;
   iat: number;
 };
@@ -45,11 +46,12 @@ function decodeSession(token: string): SessionData | null {
   }
 }
 
-export async function setSessionCookie(email: string, pilotType?: string | null) {
+export async function setSessionCookie(email: string, pilotType?: string | null, role: "pilot" | "admin" = "pilot") {
   const now = Date.now();
   const data: SessionData = {
     email,
     pilotType: pilotType ?? undefined,
+    role,
     iat: now,
     exp: now + SESSION_TTL_MS,
   };
