@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = normalizeLocale(localeParam);
   return {
     title: "Topics | Y-Link",
-    description: "Explore grouped guides and blog posts by topic.",
+    description: "Browse guides and blog posts by topic.",
     alternates: {
       canonical: prefixLocale(locale, "/topics"),
       languages: {
@@ -62,7 +62,7 @@ export default async function TopicsPage({ params }: PageProps) {
             <p className="text-label text-muted-foreground">Explore by Topic</p>
             <h1 className="text-heading-lg text-foreground">Topics</h1>
             <p className="text-body-lg text-muted-foreground prose-constrained">
-              Collections of related guides and blogs grouped around practical DMX and show-control workflows.
+              Find related guides and blog posts in one place, grouped by the topic you are working on.
             </p>
           </div>
 

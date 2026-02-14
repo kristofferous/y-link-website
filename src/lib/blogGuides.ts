@@ -3,6 +3,7 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { createServiceClient } from "@/lib/supabaseServer";
 import { locales, type AppLocale } from "@/lib/i18n/config";
+import { topicAliasesForSlug, topicLabelFromSlug, topicSlugFromTag } from "@/lib/topics";
 
 const nowIso = () => new Date().toISOString();
 const todayDate = () => new Date().toISOString().slice(0, 10);
@@ -329,11 +330,7 @@ function eligibilityFilter(nowValue: string) {
 }
 
 function toClusterSlug(value: string) {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  return topicSlugFromTag(value);
 }
 
 export function clusterSlugFromTag(value: string) {
@@ -1304,19 +1301,20 @@ export async function fetchAllClusterTags(): Promise<{ tag: string; slug: string
   for (const tag of tags) {
     const slug = toClusterSlug(tag);
     if (!slug) continue;
-    const existing = bySlug.get(slug);
-    if (!existing || tag.length < existing.tag.length) {
-      bySlug.set(slug, { tag, slug });
-    }
+    const displayTag = topicLabelFromSlug(slug, tag);
+    bySlug.set(slug, { tag: displayTag, slug });
   }
   return Array.from(bySlug.values()).sort((a, b) => a.tag.localeCompare(b.tag));
 }
 
-async function resolveTagFromSlug(slug: string): Promise<string | null> {
+async function resolveTagsFromSlug(slug: string): Promise<string[]> {
   const normalized = toClusterSlug(slug);
-  if (!normalized) return null;
+  if (!normalized) return [];
+  const aliases = new Set(topicAliasesForSlug(normalized));
   const tags = await fetchAllTagsCached();
-  return tags.find((tag) => toClusterSlug(tag) === normalized) ?? null;
+  const matching = tags.filter((tag) => aliases.has(toClusterSlug(tag)));
+  if (matching.length > 0) return matching;
+  return [normalized];
 }
 
 function mapClusterItems(
@@ -1360,16 +1358,22 @@ export async function fetchTagClusterByTag(
   const normalizedTag = (tag ?? "").trim();
   const slug = toClusterSlug(normalizedTag);
   if (!normalizedTag || !slug) return null;
+  const displayTag = topicLabelFromSlug(slug, normalizedTag);
 
   const supabase = createServiceClient();
-  const { data: tagRows, error: tagError } = await supabase.from("blog_tags").select("post_id").eq("tag", normalizedTag);
+  const topicAliases = topicAliasesForSlug(slug);
+  const allTags = await fetchAllTagsCached();
+  const matchingTags = allTags.filter((existingTag) => topicAliases.includes(toClusterSlug(existingTag)));
+  const resolvedTags = matchingTags.length > 0 ? matchingTags : [normalizedTag];
+
+  const { data: tagRows, error: tagError } = await supabase.from("blog_tags").select("post_id").in("tag", resolvedTags);
   if (tagError || !tagRows || tagRows.length === 0) {
-    return { slug, tag: normalizedTag, items: [] };
+    return { slug, tag: displayTag, items: [] };
   }
 
   const postIds = Array.from(new Set(tagRows.map((row) => row.post_id).filter(Boolean)));
   if (postIds.length === 0) {
-    return { slug, tag: normalizedTag, items: [] };
+    return { slug, tag: displayTag, items: [] };
   }
 
   let query = supabase
@@ -1416,7 +1420,7 @@ export async function fetchTagClusterByTag(
 
   const { data, error } = await query;
   if (error || !data) {
-    return { slug, tag: normalizedTag, items: [] };
+    return { slug, tag: displayTag, items: [] };
   }
 
   const seriesTranslations = await fetchSeriesTranslationsCached();
@@ -1436,7 +1440,7 @@ export async function fetchTagClusterByTag(
     items = items.slice(0, limit);
   }
 
-  return { slug, tag: normalizedTag, items };
+  return { slug, tag: displayTag, items };
 }
 
 export async function fetchTagClusterBySlug(
@@ -1444,7 +1448,7 @@ export async function fetchTagClusterBySlug(
   slug: string,
   options?: { includeAllStatuses?: boolean; excludePostId?: number; limit?: number },
 ): Promise<TagCluster | null> {
-  const tag = await resolveTagFromSlug(slug);
-  if (!tag) return null;
-  return fetchTagClusterByTag(locale, tag, options);
+  const tags = await resolveTagsFromSlug(slug);
+  if (tags.length === 0) return null;
+  return fetchTagClusterByTag(locale, tags[0], options);
 }

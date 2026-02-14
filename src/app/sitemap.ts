@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { fetchAllClusterTags, fetchPublishedTranslations, fetchSeriesTranslations } from "@/lib/blogGuides";
+import { fetchAllClusterTags, fetchPublishedTranslations, fetchSeriesTranslations, fetchTagClusterBySlug } from "@/lib/blogGuides";
 import { locales, type AppLocale } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -112,14 +112,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  const clusterEntries = locales.flatMap((locale) =>
-    clusterTags.map((cluster) => ({
-      url: absoluteUrl(`/${locale}/topics/${cluster.slug}`),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
-  );
+  const clusterEntries = (
+    await Promise.all(
+      locales.flatMap((locale) =>
+        clusterTags.map(async (cluster) => {
+          const details = await fetchTagClusterBySlug(locale, cluster.slug, { limit: 2 });
+          if (!details || details.items.length < 2) return null;
+          return {
+            url: absoluteUrl(`/${locale}/topics/${cluster.slug}`),
+            lastModified,
+            changeFrequency: "monthly" as const,
+            priority: 0.6,
+          };
+        }),
+      ),
+    )
+  ).filter((entry): entry is MetadataRoute.Sitemap[number] => Boolean(entry));
 
   return [...staticEntries, ...dynamicEntries, ...clusterEntries];
 }

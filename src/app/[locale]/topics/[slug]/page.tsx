@@ -19,10 +19,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const isAdmin = session?.role === "admin";
   const cluster = await fetchTagClusterBySlug(locale, slug, { includeAllStatuses: isAdmin, limit: 1 });
   if (!cluster) return {};
+  const robots =
+    cluster.items.length < 2
+      ? {
+          index: false,
+          follow: true,
+        }
+      : undefined;
 
   return {
     title: `${cluster.tag} Topic | Y-Link`,
-    description: `Curated ${cluster.tag} guides and blog posts.`,
+    description: `Guides and blog posts about ${cluster.tag}.`,
+    robots,
     alternates: {
       canonical: prefixLocale(locale, `/topics/${cluster.slug}`),
       languages: {
@@ -43,6 +51,10 @@ export default async function TopicPage({ params }: PageProps) {
 
   if (!cluster) notFound();
 
+  const guides = cluster.items.filter((item) => item.category === "guide");
+  const blogs = cluster.items.filter((item) => item.category === "blog");
+  const readingPath = [...guides, ...blogs].slice(0, 6);
+
   return (
     <main>
       <section className="section-spacing">
@@ -59,9 +71,47 @@ export default async function TopicPage({ params }: PageProps) {
             <p className="text-label text-muted-foreground">Topic</p>
             <h1 className="text-heading-lg text-foreground">{cluster.tag}</h1>
             <p className="text-body-lg text-muted-foreground prose-constrained">
-              Related guides and blog posts grouped around one operating topic.
+              Everything in this topic, including step-by-step guides and practical articles you can use right away.
             </p>
           </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <article className="rounded-lg border border-border/40 bg-card p-5">
+              <h2 className="text-base font-semibold text-foreground">What you will find here</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Core concepts, practical setup steps, and common troubleshooting tips for {cluster.tag}.
+              </p>
+            </article>
+            <article className="rounded-lg border border-border/40 bg-card p-5">
+              <h2 className="text-base font-semibold text-foreground">How much content is here</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {cluster.items.length} articles ({guides.length} guides and {blogs.length} blog posts).
+              </p>
+            </article>
+            <article className="rounded-lg border border-border/40 bg-card p-5">
+              <h2 className="text-base font-semibold text-foreground">How to use this page</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Start with the reading path below, or jump directly to the article that matches your current task.
+              </p>
+            </article>
+          </div>
+
+          {readingPath.length > 0 ? (
+            <section className="space-y-3">
+              <h2 className="text-heading text-foreground">Recommended Reading Order</h2>
+              <div className="grid gap-3">
+                {readingPath.map((item, index) => (
+                  <Link
+                    key={`path-${item.category}-${item.postId}`}
+                    href={prefixLocale(locale, item.path)}
+                    className="rounded-lg border border-border/40 bg-card px-4 py-3 text-sm text-foreground transition-colors hover:bg-accent"
+                  >
+                    {index + 1}. {item.title}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           {cluster.items.length === 0 ? (
             <div className="rounded-lg border border-border/40 bg-card p-8 text-muted-foreground">
@@ -93,6 +143,24 @@ export default async function TopicPage({ params }: PageProps) {
               ))}
             </div>
           )}
+
+          <section className="space-y-3 rounded-lg border border-border/40 bg-card p-6">
+            <h2 className="text-heading text-foreground">FAQ</h2>
+            <div className="space-y-4 text-sm text-muted-foreground">
+              <div>
+                <p className="font-semibold text-foreground">When should I use this topic page vs a single article?</p>
+                <p>Use this page for the full topic map. Use single articles for one task or one specific fault condition.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">How are items selected for this topic?</p>
+                <p>Items are grouped under one topic so related tags are shown together in a single place.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Can this topic include drafts?</p>
+                <p>Only for approved admin sessions. Public visitors only see published or due scheduled content.</p>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </main>
