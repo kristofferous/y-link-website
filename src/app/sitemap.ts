@@ -15,7 +15,7 @@ const staticRoutes = [
   "/use-cases/beat-synced-lighting-without-programming",
   "/blog",
   "/guides",
-  "/clusters",
+  "/topics",
   "/tools",
   "/tools/dmx-dip",
   "/tools/lighting-power-load",
@@ -114,7 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const clusterEntries = locales.flatMap((locale) =>
     clusterTags.map((cluster) => ({
-      url: absoluteUrl(`/${locale}/clusters/${cluster.slug}`),
+      url: absoluteUrl(`/${locale}/topics/${cluster.slug}`),
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.6,

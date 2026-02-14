@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { type BlogPost } from "@/lib/blogGuides";
+import { clusterSlugFromTag, type BlogPost } from "@/lib/blogGuides";
 import { type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
@@ -61,14 +61,19 @@ export function GuideArticle({
             <p className="text-label text-muted-foreground">{label}</p>
             {tags && tags.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-border/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                {tags.map((tag) => {
+                  const clusterSlug = clusterSlugFromTag(tag);
+                  if (!clusterSlug) return null;
+                  return (
+                    <Link
+                      key={tag}
+                      href={prefixLocale(locale, `/topics/${clusterSlug}`)}
+                      className="rounded-full border border-border/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+                    >
+                      {tag}
+                    </Link>
+                  );
+                })}
               </div>
             ) : null}
             <div className="space-y-2">
@@ -161,10 +166,10 @@ export function GuideArticle({
                   <h2 className="text-title text-foreground">{relatedCluster.tag}</h2>
                 </div>
                 <Link
-                  href={prefixLocale(locale, `/clusters/${relatedCluster.slug}`)}
+                  href={prefixLocale(locale, `/topics/${relatedCluster.slug}`)}
                   className="text-sm font-semibold text-foreground underline underline-offset-4 hover:opacity-80"
                 >
-                  View cluster
+                  View topic
                 </Link>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">

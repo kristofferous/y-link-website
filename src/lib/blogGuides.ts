@@ -336,6 +336,10 @@ function toClusterSlug(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+export function clusterSlugFromTag(value: string) {
+  return toClusterSlug(value);
+}
+
 async function fetchSeriesSlug(
   _supabase: ReturnType<typeof createServiceClient>,
   seriesId: string,
@@ -1296,7 +1300,16 @@ const fetchAllTagsCached = unstable_cache(
 
 export async function fetchAllClusterTags(): Promise<{ tag: string; slug: string }[]> {
   const tags = await fetchAllTagsCached();
-  return tags.map((tag) => ({ tag, slug: toClusterSlug(tag) })).filter((item) => item.slug.length > 0);
+  const bySlug = new Map<string, { tag: string; slug: string }>();
+  for (const tag of tags) {
+    const slug = toClusterSlug(tag);
+    if (!slug) continue;
+    const existing = bySlug.get(slug);
+    if (!existing || tag.length < existing.tag.length) {
+      bySlug.set(slug, { tag, slug });
+    }
+  }
+  return Array.from(bySlug.values()).sort((a, b) => a.tag.localeCompare(b.tag));
 }
 
 async function resolveTagFromSlug(slug: string): Promise<string | null> {
