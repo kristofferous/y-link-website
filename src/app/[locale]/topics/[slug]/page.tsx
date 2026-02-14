@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = normalizeLocale(localeParam);
   const session = await getSessionFromCookie();
   const isAdmin = session?.role === "admin";
-  const cluster = await fetchTagClusterBySlug(locale, slug, { includeAllStatuses: isAdmin, limit: 1 });
+  const cluster = await fetchTagClusterBySlug(locale, slug, { includeAllStatuses: isAdmin, limit: 2 });
   if (!cluster) return {};
   const robots =
     cluster.items.length < 2
