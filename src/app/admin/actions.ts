@@ -38,5 +38,5 @@ export async function adminLogoutAction(formData?: FormData) {
   if (!loginToken) {
     redirect(`/${locale}`);
   }
-  redirect(`/${locale}/_/${loginToken}`);
+  redirect(`/${locale}/gate/${loginToken}`);
 }
