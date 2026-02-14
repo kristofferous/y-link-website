@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Instagram } from "lucide-react";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 export function Footer() {
   const { dictionary, locale } = useTranslations();
   const { footer } = dictionary;
+  const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://www.instagram.com/y.link.no/";
 
   return (
     <footer className="border-t border-border/40 bg-background">
@@ -37,6 +39,16 @@ export function Footer() {
                 hello@y-link.no
               </a>
             </div>
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="inline-flex w-fit items-center gap-2 rounded-md border border-border/40 bg-card px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Instagram className="h-4 w-4" />
+              <span>Instagram</span>
+            </a>
           </div>
 
           {/* Links */}
