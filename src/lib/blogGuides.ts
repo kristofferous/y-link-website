@@ -380,6 +380,64 @@ export async function fetchBlogPostBySlug(locale: AppLocale, slug: string): Prom
   return { ...mapped, post: updatedPost };
 }
 
+const fetchBlogPostBySlugAllStatusesCached = unstable_cache(
+  async (locale: AppLocale, slug: string) => {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select(
+        `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+      )
+      .eq("category", "blog")
+      .eq("translations.slug", slug)
+      .eq("translations.locale", locale)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data as JoinedPostRow;
+  },
+  ["blog-post-by-slug-all-statuses"],
+  { revalidate: CACHE_TTL_SECONDS },
+);
+
+export async function fetchBlogPostBySlugAllStatuses(locale: AppLocale, slug: string): Promise<BlogPost | null> {
+  const supabase = createServiceClient();
+  const now = new Date();
+  const data = await fetchBlogPostBySlugAllStatusesCached(locale, slug);
+  if (!data) return null;
+  const mapped = mapJoined(data);
+  if (!mapped) return null;
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
+}
+
 const fetchGuideBySlugCached = unstable_cache(
   async (locale: AppLocale, slug: string) => {
     const supabase = createServiceClient();
@@ -434,6 +492,65 @@ export async function fetchGuideBySlug(locale: AppLocale, slug: string): Promise
   const supabase = createServiceClient();
   const now = new Date();
   const data = await fetchGuideBySlugCached(locale, slug);
+  if (!data) return null;
+  const mapped = mapJoined(data);
+  if (!mapped) return null;
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
+}
+
+const fetchGuideBySlugAllStatusesCached = unstable_cache(
+  async (locale: AppLocale, slug: string) => {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select(
+        `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+      )
+      .eq("category", "guide")
+      .is("series_id", null)
+      .eq("translations.slug", slug)
+      .eq("translations.locale", locale)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data as JoinedPostRow;
+  },
+  ["guide-by-slug-all-statuses"],
+  { revalidate: CACHE_TTL_SECONDS },
+);
+
+export async function fetchGuideBySlugAllStatuses(locale: AppLocale, slug: string): Promise<BlogPost | null> {
+  const supabase = createServiceClient();
+  const now = new Date();
+  const data = await fetchGuideBySlugAllStatusesCached(locale, slug);
   if (!data) return null;
   const mapped = mapJoined(data);
   if (!mapped) return null;
@@ -522,6 +639,69 @@ export async function fetchGuideInSeries(
   return { ...mapped, post: updatedPost };
 }
 
+const fetchGuideInSeriesAllStatusesCached = unstable_cache(
+  async (locale: AppLocale, seriesId: string, slug: string) => {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select(
+        `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+      )
+      .eq("category", "guide")
+      .eq("series_id", seriesId)
+      .eq("translations.slug", slug)
+      .eq("translations.locale", locale)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data as JoinedPostRow;
+  },
+  ["guide-series-post-by-slug-all-statuses"],
+  { revalidate: CACHE_TTL_SECONDS },
+);
+
+export async function fetchGuideInSeriesAllStatuses(
+  locale: AppLocale,
+  seriesId: string,
+  slug: string,
+): Promise<BlogPost | null> {
+  const supabase = createServiceClient();
+  const now = new Date();
+  const data = await fetchGuideInSeriesAllStatusesCached(locale, seriesId, slug);
+  if (!data) return null;
+  const mapped = mapJoined(data);
+  if (!mapped) return null;
+  const updatedPost = await promoteScheduledPostIfDue(supabase, mapped.post, now);
+  return { ...mapped, post: updatedPost };
+}
+
 const fetchGuidesForSeriesCached = unstable_cache(
   async (locale: AppLocale, seriesId: string) => {
     const supabase = createServiceClient();
@@ -576,6 +756,77 @@ export async function fetchGuidesForSeries(locale: AppLocale, seriesId: string):
   const supabase = createServiceClient();
   const now = new Date();
   const data = await fetchGuidesForSeriesCached(locale, seriesId);
+  if (!data || data.length === 0) return [];
+
+  const mapped = data
+    .map((row) => mapJoined(row as JoinedPostRow))
+    .filter((item): item is BlogPost => Boolean(item));
+  const updatedPosts = await promoteScheduledPostsIfDue(
+    supabase,
+    mapped.map((item) => item.post),
+    now,
+  );
+  const updatedById = new Map(updatedPosts.map((post) => [post.id, post]));
+
+  return mapped.map((item) => ({
+    ...item,
+    post: updatedById.get(item.post.id) ?? item.post,
+    seriesSlug: null,
+  }));
+}
+
+const fetchGuidesForSeriesAllStatusesCached = unstable_cache(
+  async (locale: AppLocale, seriesId: string) => {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select(
+        `
+      id,
+      category,
+      status,
+      published_at,
+      scheduled_at,
+      reading_time,
+      takeaway,
+      featured_image_url,
+      author_name,
+      author:users!blog_posts_author_id_fkey(
+        full_name,
+        avatar_url
+      ),
+      prev_guide_id,
+      next_guide_id,
+      series_id,
+      series_order,
+      translations:blog_post_translations!inner(
+        slug,
+        title,
+        summary,
+        content_html,
+        seo_title,
+        seo_description,
+        locale
+      )
+    `,
+      )
+      .eq("category", "guide")
+      .eq("series_id", seriesId)
+      .eq("translations.locale", locale)
+      .order("series_order", { ascending: true })
+      .order("published_at", { ascending: false });
+
+    if (error || !data) return [];
+    return data as JoinedPostRow[];
+  },
+  ["guides-for-series-all-statuses"],
+  { revalidate: CACHE_TTL_SECONDS },
+);
+
+export async function fetchGuidesForSeriesAllStatuses(locale: AppLocale, seriesId: string): Promise<GuideListItem[]> {
+  const supabase = createServiceClient();
+  const now = new Date();
+  const data = await fetchGuidesForSeriesAllStatusesCached(locale, seriesId);
   if (!data || data.length === 0) return [];
 
   const mapped = data

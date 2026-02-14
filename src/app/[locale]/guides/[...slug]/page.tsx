@@ -5,10 +5,13 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GuideArticle } from "@/components/GuideArticle";
 import {
   fetchGuideBySlug,
+  fetchGuideBySlugAllStatuses,
   fetchGuideInSeries,
+  fetchGuideInSeriesAllStatuses,
   fetchGuideNavItem,
   fetchGuideSeries,
   fetchGuidesForSeries,
+  fetchGuidesForSeriesAllStatuses,
   fetchPostTags,
   fetchSeriesTranslationSlugs,
   fetchTranslationSlugs,
@@ -17,6 +20,7 @@ import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
+import { getSessionFromCookie } from "@/lib/session";
 
 type PageProps = { params: Promise<{ locale: AppLocale; slug?: string[] }> };
 
@@ -25,18 +29,22 @@ type GuideLookup =
   | { type: "seriesGuide"; post: Awaited<ReturnType<typeof fetchGuideInSeries>>; series: Awaited<ReturnType<typeof fetchGuideSeries>> }
   | { type: "seriesLanding"; series: Awaited<ReturnType<typeof fetchGuideSeries>> };
 
-async function resolveGuide(locale: AppLocale, segments: string[]): Promise<GuideLookup | null> {
+async function resolveGuide(locale: AppLocale, segments: string[], includeAllStatuses: boolean): Promise<GuideLookup | null> {
   if (segments.length === 1) {
     const series = await fetchGuideSeries(locale, segments[0]);
     if (series) return { type: "seriesLanding", series };
-    const post = await fetchGuideBySlug(locale, segments[0]);
+    const post = includeAllStatuses
+      ? await fetchGuideBySlugAllStatuses(locale, segments[0])
+      : await fetchGuideBySlug(locale, segments[0]);
     return post ? { type: "standalone", post } : null;
   }
 
   if (segments.length === 2) {
     const series = await fetchGuideSeries(locale, segments[0]);
     if (!series) return null;
-    const post = await fetchGuideInSeries(locale, series.id, segments[1]);
+    const post = includeAllStatuses
+      ? await fetchGuideInSeriesAllStatuses(locale, series.id, segments[1])
+      : await fetchGuideInSeries(locale, series.id, segments[1]);
     return post ? { type: "seriesGuide", post, series } : null;
   }
 
@@ -46,7 +54,9 @@ async function resolveGuide(locale: AppLocale, segments: string[]): Promise<Guid
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: localeParam, slug = [] } = await params;
   const locale = normalizeLocale(localeParam);
-  const resolved = await resolveGuide(locale, slug);
+  const session = await getSessionFromCookie();
+  const isAdmin = session?.role === "admin";
+  const resolved = await resolveGuide(locale, slug, isAdmin);
 
   if (!resolved) return {};
 
@@ -134,13 +144,17 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
   const { locale: localeParam, slug = [] } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const resolved = await resolveGuide(locale, slug);
+  const session = await getSessionFromCookie();
+  const isAdmin = session?.role === "admin";
+  const resolved = await resolveGuide(locale, slug, isAdmin);
 
   if (!resolved) notFound();
 
   if (resolved.type === "seriesLanding") {
     if (!resolved.series) notFound();
-    const guides = await fetchGuidesForSeries(locale, resolved.series.id);
+    const guides = isAdmin
+      ? await fetchGuidesForSeriesAllStatuses(locale, resolved.series.id)
+      : await fetchGuidesForSeries(locale, resolved.series.id);
     return (
       <main>
         <section className="section-spacing">

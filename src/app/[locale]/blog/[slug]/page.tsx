@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { fetchBlogPostBySlug, fetchPostTags, fetchTranslationSlugs } from "@/lib/blogGuides";
+import { fetchBlogPostBySlug, fetchBlogPostBySlugAllStatuses, fetchPostTags, fetchTranslationSlugs } from "@/lib/blogGuides";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { buildDescription } from "@/lib/contentUtils";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
+import { getSessionFromCookie } from "@/lib/session";
 
 type PageProps = { params: Promise<{ locale: AppLocale; slug: string }> };
 
@@ -32,7 +33,9 @@ function getInitials(name: string) {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: localeParam, slug } = await params;
   const locale = normalizeLocale(localeParam);
-  const post = await fetchBlogPostBySlug(locale, slug);
+  const session = await getSessionFromCookie();
+  const isAdmin = session?.role === "admin";
+  const post = isAdmin ? await fetchBlogPostBySlugAllStatuses(locale, slug) : await fetchBlogPostBySlug(locale, slug);
 
   if (!post) return {};
 
@@ -83,7 +86,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { locale: localeParam, slug } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const post = await fetchBlogPostBySlug(locale, slug);
+  const session = await getSessionFromCookie();
+  const isAdmin = session?.role === "admin";
+  const post = isAdmin ? await fetchBlogPostBySlugAllStatuses(locale, slug) : await fetchBlogPostBySlug(locale, slug);
 
   if (!post) notFound();
 
