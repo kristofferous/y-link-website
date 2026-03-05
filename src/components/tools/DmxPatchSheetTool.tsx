@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SectionCard } from "@/components/SectionCard";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 type FixtureRow = {
@@ -72,11 +73,26 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
+type PatchState = { fixtures: FixtureRow[]; settings: Settings };
+
+const decodePatchState = (raw: string): PatchState | null => {
+  try {
+    return JSON.parse(decodeURIComponent(escape(atob(raw)))) as PatchState;
+  } catch {
+    return null;
+  }
+};
+
+const encodePatchState = (state: PatchState) =>
+  btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+
 export function DmxPatchSheetTool() {
+  const router = useRouter();
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.dmxPatch.tool;
   const searchParams = useSearchParams();
   const importAppliedRef = useRef(false);
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [settings, setSettings] = useState<Settings>({
     startUniverse: 1,
@@ -109,10 +125,33 @@ export function DmxPatchSheetTool() {
     return map;
   }, [fixtures]);
 
+  const syncUrl = (nextFixtures: FixtureRow[], nextSettings: Settings) => {
+    if (syncRef.current) clearTimeout(syncRef.current);
+    syncRef.current = setTimeout(() => {
+      const encoded = encodePatchState({ fixtures: nextFixtures, settings: nextSettings });
+      router.replace(`?state=${encoded}`, { scroll: false });
+    }, 500);
+  };
+
   useEffect(() => {
     if (importAppliedRef.current) return;
+
+    const stateParam = searchParams.get("state");
+    if (stateParam) {
+      const decoded = decodePatchState(stateParam);
+      if (decoded?.fixtures?.length) {
+        setFixtures(decoded.fixtures);
+        if (decoded.settings) setSettings(decoded.settings);
+        importAppliedRef.current = true;
+        return;
+      }
+    }
+
     const importParam = searchParams.get("import");
-    if (!importParam) return;
+    if (!importParam) {
+      importAppliedRef.current = true;
+      return;
+    }
 
     try {
       const decoded = JSON.parse(decodeURIComponent(escape(atob(importParam)))) as ImportedPatchRow[];
@@ -207,32 +246,40 @@ export function DmxPatchSheetTool() {
   }, [fixtures, settings, tool]);
 
   const updateFixture = (id: string, patch: Partial<FixtureRow>) => {
-    setFixtures((current) => current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture)));
+    setFixtures((current) => {
+      const next = current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture));
+      syncUrl(next, settings);
+      return next;
+    });
   };
 
   const addFixture = () => {
-    setFixtures((current) => [
-      ...current,
-      {
-        id: createId(),
-        name: tool.defaults.newName,
-        channelCount: 1,
-        quantity: 1,
-      },
-    ]);
+    setFixtures((current) => {
+      const next = [
+        ...current,
+        { id: createId(), name: tool.defaults.newName, channelCount: 1, quantity: 1 },
+      ];
+      syncUrl(next, settings);
+      return next;
+    });
   };
 
   const duplicateFixture = (fixture: FixtureRow) => {
     const count = clampInt(duplicateCount);
-    const copies = Array.from({ length: count }, () => ({
-      ...fixture,
-      id: createId(),
-    }));
-    setFixtures((current) => [...current, ...copies]);
+    const copies = Array.from({ length: count }, () => ({ ...fixture, id: createId() }));
+    setFixtures((current) => {
+      const next = [...current, ...copies];
+      syncUrl(next, settings);
+      return next;
+    });
   };
 
   const removeFixture = (id: string) => {
-    setFixtures((current) => current.filter((fixture) => fixture.id !== id));
+    setFixtures((current) => {
+      const next = current.filter((fixture) => fixture.id !== id);
+      syncUrl(next, settings);
+      return next;
+    });
   };
 
   const generatePatch = () => {
@@ -574,6 +621,7 @@ export function DmxPatchSheetTool() {
   return (
     <div className="space-y-10">
       <div className="space-y-10 print-hide">
+      <ShareToolButton />
         <SectionCard>
           <div className="space-y-6">
             <div className="space-y-2">

@@ -33,6 +33,7 @@ export function proxy(request: NextRequest) {
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/s/") ||
     pathname.startsWith("/favicon") ||
     pathname.startsWith("/fonts") ||
     pathname.startsWith("/og-") ||

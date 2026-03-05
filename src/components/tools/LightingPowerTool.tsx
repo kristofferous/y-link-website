@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SectionCard } from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 import presets from "@/data/lighting/power-presets.json";
 
@@ -43,26 +45,84 @@ const createId = () => {
 
 const defaultPreset = presets[0] as Preset | undefined;
 
+type PowerState = {
+  fixtures: Array<{ name: string; presetName: string; quantity: number; watts: number }>;
+  voltage: number;
+  circuitCount: number;
+  phaseCount: number;
+  breakerSizes: number[];
+  powerFactor: number;
+  diversity: number;
+};
+
+const decodePowerState = (raw: string): PowerState | null => {
+  try {
+    return JSON.parse(decodeURIComponent(escape(atob(raw)))) as PowerState;
+  } catch {
+    return null;
+  }
+};
+
+const encodePowerState = (state: PowerState) =>
+  btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+
 export function LightingPowerTool() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.lightingPower.tool;
 
-  const [fixtures, setFixtures] = useState<FixtureRow[]>([
-    {
-      id: createId(),
-      name: defaultPreset?.name ?? tool.defaults.newName,
-      presetName: defaultPreset?.name ?? PRESET_CUSTOM,
-      quantity: 4,
-      watts: defaultPreset?.watts ?? 50,
-    },
-  ]);
+  const savedState = (() => {
+    const raw = searchParams.get("state");
+    return raw ? decodePowerState(raw) : null;
+  })();
 
-  const [voltage, setVoltage] = useState(230);
-  const [circuitCount, setCircuitCount] = useState(6);
-  const [phaseCount, setPhaseCount] = useState(3);
-  const [breakerSizes, setBreakerSizes] = useState<number[]>(() => Array.from({ length: 6 }, () => 20));
-  const [powerFactor, setPowerFactor] = useState(0.9);
-  const [diversity, setDiversity] = useState(0.8);
+  const [fixtures, setFixtures] = useState<FixtureRow[]>(() => {
+    if (savedState?.fixtures?.length) {
+      return savedState.fixtures.map((f) => ({ ...f, id: createId() }));
+    }
+    return [
+      {
+        id: createId(),
+        name: defaultPreset?.name ?? tool.defaults.newName,
+        presetName: defaultPreset?.name ?? PRESET_CUSTOM,
+        quantity: 4,
+        watts: defaultPreset?.watts ?? 50,
+      },
+    ];
+  });
+
+  const [voltage, setVoltage] = useState(savedState?.voltage ?? 230);
+  const [circuitCount, setCircuitCount] = useState(savedState?.circuitCount ?? 6);
+  const [phaseCount, setPhaseCount] = useState(savedState?.phaseCount ?? 3);
+  const [breakerSizes, setBreakerSizes] = useState<number[]>(
+    savedState?.breakerSizes ?? Array.from({ length: 6 }, () => 20),
+  );
+  const [powerFactor, setPowerFactor] = useState(savedState?.powerFactor ?? 0.9);
+  const [diversity, setDiversity] = useState(savedState?.diversity ?? 0.8);
+
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncUrl = (state: Partial<PowerState>) => {
+    if (syncRef.current) clearTimeout(syncRef.current);
+    syncRef.current = setTimeout(() => {
+      const full: PowerState = {
+        fixtures: fixtures.map(({ name, presetName, quantity, watts }) => ({
+          name,
+          presetName,
+          quantity,
+          watts,
+        })),
+        voltage,
+        circuitCount,
+        phaseCount,
+        breakerSizes,
+        powerFactor,
+        diversity,
+        ...state,
+      };
+      router.replace(`?state=${encodePowerState(full)}`, { scroll: false });
+    }, 500);
+  };
 
   useEffect(() => {
     setBreakerSizes((current) => {
@@ -75,24 +135,36 @@ export function LightingPowerTool() {
   }, [circuitCount]);
 
   const updateFixture = (id: string, patch: Partial<FixtureRow>) => {
-    setFixtures((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
+    setFixtures((current) => {
+      const next = current.map((row) => (row.id === id ? { ...row, ...patch } : row));
+      syncUrl({
+        fixtures: next.map(({ name, presetName, quantity, watts }) => ({ name, presetName, quantity, watts })),
+      });
+      return next;
+    });
   };
 
   const addFixture = () => {
-    setFixtures((current) => [
-      ...current,
-      {
-        id: createId(),
-        name: tool.defaults.newName,
-        presetName: PRESET_CUSTOM,
-        quantity: 1,
-        watts: 0,
-      },
-    ]);
+    setFixtures((current) => {
+      const next = [
+        ...current,
+        { id: createId(), name: tool.defaults.newName, presetName: PRESET_CUSTOM, quantity: 1, watts: 0 },
+      ];
+      syncUrl({
+        fixtures: next.map(({ name, presetName, quantity, watts }) => ({ name, presetName, quantity, watts })),
+      });
+      return next;
+    });
   };
 
   const removeFixture = (id: string) => {
-    setFixtures((current) => current.filter((row) => row.id !== id));
+    setFixtures((current) => {
+      const next = current.filter((row) => row.id !== id);
+      syncUrl({
+        fixtures: next.map(({ name, presetName, quantity, watts }) => ({ name, presetName, quantity, watts })),
+      });
+      return next;
+    });
   };
 
   const applyPreset = (id: string, presetName: string) => {
@@ -171,6 +243,7 @@ export function LightingPowerTool() {
 
   return (
     <div className="space-y-8">
+      <ShareToolButton />
       <SectionCard>
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">

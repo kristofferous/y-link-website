@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SectionCard } from "@/components/SectionCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 const clampInt = (value: number, min = 1) => {
@@ -12,13 +14,33 @@ const clampInt = (value: number, min = 1) => {
 };
 
 export function DmxCapacityTool() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { dictionary } = useTranslations();
   const { dmxCapacity } = dictionary.tools;
   const tool = dmxCapacity.tool;
 
-  const [channelsPerFixture, setChannelsPerFixture] = useState(13);
-  const [fixtureCount, setFixtureCount] = useState("");
-  const [channelsPerUniverse, setChannelsPerUniverse] = useState(512);
+  const [channelsPerFixture, setChannelsPerFixture] = useState(() => {
+    const raw = searchParams.get("ch");
+    const parsed = raw ? parseInt(raw, 10) : NaN;
+    return Number.isFinite(parsed) && parsed >= 1 ? parsed : 13;
+  });
+  const [fixtureCount, setFixtureCount] = useState(() => searchParams.get("count") ?? "");
+  const [channelsPerUniverse, setChannelsPerUniverse] = useState(() => {
+    const raw = searchParams.get("max");
+    const parsed = raw ? parseInt(raw, 10) : NaN;
+    return Number.isFinite(parsed) && parsed >= 1 ? parsed : 512;
+  });
+
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncUrl = (ch: number, count: string, max: number) => {
+    if (syncRef.current) clearTimeout(syncRef.current);
+    syncRef.current = setTimeout(() => {
+      const params = new URLSearchParams({ ch: String(ch), max: String(max) });
+      if (count.trim()) params.set("count", count.trim());
+      router.replace(`?${params.toString()}`, { scroll: false });
+    }, 300);
+  };
 
   const outputs = useMemo(() => {
     const perFixture = clampInt(channelsPerFixture);
@@ -41,6 +63,7 @@ export function DmxCapacityTool() {
   }, [channelsPerFixture, channelsPerUniverse, fixtureCount]);
 
   return (
+    <div className="space-y-8">
     <SectionCard>
       <div className="space-y-6">
         <div className="space-y-2">
@@ -54,7 +77,11 @@ export function DmxCapacityTool() {
               type="number"
               min={1}
               value={channelsPerFixture}
-              onChange={(event) => setChannelsPerFixture(clampInt(Number(event.target.value || 1)))}
+              onChange={(event) => {
+                const v = clampInt(Number(event.target.value || 1));
+                setChannelsPerFixture(v);
+                syncUrl(v, fixtureCount, channelsPerUniverse);
+              }}
             />
           </div>
           <div className="space-y-2">
@@ -64,7 +91,10 @@ export function DmxCapacityTool() {
               type="number"
               min={1}
               value={fixtureCount}
-              onChange={(event) => setFixtureCount(event.target.value)}
+              onChange={(event) => {
+                setFixtureCount(event.target.value);
+                syncUrl(channelsPerFixture, event.target.value, channelsPerUniverse);
+              }}
               placeholder="e.g. 24"
             />
           </div>
@@ -75,7 +105,11 @@ export function DmxCapacityTool() {
               type="number"
               min={1}
               value={channelsPerUniverse}
-              onChange={(event) => setChannelsPerUniverse(clampInt(Number(event.target.value || 1)))}
+              onChange={(event) => {
+                const v = clampInt(Number(event.target.value || 1));
+                setChannelsPerUniverse(v);
+                syncUrl(channelsPerFixture, fixtureCount, v);
+              }}
             />
           </div>
         </div>
@@ -110,5 +144,8 @@ export function DmxCapacityTool() {
         ) : null}
       </div>
     </SectionCard>
+
+    <ShareToolButton />
+  </div>
   );
 }

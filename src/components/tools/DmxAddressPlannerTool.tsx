@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SectionCard } from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { CHANNELS_PER_UNIVERSE, checkOverlap, clampInt, nextFreeAddress } from "@/lib/tools/dmx";
@@ -43,25 +45,73 @@ const fixtureTypeTone: Record<FixtureType, string> = {
   other: "bg-foreground/6 border-foreground/15",
 };
 
+type PlannerState = {
+  fixtures: Fixture[];
+  placements: Record<string, Placement>;
+  universes: number[];
+  activeUniverse: number;
+};
+
+const decodePlannerState = (raw: string): PlannerState | null => {
+  try {
+    return JSON.parse(decodeURIComponent(escape(atob(raw)))) as PlannerState;
+  } catch {
+    return null;
+  }
+};
+
+const encodePlannerState = (state: PlannerState) =>
+  btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+
 export function DmxAddressPlannerTool() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { dictionary, locale } = useTranslations();
   const tool = dictionary.tools.dmxAddressPlanner.tool;
   const defaults = dictionary.tools.dmxAddressPlanner.defaults;
 
-  const [initialFixtureId] = useState(() => createId());
-  const [fixtures, setFixtures] = useState<Fixture[]>(() => [
-    {
-      id: initialFixtureId,
-      name: defaults.sampleName,
-      channels: 12,
-      type: "wash",
-    },
-  ]);
-  const [activeFixtureId, setActiveFixtureId] = useState<string | null>(initialFixtureId);
-  const [placements, setPlacements] = useState<Record<string, Placement>>({});
+  const initialState = (() => {
+    const raw = searchParams.get("state");
+    if (raw) {
+      const decoded = decodePlannerState(raw);
+      if (decoded?.fixtures?.length) return decoded;
+    }
+    const id = createId();
+    return {
+      fixtures: [{ id, name: defaults.sampleName, channels: 12, type: "wash" as FixtureType }],
+      placements: {} as Record<string, Placement>,
+      universes: [1],
+      activeUniverse: 1,
+    };
+  })();
+
+  const [fixtures, setFixtures] = useState<Fixture[]>(initialState.fixtures);
+  const [activeFixtureId, setActiveFixtureId] = useState<string | null>(
+    initialState.fixtures[0]?.id ?? null,
+  );
+  const [placements, setPlacements] = useState<Record<string, Placement>>(initialState.placements);
   const [warning, setWarning] = useState<string | null>(null);
-  const [universes, setUniverses] = useState<number[]>([1]);
-  const [activeUniverse, setActiveUniverse] = useState(1);
+  const [universes, setUniverses] = useState<number[]>(initialState.universes);
+  const [activeUniverse, setActiveUniverse] = useState(initialState.activeUniverse);
+
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncUrl = (
+    nextFixtures: Fixture[],
+    nextPlacements: Record<string, Placement>,
+    nextUniverses: number[],
+    nextActiveUniverse: number,
+  ) => {
+    if (syncRef.current) clearTimeout(syncRef.current);
+    syncRef.current = setTimeout(() => {
+      const encoded = encodePlannerState({
+        fixtures: nextFixtures,
+        placements: nextPlacements,
+        universes: nextUniverses,
+        activeUniverse: nextActiveUniverse,
+      });
+      router.replace(`?state=${encoded}`, { scroll: false });
+    }, 500);
+  };
 
   useEffect(() => {
     if (activeFixtureId && fixtures.some((fixture) => fixture.id === activeFixtureId)) return;
@@ -73,28 +123,35 @@ export function DmxAddressPlannerTool() {
   }, [fixtures]);
 
   const updateFixture = (id: string, patch: Partial<Fixture>) => {
-    setFixtures((current) => current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture)));
+    setFixtures((current) => {
+      const next = current.map((fixture) => (fixture.id === id ? { ...fixture, ...patch } : fixture));
+      syncUrl(next, placements, universes, activeUniverse);
+      return next;
+    });
   };
 
   const addFixture = () => {
     const id = createId();
-    setFixtures((current) => [
-      ...current,
-      {
-        id,
-        name: defaults.newName,
-        channels: 8,
-        type: "spot",
-      },
-    ]);
+    setFixtures((current) => {
+      const next = [
+        ...current,
+        { id, name: defaults.newName, channels: 8, type: "spot" as FixtureType },
+      ];
+      syncUrl(next, placements, universes, activeUniverse);
+      return next;
+    });
     setActiveFixtureId(id);
   };
 
   const removeFixture = (id: string) => {
-    setFixtures((current) => current.filter((fixture) => fixture.id !== id));
-    setPlacements((current) => {
-      const next = { ...current };
-      delete next[id];
+    setFixtures((current) => {
+      const next = current.filter((fixture) => fixture.id !== id);
+      setPlacements((currentP) => {
+        const nextP = { ...currentP };
+        delete nextP[id];
+        syncUrl(next, nextP, universes, activeUniverse);
+        return nextP;
+      });
       return next;
     });
   };
@@ -103,6 +160,7 @@ export function DmxAddressPlannerTool() {
     setPlacements((current) => {
       const next = { ...current };
       delete next[id];
+      syncUrl(fixtures, next, universes, activeUniverse);
       return next;
     });
   };
@@ -115,10 +173,11 @@ export function DmxAddressPlannerTool() {
       setWarning(tool.warnings.outOfRange);
       return;
     }
-    setPlacements((current) => ({
-      ...current,
-      [fixtureId]: { fixtureId, universe, startAddress },
-    }));
+    setPlacements((current) => {
+      const next = { ...current, [fixtureId]: { fixtureId, universe, startAddress } };
+      syncUrl(fixtures, next, universes, activeUniverse);
+      return next;
+    });
     setWarning(null);
   };
 
@@ -225,12 +284,17 @@ export function DmxAddressPlannerTool() {
 
   const addUniverse = () => {
     const nextUniverse = Math.max(...universes) + 1;
-    setUniverses((current) => [...current, nextUniverse]);
+    setUniverses((current) => {
+      const next = [...current, nextUniverse];
+      syncUrl(fixtures, placements, next, nextUniverse);
+      return next;
+    });
     setActiveUniverse(nextUniverse);
   };
 
   return (
     <div className="space-y-8">
+      <ShareToolButton />
       <SectionCard className="border-0 bg-transparent !p-0 shadow-none sm:rounded-xl sm:border sm:border-border/40 sm:bg-card sm:!p-8 sm:shadow-lg">
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">

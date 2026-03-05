@@ -1045,6 +1045,12 @@
       "description": "Fast, practical DMX calculators and tools for patching and addressing: DIP switch calculator, address planner, patch sheet generator, color picker, capacity calculator, lighting power calculator, and more."
     },
     "breadcrumb": "Tools",
+    "shareButton": {
+      "copyLink": "Copy short link",
+      "copied": "Copied!",
+      "share": "Share",
+      "error": "Error"
+    },
     "hero": {
       "label": "Tools",
       "title": "DMX Tools for Fast Patching",
@@ -1086,6 +1092,12 @@
         "title": "Stage Lighting Power & Load Calculator",
         "description": "Estimate watts, amps, and circuit headroom with safety margins and phase balancing.",
         "href": "/tools/lighting-power-load",
+        "tag": "Free tool"
+      },
+      {
+        "title": "DMX Refresh Rate Calculator",
+        "description": "Calculate DMX frame time, max refresh rate (FPS), and latency from slot count and timing parameters.",
+        "href": "/tools/dmx-refresh-rate",
         "tag": "Free tool"
       }
     ],
@@ -1746,6 +1758,67 @@
           {
             "title": "Universe offsets",
             "body": "Address 513 corresponds to universe 2, channel 1."
+          }
+        ]
+      }
+    },
+    "dmxRefreshRate": {
+      "metadata": {
+        "title": "DMX Refresh Rate Calculator",
+        "description": "Calculate DMX frame time, max refresh rate (FPS), and update latency from slot count, break time, MAB, and slot duration. Targets the dmx timing refresh rate query."
+      },
+      "breadcrumb": "DMX Refresh Rate",
+      "intro": {
+        "eyebrow": "DMX Tool",
+        "title": "Calculate DMX frame rate and latency",
+        "body": "Adjust active slots and timing parameters to see frame time, max FPS, and whether your setup meets the 30 FPS minimum for flicker-free moving lights."
+      },
+      "howTo": {
+        "title": "How to use the refresh rate calculator",
+        "steps": [
+          "Set active slots to the number of channels you are sending (1–512).",
+          "Leave timing parameters at standard values unless your controller uses custom timing.",
+          "Read the frame time, FPS, and flicker-free indicator.",
+          "Use the high-speed preset or reduce active slots to push above 30 FPS."
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Timing parameters",
+          "slots": "Active slots / channels",
+          "slotsHelp": "Number of DMX slots transmitted per frame (1–512).",
+          "break": "Break time (µs)",
+          "breakHelp": "Minimum 88 µs per DMX512 spec.",
+          "mab": "Mark After Break (µs)",
+          "mabHelp": "Minimum 8 µs per DMX512 spec.",
+          "slotTime": "Slot time (µs)",
+          "slotTimeHelp": "Duration of one slot. Standard DMX is 4 µs per bit × 11 bits = 44 µs. Enter the per-slot value (4–8 µs typical).",
+          "presets": {
+            "title": "Presets",
+            "standard": "Standard DMX (512 slots)",
+            "highSpeed": "High-speed (128 slots)"
+          }
+        },
+        "outputs": {
+          "title": "Results",
+          "frameTime": "Frame time",
+          "fps": "Max refresh rate",
+          "flicker": "Flicker-free (≥ 30 FPS)",
+          "flickerOk": "Yes",
+          "flickerFail": "No — reduce slots or use faster timing",
+          "latency": "Update latency"
+        }
+      },
+      "details": {
+        "title": "Notes",
+        "sections": [
+          {
+            "title": "Standard DMX",
+            "body": "Full 512-slot DMX at standard timing gives roughly 44 FPS — above the 30 FPS flicker threshold. Reducing slots improves refresh rate proportionally."
+          },
+          {
+            "title": "Flicker threshold",
+            "body": "Moving lights and LED fixtures generally require 30 FPS or more for smooth, flicker-free operation. Strobes and pixel mapping may need higher rates."
           }
         ]
       }

@@ -1045,6 +1045,12 @@
       "description": "Raske, praktiske DMX-kalkulatorer og verktøy for patching og adressering: DIP-bryterkalkulator, adresseplanlegger, patcharkgenerator, fargeplukker, kapasitetskalkulator, belastningskalkulator, og mer."
     },
     "breadcrumb": "Verktøy",
+    "shareButton": {
+      "copyLink": "Kopier kort lenke",
+      "copied": "Kopiert!",
+      "share": "Del",
+      "error": "Feil"
+    },
     "hero": {
       "label": "Verktøy",
       "title": "DMX‑verktøy for rask patching",
@@ -1086,6 +1092,12 @@
         "title": "Strøm- og lastkalkulator for scenelys",
         "description": "Estimer watt, ampere og kurskapasitet med sikkerhetsmarginer og fasebalansering.",
         "href": "/tools/lighting-power-load",
+        "tag": "Gratis verktøy"
+      },
+      {
+        "title": "DMX-oppdateringsfrekvenskalkulator",
+        "description": "Beregn DMX-rammetid, maks oppdateringsfrekvens (FPS) og forsinkelse fra antall kanaler og timingparametere.",
+        "href": "/tools/dmx-refresh-rate",
         "tag": "Gratis verktøy"
       }
     ],
@@ -1746,6 +1758,67 @@
           {
             "title": "Fasebalanse",
             "body": "Jevn fordeling reduserer utkoblinger og holder strømmen stabil."
+          }
+        ]
+      }
+    },
+    "dmxRefreshRate": {
+      "metadata": {
+        "title": "DMX-oppdateringsfrekvenskalkulator",
+        "description": "Beregn DMX-rammetid, maks oppdateringsfrekvens (FPS) og oppdateringsforsinkelse fra antall kanaler, pausetid, MAB og slottvarighet."
+      },
+      "breadcrumb": "DMX oppdateringsfrekvens",
+      "intro": {
+        "eyebrow": "DMX-verktøy",
+        "title": "Beregn DMX-bildefrekvens og forsinkelse",
+        "body": "Juster aktive kanaler og timingparametere for å se rammetid, maks FPS og om oppsettet ditt møter 30 FPS-minimumskravet for flimmerfrie bevegelige lys."
+      },
+      "howTo": {
+        "title": "Slik bruker du kalkulatoren",
+        "steps": [
+          "Sett aktive kanaler til antall DMX-kanaler du sender (1–512).",
+          "La timingparametrene stå på standardverdier med mindre kontrolleren bruker egendefinert timing.",
+          "Les av rammetid, FPS og flimmerfri-indikator.",
+          "Bruk høyhastighetsforhåndsinnstillingen eller reduser antall kanaler for å nå over 30 FPS."
+        ]
+      },
+      "tool": {
+        "inputs": {
+          "title": "Timingparametere",
+          "slots": "Aktive kanaler",
+          "slotsHelp": "Antall DMX-kanaler som sendes per ramme (1–512).",
+          "break": "Pausetid (µs)",
+          "breakHelp": "Minimum 88 µs i henhold til DMX512-spesifikasjonen.",
+          "mab": "Mark After Break (µs)",
+          "mabHelp": "Minimum 8 µs i henhold til DMX512-spesifikasjonen.",
+          "slotTime": "Kanaltid (µs)",
+          "slotTimeHelp": "Varighet av én kanal. Standard DMX er 4 µs per bit × 11 bit = 44 µs. Oppgi per-kanal-verdi (4–8 µs typisk).",
+          "presets": {
+            "title": "Forhåndsinnstillinger",
+            "standard": "Standard DMX (512 kanaler)",
+            "highSpeed": "Høyhastighet (128 kanaler)"
+          }
+        },
+        "outputs": {
+          "title": "Resultater",
+          "frameTime": "Rammetid",
+          "fps": "Maks oppdateringsfrekvens",
+          "flicker": "Flimmerfri (≥ 30 FPS)",
+          "flickerOk": "Ja",
+          "flickerFail": "Nei — reduser kanaler eller bruk raskere timing",
+          "latency": "Oppdateringsforsinkelse"
+        }
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "Standard DMX",
+            "body": "Full 512-kanals DMX med standard timing gir ca. 44 FPS — over 30 FPS-grensen. Å redusere antall kanaler forbedrer oppdateringsfrekvensen proporsjonalt."
+          },
+          {
+            "title": "Flimmergrense",
+            "body": "Bevegelige lys og LED-armaturer krever vanligvis 30 FPS eller mer for jevn, flimmerfri drift. Stroboskoper og pikselkartlegging kan kreve høyere frekvens."
           }
         ]
       }

@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SectionCard } from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 const DIP_VALUES = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
@@ -21,11 +23,27 @@ const buildSwitches = (value: number) =>
 const toBinaryString = (value: number) => value.toString(2).padStart(10, "0");
 
 export function DmxDipSwitchTool() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.dmxDip.tool;
 
-  const [decimal, setDecimal] = useState(1);
-  const [switches, setSwitches] = useState<boolean[]>(() => buildSwitches(1));
+  const initialAddress = (() => {
+    const raw = searchParams.get("address");
+    const parsed = raw ? parseInt(raw, 10) : NaN;
+    return Number.isFinite(parsed) ? clampInt(parsed, 0, MAX_ADDRESS) : 1;
+  })();
+
+  const [decimal, setDecimal] = useState(initialAddress);
+  const [switches, setSwitches] = useState<boolean[]>(() => buildSwitches(initialAddress));
+
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncUrl = (value: number) => {
+    if (syncRef.current) clearTimeout(syncRef.current);
+    syncRef.current = setTimeout(() => {
+      router.replace(`?address=${value}`, { scroll: false });
+    }, 200);
+  };
 
   const binary = useMemo(() => toBinaryString(decimal), [decimal]);
 
@@ -33,6 +51,7 @@ export function DmxDipSwitchTool() {
     const clamped = clampInt(nextValue, 0, MAX_ADDRESS);
     setDecimal(clamped);
     setSwitches(buildSwitches(clamped));
+    syncUrl(clamped);
   };
 
   const toggleSwitch = (index: number) => {
@@ -44,6 +63,7 @@ export function DmxDipSwitchTool() {
         0,
       );
       setDecimal(nextValue);
+      syncUrl(nextValue);
       return next;
     });
   };
@@ -139,6 +159,8 @@ export function DmxDipSwitchTool() {
           </div>
         </div>
       </SectionCard>
+
+      <ShareToolButton />
     </div>
   );
 }

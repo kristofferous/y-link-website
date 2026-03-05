@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SectionCard } from "@/components/SectionCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import {
   ColorPickerHue,
   ColorPickerSelection,
 } from "@/components/ui/shadcn-io/color-picker";
+import { ShareToolButton } from "@/components/tools/ShareToolButton";
 import { useTranslations } from "@/lib/i18n/TranslationProvider";
 
 type FixtureType = "rgb" | "rgbw" | "rgba" | "rgbwa" | "rgbwwcw";
@@ -160,15 +162,69 @@ const toCoarseFine = (value16: number) => ({
 });
 
 export function DmxColorTool() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { dictionary } = useTranslations();
   const tool = dictionary.tools.dmxColor.tool;
 
-  const [fixtureType, setFixtureType] = useState<FixtureType>("rgbw");
-  const [inputMode, setInputMode] = useState<InputMode>("hexRgb");
-  const [hexInput, setHexInput] = useState("#FF7A66");
-  const [rgb, setRgb] = useState<Rgb>({ r: 255, g: 122, b: 102 });
-  const [cctInput, setCctInput] = useState("");
-  const [cctIntensity, setCctIntensity] = useState(100);
+  const [fixtureType, setFixtureType] = useState<FixtureType>(() => {
+    const raw = searchParams.get("type");
+    const valid: FixtureType[] = ["rgb", "rgbw", "rgba", "rgbwa", "rgbwwcw"];
+    return valid.includes(raw?.toLowerCase() as FixtureType)
+      ? (raw!.toLowerCase() as FixtureType)
+      : "rgbw";
+  });
+  const [inputMode, setInputMode] = useState<InputMode>(() => {
+    if (searchParams.get("cct")) return "cct";
+    if (searchParams.get("mode") === "wheel") return "wheel";
+    return "hexRgb";
+  });
+  const [hexInput, setHexInput] = useState(() => {
+    const raw = searchParams.get("hex");
+    return raw ? `#${raw.toUpperCase()}` : "#FF7A66";
+  });
+  const [rgb, setRgb] = useState<Rgb>(() => {
+    const raw = searchParams.get("hex");
+    if (raw) {
+      const parsed = parseHex(`#${raw}`);
+      if (parsed) return parsed;
+    }
+    return { r: 255, g: 122, b: 102 };
+  });
+  const [cctInput, setCctInput] = useState(() => searchParams.get("cct") ?? "");
+  const [cctIntensity, setCctIntensity] = useState(() => {
+    const raw = searchParams.get("intensity");
+    const parsed = raw ? parseInt(raw, 10) : NaN;
+    return Number.isFinite(parsed) ? Math.min(100, Math.max(0, parsed)) : 100;
+  });
+
+  const syncRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncUrl = useCallback(
+    (
+      hex: string,
+      type: FixtureType,
+      mode: InputMode,
+      cct: string,
+      intensity: number,
+    ) => {
+      if (syncRef.current) clearTimeout(syncRef.current);
+      syncRef.current = setTimeout(() => {
+        const params = new URLSearchParams({ type });
+        if (mode === "cct") {
+          params.set("mode", "cct");
+          if (cct.trim()) params.set("cct", cct.trim());
+          params.set("intensity", String(intensity));
+        } else if (mode === "wheel") {
+          params.set("mode", "wheel");
+          params.set("hex", hex.replace(/^#/, "").toLowerCase());
+        } else {
+          params.set("hex", hex.replace(/^#/, "").toLowerCase());
+        }
+        router.replace(`?${params.toString()}`, { scroll: false });
+      }, 300);
+    },
+    [router],
+  );
   const [optimizeWhites, setOptimizeWhites] = useState(true);
   const [limitWhite, setLimitWhite] = useState(true);
   const [rgbOnly, setRgbOnly] = useState(false);
@@ -189,32 +245,42 @@ export function DmxColorTool() {
     const parsed = parseHex(value);
     if (parsed) {
       setRgb(parsed);
+      syncUrl(rgbToHex(parsed), fixtureType, inputMode, cctInput, cctIntensity);
     }
   };
 
   const handleHexCommit = () => {
     const parsed = parseHex(hexInput);
     if (parsed) {
-      setHexInput(rgbToHex(parsed));
+      const canonical = rgbToHex(parsed);
+      setHexInput(canonical);
+      syncUrl(canonical, fixtureType, inputMode, cctInput, cctIntensity);
     }
   };
 
   const updateChannel = (channel: keyof Rgb, value: number) => {
     const next = { ...rgb, [channel]: clampChannel(value) };
     setRgb(next);
-    setHexInput(rgbToHex(next));
+    const hex = rgbToHex(next);
+    setHexInput(hex);
+    syncUrl(hex, fixtureType, inputMode, cctInput, cctIntensity);
   };
 
-  const updateFromPicker = useCallback((value: number[]) => {
-    const [r, g, b] = value;
-    const next = {
-      r: clampChannel(r),
-      g: clampChannel(g),
-      b: clampChannel(b),
-    };
-    setRgb(next);
-    setHexInput(rgbToHex(next));
-  }, []);
+  const updateFromPicker = useCallback(
+    (value: number[]) => {
+      const [r, g, b] = value;
+      const next = {
+        r: clampChannel(r),
+        g: clampChannel(g),
+        b: clampChannel(b),
+      };
+      setRgb(next);
+      const hex = rgbToHex(next);
+      setHexInput(hex);
+      syncUrl(hex, fixtureType, inputMode, cctInput, cctIntensity);
+    },
+    [fixtureType, inputMode, cctInput, cctIntensity, syncUrl],
+  );
 
   const output = useMemo(() => {
     const intensity = clamp(cctIntensity / 100);
@@ -385,7 +451,30 @@ export function DmxColorTool() {
   const whiteLimitDisabled = optimizationDisabled;
   const showRgbOnly = (supportsWhite || supportsWwCw || supportsAmber) && inputMode !== "cct";
 
+  const handleFixtureTypeChange = (value: string) => {
+    const next = value as FixtureType;
+    setFixtureType(next);
+    syncUrl(hexInput, next, inputMode, cctInput, cctIntensity);
+  };
+
+  const handleInputModeChange = (value: string) => {
+    const next = value as InputMode;
+    setInputMode(next);
+    syncUrl(hexInput, fixtureType, next, cctInput, cctIntensity);
+  };
+
+  const handleCctChange = (value: string) => {
+    setCctInput(value);
+    syncUrl(hexInput, fixtureType, inputMode, value, cctIntensity);
+  };
+
+  const handleCctIntensityChange = (value: number) => {
+    setCctIntensity(value);
+    syncUrl(hexInput, fixtureType, inputMode, cctInput, value);
+  };
+
   return (
+    <div className="space-y-8">
     <SectionCard>
       <div className="space-y-6">
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -393,7 +482,7 @@ export function DmxColorTool() {
             <p className="text-title text-foreground">{tool.inputs.title}</p>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-foreground">{tool.inputs.modeLabel}</p>
-              <RadioGroup value={inputMode} onValueChange={(value) => setInputMode(value as InputMode)}>
+              <RadioGroup value={inputMode} onValueChange={handleInputModeChange}>
                 <label className="flex items-center gap-2 text-sm text-muted-foreground">
                   <RadioGroupItem value="hexRgb" />
                   {tool.inputs.modes.hexRgb}
@@ -478,7 +567,7 @@ export function DmxColorTool() {
                     min={1800}
                     max={10000}
                     value={cctInput}
-                    onChange={(event) => setCctInput(event.target.value)}
+                    onChange={(event) => handleCctChange(event.target.value)}
                     placeholder="e.g. 3200"
                   />
                   <p className="text-xs text-muted-foreground">{tool.inputs.cctHelp}</p>
@@ -492,7 +581,7 @@ export function DmxColorTool() {
                       min={0}
                       max={100}
                       value={cctIntensity}
-                      onChange={(event) => setCctIntensity(Number(event.target.value))}
+                      onChange={(event) => handleCctIntensityChange(Number(event.target.value))}
                       className="w-full"
                     />
                     <Input
@@ -500,7 +589,7 @@ export function DmxColorTool() {
                       min={0}
                       max={100}
                       value={cctIntensity}
-                      onChange={(event) => setCctIntensity(Number(event.target.value))}
+                      onChange={(event) => handleCctIntensityChange(Number(event.target.value))}
                       className="w-24"
                     />
                   </div>
@@ -514,7 +603,7 @@ export function DmxColorTool() {
             <p className="text-title text-foreground">{tool.options.title}</p>
             <div className="space-y-2">
               <Label htmlFor="dmx-color-fixture">{tool.options.fixtureType}</Label>
-              <Select value={fixtureType} onValueChange={(value) => setFixtureType(value as FixtureType)}>
+              <Select value={fixtureType} onValueChange={handleFixtureTypeChange}>
                 <SelectTrigger id="dmx-color-fixture" className="w-full">
                   <SelectValue placeholder={tool.options.fixturePlaceholder} />
                 </SelectTrigger>
@@ -652,5 +741,8 @@ export function DmxColorTool() {
         </div>
       </div>
     </SectionCard>
+
+    <ShareToolButton />
+    </div>
   );
 }

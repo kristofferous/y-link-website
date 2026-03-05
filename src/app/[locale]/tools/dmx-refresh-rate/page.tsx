@@ -1,63 +1,56 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ToolPage } from "@/components/ToolPage";
-import { LightingPowerTool } from "@/components/tools/LightingPowerTool";
+import { DmxRefreshRateTool } from "@/components/tools/DmxRefreshRateTool";
 import { SectionCard } from "@/components/SectionCard";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { absoluteUrl, defaultOgImage } from "@/lib/seo";
 
-type LightingPowerPageProps = {
+type Props = {
   params: Promise<{ locale: AppLocale }>;
 };
 
-export async function generateMetadata({ params }: LightingPowerPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
-  const canonicalPath = prefixLocale(locale, "/tools/lighting-power-load");
+  const canonicalPath = prefixLocale(locale, "/tools/dmx-refresh-rate");
   const ogAlt = dictionary.meta?.ogAlt ?? "Y-Link";
 
   return {
-    title: dictionary.tools.lightingPower.metadata.title,
-    description: dictionary.tools.lightingPower.metadata.description,
+    title: dictionary.tools.dmxRefreshRate.metadata.title,
+    description: dictionary.tools.dmxRefreshRate.metadata.description,
     alternates: {
       canonical: canonicalPath,
       languages: {
-        "nb-NO": prefixLocale("nb", "/tools/lighting-power-load"),
-        "en-US": prefixLocale("en", "/tools/lighting-power-load"),
+        "nb-NO": prefixLocale("nb", "/tools/dmx-refresh-rate"),
+        "en-US": prefixLocale("en", "/tools/dmx-refresh-rate"),
       },
     },
     openGraph: {
-      title: dictionary.tools.lightingPower.metadata.title,
-      description: dictionary.tools.lightingPower.metadata.description,
+      title: dictionary.tools.dmxRefreshRate.metadata.title,
+      description: dictionary.tools.dmxRefreshRate.metadata.description,
       url: absoluteUrl(canonicalPath),
-      images: [
-        {
-          url: defaultOgImage,
-          width: 1200,
-          height: 630,
-          alt: ogAlt,
-        },
-      ],
+      images: [{ url: defaultOgImage, width: 1200, height: 630, alt: ogAlt }],
     },
     twitter: {
       card: "summary_large_image",
-      title: dictionary.tools.lightingPower.metadata.title,
-      description: dictionary.tools.lightingPower.metadata.description,
+      title: dictionary.tools.dmxRefreshRate.metadata.title,
+      description: dictionary.tools.dmxRefreshRate.metadata.description,
       images: [defaultOgImage],
     },
   };
 }
 
-export default async function LightingPowerPage({ params }: LightingPowerPageProps) {
+export default async function DmxRefreshRatePage({ params }: Props) {
   const { locale: localeParam } = await params;
   const locale = normalizeLocale(localeParam);
   const dictionary = await getDictionary(locale);
   const lang = getLanguageTag(locale);
   const { tools, navigation } = dictionary;
-  const tool = tools.lightingPower;
+  const tool = tools.dmxRefreshRate;
 
   const howToSchema = {
     "@context": "https://schema.org",
@@ -84,12 +77,14 @@ export default async function LightingPowerPage({ params }: LightingPowerPagePro
       description={tool.metadata.description}
       intro={tool.intro.eyebrow}
       breadcrumbs={breadcrumbs}
-      canonicalPath={prefixLocale(locale, "/tools/lighting-power-load")}
+      canonicalPath={prefixLocale(locale, "/tools/dmx-refresh-rate")}
       structuredData={howToSchema}
     >
       <ToolIntro title={tool.intro.title} body={tool.intro.body} />
       <ToolHowTo title={tool.howTo.title} steps={tool.howTo.steps} />
-      <Suspense><LightingPowerTool /></Suspense>
+      <Suspense>
+        <DmxRefreshRateTool />
+      </Suspense>
       <ToolDetails data={tool.details} />
     </ToolPage>
   );

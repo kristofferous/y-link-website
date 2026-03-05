@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxColorTool } from "@/components/tools/DmxColorTool";
@@ -115,7 +116,7 @@ export default async function DmxColorPage({ params }: DmxColorPageProps) {
     >
       <ToolIntro title={tool.intro.title} body={tool.intro.body} />
       <ToolHowTo title={tool.howTo.title} steps={tool.howTo.steps} />
-      <DmxColorTool />
+      <Suspense><DmxColorTool /></Suspense>
       <ToolFaq title={tool.faq.title} items={tool.faq.items} />
       <ToolDetails data={tool.details} />
     </ToolPage>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxAddressPlannerTool } from "@/components/tools/DmxAddressPlannerTool";
@@ -141,7 +142,7 @@ export default async function DmxAddressPlannerPage({ params }: DmxAddressPlanne
     >
       <ToolIntro title={tool.intro.title} body={tool.intro.body} />
       <ToolHowTo title={tool.howTo.title} steps={tool.howTo.steps} />
-      <DmxAddressPlannerTool />
+      <Suspense><DmxAddressPlannerTool /></Suspense>
       <ToolFaq title={tool.faq.title} items={tool.faq.items} />
       <ToolDetails data={tool.details} />
     </ToolPage>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxPatchSheetTool } from "@/components/tools/DmxPatchSheetTool";
@@ -168,7 +169,7 @@ export default async function DmxPatchSheetPage({ params }: DmxPatchSheetPagePro
     >
       <ToolIntro data={tool.intro} />
       <ToolHowTo data={tool.howTo} />
-      <DmxPatchSheetTool />
+      <Suspense><DmxPatchSheetTool /></Suspense>
       <ToolAddressNote data={tool.addressNote} />
       <ToolFaq data={tool.faq} />
       <ToolLimitations data={tool.limitations} />

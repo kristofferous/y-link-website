@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxCapacityTool } from "@/components/tools/DmxCapacityTool";
@@ -140,7 +141,7 @@ export default async function DmxCapacityPage({ params }: DmxCapacityPageProps) 
     >
       <ToolIntro title={tool.intro.title} body={tool.intro.body} />
       <ToolHowTo title={tool.howTo.title} steps={tool.howTo.steps} />
-      <DmxCapacityTool />
+      <Suspense><DmxCapacityTool /></Suspense>
       <ToolFaq title={tool.faq.title} items={tool.faq.items} />
       <ToolDetails data={tool.details} />
     </ToolPage>

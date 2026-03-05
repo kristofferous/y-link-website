@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ToolPage } from "@/components/ToolPage";
 import { DmxDipSwitchTool } from "@/components/tools/DmxDipSwitchTool";
 import { SectionCard } from "@/components/SectionCard";
@@ -88,7 +89,7 @@ export default async function DmxDipPage({ params }: DmxDipPageProps) {
     >
       <ToolIntro title={tool.intro.title} body={tool.intro.body} />
       <ToolHowTo title={tool.howTo.title} steps={tool.howTo.steps} />
-      <DmxDipSwitchTool />
+      <Suspense><DmxDipSwitchTool /></Suspense>
       <ToolDetails data={tool.details} />
     </ToolPage>
   );
