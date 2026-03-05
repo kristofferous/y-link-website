@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackUseSystemTlsCerts: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "y-link.no" }],
+        destination: "https://www.y-link.no/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

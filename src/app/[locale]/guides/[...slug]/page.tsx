@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { GuideArticle } from "@/components/GuideArticle";
+import { StructuredData } from "@/components/StructuredData";
 import {
   fetchGuideBySlug,
   fetchGuideBySlugAllStatuses,
@@ -19,8 +20,9 @@ import {
 } from "@/lib/blogGuides";
 import { buildDescription } from "@/lib/contentUtils";
 import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/config";
+import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
-import { absoluteUrl, defaultOgImage } from "@/lib/seo";
+import { absoluteUrl, articleSchema, defaultOgImage } from "@/lib/seo";
 import { getSessionFromCookie } from "@/lib/session";
 
 type PageProps = { params: Promise<{ locale: AppLocale; slug?: string[] }> };
@@ -210,6 +212,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
     );
   }
 
+  const lang = getLanguageTag(locale);
   const label = dictionary.guides.articleLabel ?? "Guide";
   const tags = await fetchPostTags(resolved.post.post.id);
   const cluster = tags[0]
@@ -245,10 +248,26 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
     ? await fetchGuideNavItem(locale, resolved.post.post.next_guide_id)
     : null;
 
+  const guidePost = resolved.post;
+  const guideImage = guidePost.post.featured_image_url ? absoluteUrl(guidePost.post.featured_image_url) : defaultOgImage;
+  const guideAuthor = guidePost.post.author?.full_name ?? guidePost.post.author_name ?? null;
+  const guideStructuredData = articleSchema({
+    title: guidePost.translation.seo_title ?? guidePost.translation.title,
+    description: guidePost.translation.seo_description ?? buildDescription(guidePost.translation.summary, guidePost.translation.content_html),
+    url: absoluteUrl(prefixLocale(locale, currentPath)),
+    imageUrl: guideImage,
+    datePublished: guidePost.post.published_at,
+    dateModified: guidePost.post.updated_at ?? guidePost.post.published_at,
+    authorName: guideAuthor,
+    language: lang,
+  });
+
   return (
-    <GuideArticle
-      locale={locale}
-      post={resolved.post}
+    <>
+      <StructuredData data={guideStructuredData} />
+      <GuideArticle
+        locale={locale}
+        post={resolved.post}
       label={label}
       tags={tags}
       relatedCluster={cluster ? { tag: cluster.tag, slug: cluster.slug, items: cluster.items } : undefined}
@@ -272,6 +291,7 @@ export default async function GuideCatchAllPage({ params }: PageProps) {
             }
           : undefined
       }
-    />
+      />
+    </>
   );
 }

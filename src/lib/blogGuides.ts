@@ -16,6 +16,7 @@ type BlogPostRow = {
   category: "blog" | "guide";
   status: "draft" | "published" | "scheduled";
   published_at: string | null;
+  updated_at: string | null;
   scheduled_at: string | null;
   reading_time: string | null;
   takeaway: string | null;
@@ -357,6 +358,7 @@ const fetchBlogPostBySlugCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -416,6 +418,7 @@ const fetchBlogPostBySlugAllStatusesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -475,6 +478,7 @@ const fetchGuideBySlugCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -535,6 +539,7 @@ const fetchGuideBySlugAllStatusesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -611,6 +616,7 @@ const fetchGuideInSeriesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -675,6 +681,7 @@ const fetchGuideInSeriesAllStatusesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -739,6 +746,7 @@ const fetchGuidesForSeriesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -811,6 +819,7 @@ const fetchGuidesForSeriesAllStatusesCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -906,6 +915,7 @@ const fetchBlogListCached = unstable_cache(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -993,6 +1003,7 @@ export async function fetchBlogListAllStatuses(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -1163,6 +1174,7 @@ export async function fetchGuideListAllStatuses(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,
@@ -1384,6 +1396,7 @@ export async function fetchTagClusterByTag(
       category,
       status,
       published_at,
+      updated_at,
       scheduled_at,
       reading_time,
       takeaway,

@@ -55,6 +55,93 @@ export function organizationSchema(language: string) {
   };
 }
 
+export function articleSchema({
+  title,
+  description,
+  url,
+  imageUrl,
+  datePublished,
+  dateModified,
+  authorName,
+  language,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  imageUrl: string;
+  datePublished: string | null;
+  dateModified: string | null;
+  authorName: string | null;
+  language: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url,
+    image: imageUrl,
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: {
+      "@type": "Person",
+      name: authorName ?? "Y-Link",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Y-Link",
+      url: siteUrl,
+      logo: `${siteUrl}/favicon.ico`,
+    },
+    inLanguage: language,
+  };
+}
+
+export function newsArticleSchema({
+  title,
+  description,
+  url,
+  imageUrl,
+  datePublished,
+  dateModified,
+  authorName,
+  language,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  imageUrl: string;
+  datePublished: string | null;
+  dateModified: string | null;
+  authorName: string | null;
+  language: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: title,
+    description,
+    url,
+    image: imageUrl,
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: {
+      "@type": "Person",
+      name: authorName ?? "Y-Link",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Y-Link",
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/favicon.ico`,
+      },
+    },
+    inLanguage: language,
+  };
+}
+
 export function websiteSchema(language: string) {
   return {
     "@context": "https://schema.org",

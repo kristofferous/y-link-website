@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { StructuredData } from "@/components/StructuredData";
 import {
   clusterSlugFromTag,
   fetchBlogPostBySlug,
@@ -15,7 +16,7 @@ import { getDictionary, normalizeLocale, type AppLocale } from "@/lib/i18n/confi
 import { getLanguageTag } from "@/lib/i18n/translator";
 import { prefixLocale } from "@/lib/i18n/routing";
 import { buildDescription, normalizeArticleHeadings } from "@/lib/contentUtils";
-import { absoluteUrl, defaultOgImage } from "@/lib/seo";
+import { absoluteUrl, articleSchema, defaultOgImage, newsArticleSchema } from "@/lib/seo";
 import { getSessionFromCookie } from "@/lib/session";
 
 type PageProps = { params: Promise<{ locale: AppLocale; slug: string }> };
@@ -110,9 +111,24 @@ export default async function BlogPostPage({ params }: PageProps) {
   const label = dictionary.blog?.breadcrumb ?? "Blog";
   const authorName = post.post.author?.full_name ?? post.post.author_name;
   const authorAvatar = post.post.author?.avatar_url ?? null;
+  const lang = getLanguageTag(locale);
+  const image = post.post.featured_image_url ? absoluteUrl(post.post.featured_image_url) : defaultOgImage;
+  const isNewsPost = tags.some((t) => t.toLowerCase().includes("news")) || post.translation.slug.includes("-news-");
+  const schemaBuilder = isNewsPost ? newsArticleSchema : articleSchema;
+  const articleStructuredData = schemaBuilder({
+    title: post.translation.seo_title ?? post.translation.title,
+    description: post.translation.seo_description ?? buildDescription(post.translation.summary, post.translation.content_html),
+    url: absoluteUrl(prefixLocale(locale, `/blog/${post.translation.slug}`)),
+    imageUrl: image,
+    datePublished: post.post.published_at,
+    dateModified: post.post.updated_at ?? post.post.published_at,
+    authorName: authorName ?? null,
+    language: lang,
+  });
 
   return (
     <main>
+      <StructuredData data={articleStructuredData} />
       <section className="section-spacing pb-8 md:pb-12 lg:pb-16">
         <div className="container-custom">
           <Breadcrumbs
