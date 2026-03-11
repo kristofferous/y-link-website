@@ -8,7 +8,9 @@
       "Bash(node:*)",
       "mcp__supabase__execute_sql",
       "mcp__claude_ai_Supabase__list_projects",
-      "mcp__claude_ai_Supabase__execute_sql"
+      "mcp__claude_ai_Supabase__execute_sql",
+      "WebFetch(domain:www.y-link.no)",
+      "WebSearch"
     ]
   },
   "enableAllProjectMcpServers": true,

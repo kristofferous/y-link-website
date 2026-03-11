@@ -1099,6 +1099,24 @@
         "description": "Beregn DMX-rammetid, maks oppdateringsfrekvens (FPS) og forsinkelse fra antall kanaler og timingparametere.",
         "href": "/tools/dmx-refresh-rate",
         "tag": "Gratis verktøy"
+      },
+      {
+        "title": "Strålingsvinkel og kasteavstandskalkulator",
+        "description": "Beregn strålediam og dekningsareal fra kasteavstand og strålingsvinkel, eller finn minste vinkel som treffer ønsket flekk.",
+        "href": "/tools/beam-angle-throw",
+        "tag": "Gratis verktøy"
+      },
+      {
+        "title": "Spenningsfall-kalkulator for scenelys",
+        "description": "Beregn kabelspenningsfall, sluttspenning og fallprosent for kobber- eller aluminiumskabler i AWG eller mm².",
+        "href": "/tools/voltage-drop",
+        "tag": "Gratis verktøy"
+      },
+      {
+        "title": "Kelvin til RGB og DMX-konverter",
+        "description": "Konverter en fargetemperatur (1000–10000 K) til sRGB, HEX og DMX-kanalverdier for RGB-, RGBW- og RGBWW/CW-armaturer.",
+        "href": "/tools/kelvin-to-dmx",
+        "tag": "Gratis verktøy"
       }
     ],
     "dmxDip": {
@@ -1819,6 +1837,231 @@
           {
             "title": "Flimmergrense",
             "body": "Bevegelige lys og LED-armaturer krever vanligvis 30 FPS eller mer for jevn, flimmerfri drift. Stroboskoper og pikselkartlegging kan kreve høyere frekvens."
+          }
+        ]
+      }
+    },
+    "beamAngle": {
+      "metadata": {
+        "title": "Strålingsvinkel og kasteavstandskalkulator",
+        "description": "Beregn strålediam og dekningsareal fra kasteavstand og strålingsvinkel, eller finn minste strålingsvinkel for en ønsket flekkstørrelse."
+      },
+      "breadcrumb": "Strålevinkelkalkulator",
+      "intro": {
+        "eyebrow": "Lysverktøy",
+        "title": "Beregn strålebredde og kasteavstand",
+        "body": "Skriv inn kasteavstand og strålingsvinkel for å beregne strålediam og dekningsareal — eller regn bakover for å finne minimumsvinkelen du trenger."
+      },
+      "howTo": {
+        "title": "Slik bruker du kalkulatoren",
+        "steps": [
+          "Velg Fremover-modus for å beregne strålediam fra kasteavstand og vinkel.",
+          "Velg Bakover-modus for å finne nødvendig strålingsvinkel for en ønsket diameter.",
+          "Slå på halvvinkel-modus hvis armaturspesifikasjonen bruker halvvinkel.",
+          "Bytt mellom meter og fot ved behov."
+        ]
+      },
+      "tool": {
+        "modeLabel": "Modus",
+        "modes": {
+          "forward": "Fremover — diameter fra avstand + vinkel",
+          "reverse": "Bakover — vinkel fra avstand + målstørrelse"
+        },
+        "angleType": "Vinkeltype",
+        "angleTypes": {
+          "full": "Full strålingsvinkel",
+          "half": "Halvvinkel (feltvinkel)"
+        },
+        "unit": "Enhet",
+        "units": {
+          "m": "Meter (m)",
+          "ft": "Fot (ft)"
+        },
+        "beamAngle": "Strålingsvinkel (°)",
+        "beamAngleHelp": "Full åpningsvinkel på strålen.",
+        "throwDistance": "Kasteavstand",
+        "throwDistanceHelp": "Avstand fra armatur til overflate.",
+        "targetDiameter": "Måldiameter",
+        "targetDiameterHelp": "Ønsket flekkstørrelse på overflaten.",
+        "resultsTitle": "Resultater",
+        "beamDiameter": "Strålediam",
+        "coverageArea": "Dekningsareal",
+        "minAngle": "Minste full strålingsvinkel som kreves"
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "Full vinkel vs halvvinkel",
+            "body": "Produsenter oppgir strålingsvinkel enten som full åpningsvinkel eller halvvinkel (senter til kant). Velg type som passer armaturspesifikasjonen."
+          },
+          {
+            "title": "Kasteavstand",
+            "body": "Måles fra fremre linse til belyst overflate. Lengre kasteavstand krever smalere vinkel for stramme flekker."
+          },
+          {
+            "title": "Dekningsareal",
+            "body": "Forutsetter sirkulær stråle. Vinklet kast gir elliptisk flekk — legg til korreksjonsfaktor ved bratte vinkler."
+          },
+          {
+            "title": "Bakover-modus",
+            "body": "Nyttig når du kjenner flekkstørrelse og avstand og trenger å velge riktig armatur eller optikk."
+          }
+        ]
+      }
+    },
+    "voltageDrop": {
+      "metadata": {
+        "title": "Spenningsfall-kalkulator for scenelys",
+        "description": "Beregn kabelspenningsfall, sluttspenning og fallprosent for kobber- eller aluminiumskabler i AWG eller mm². Inkluderer OK/advarsel/fare-grenser."
+      },
+      "breadcrumb": "Spenningsfallkalkulator",
+      "intro": {
+        "eyebrow": "Lysverktøy",
+        "title": "Sjekk kabelspenningsfall før innlasting",
+        "body": "Skriv inn forsyningsspenning, strøm, kabellengde og ledertverrsnitt for å se spenningsfallet i kabelen og spenningen som ankommer armaturet."
+      },
+      "howTo": {
+        "title": "Slik bruker du kalkulatoren",
+        "steps": [
+          "Skriv inn forsyningsspenning og laststrøm.",
+          "Skriv inn kabellengde og velg meter eller fot.",
+          "Velg enveis- eller rundturmåling.",
+          "Velg ledermateriale (kobber eller aluminium) og kalibreformat.",
+          "Les av spenningsfall, sluttspenning og OK/advarsel/fare-indikator."
+        ]
+      },
+      "tool": {
+        "supplyVoltage": "Forsyningsspenning (V)",
+        "current": "Strøm (A)",
+        "cableLength": "Kabellengde",
+        "unit": "Enhet",
+        "units": {
+          "m": "Meter (m)",
+          "ft": "Fot (ft)"
+        },
+        "lengthMode": "Lengdemåling",
+        "lengthModes": {
+          "oneWay": "Enveis (verktøyet dobler for rundtur)",
+          "roundTrip": "Rundtur (total lederlengde)"
+        },
+        "material": "Ledermateriale",
+        "materials": {
+          "cu": "Kobber (Cu)",
+          "al": "Aluminium (Al)"
+        },
+        "gaugeFormat": "Kalibreformat",
+        "gaugeFormats": {
+          "awg": "AWG",
+          "mm2": "mm²"
+        },
+        "gauge": "Lederkaliber",
+        "resultsTitle": "Resultater",
+        "voltageDrop": "Spenningsfall",
+        "dropPercent": "Fall (%)",
+        "endVoltage": "Spenning ved armatur",
+        "status": {
+          "ok": "OK — under 3 %",
+          "warning": "Advarsel — 3–5 % fall",
+          "danger": "Høyt fall — over 5 %"
+        }
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "3 %-grensen",
+            "body": "Et fall over 3 % er merkbart på dimmere og kan påvirke fargen på LED-armaturer. Hold lange løp under 3 % for pålitelige resultater."
+          },
+          {
+            "title": "Enveis vs rundtur",
+            "body": "Strøm går til armaturet og tilbake gjennom returlederen. Oppgi enveis-lengde og la verktøyet doble det, eller skriv inn total kabellengde direkte."
+          },
+          {
+            "title": "Kobber vs aluminium",
+            "body": "Aluminium har ca. 64 % av kobbrets ledningsevne. Bruk større tverrsnitt for å kompensere for høyere motstand."
+          },
+          {
+            "title": "AWG og mm²",
+            "body": "AWG-størrelser er kartlagt til standard tverrsnitt. mm²-størrelser følger IEC-kabelstandarder."
+          }
+        ]
+      }
+    },
+    "kelvinToDmx": {
+      "metadata": {
+        "title": "Kelvin til RGB og DMX-konverter",
+        "description": "Konverter en fargetemperatur (1000–10000 K) til sRGB, HEX og DMX-kanalverdier for RGB-, RGBW- og RGBWW/CW-armaturer."
+      },
+      "breadcrumb": "Kelvin til DMX",
+      "intro": {
+        "eyebrow": "Lysverktøy",
+        "title": "Konverter Kelvin til RGB og DMX-verdier",
+        "body": "Velg en fargetemperatur og få tilsvarende sRGB-verdier, HEX-kode og DMX-kanalverdier for din armaturtype."
+      },
+      "howTo": {
+        "title": "Slik bruker du konverteren",
+        "steps": [
+          "Dra slideren eller skriv inn en Kelvin-verdi (1000–10000 K).",
+          "Velg armaturtype: RGB, RGBW eller RGBWW/CW.",
+          "Les av farge-forhåndsvisning og beskrivelse for valgt temperatur.",
+          "Kopier DMX-kanalverdiene for hver kanal."
+        ]
+      },
+      "tool": {
+        "kelvinLabel": "Fargetemperatur (K)",
+        "kelvinHelp": "1000 K = dypt rav, 10000 K = kjølig blå himmel.",
+        "fixtureType": "Armaturtype",
+        "fixtureTypes": {
+          "rgb": "RGB",
+          "rgbw": "RGBW",
+          "rgbwwcw": "RGB + Varm hvit + Kald hvit"
+        },
+        "swatchLabel": "Fargeforhåndsvisning",
+        "descriptionLabel": "Beskrivelse",
+        "resultsTitle": "DMX-kanalverdier",
+        "channel": "Kanal",
+        "dmxValue": "DMX (0–255)",
+        "channels": {
+          "r": "Rød (R)",
+          "g": "Grønn (G)",
+          "b": "Blå (B)",
+          "w": "Hvit (W)",
+          "ww": "Varm hvit (WW)",
+          "cw": "Kald hvit (CW)"
+        },
+        "descriptions": {
+          "candlelight": "Stearinlys — veldig varmt rav",
+          "lateGolden": "Sen gyllen time — dypt varmt rav",
+          "earlyGolden": "Tidlig gyllen time — varmt rav",
+          "tungsten": "Glødepære / halogen — varm hvit",
+          "warmWhite": "Varm hvit — typisk innendørs",
+          "neutralWarm": "Nøytral varm — fotografisk glødelampe",
+          "neutralWhite": "Nøytral hvit — studiostandard",
+          "coolWhite": "Kald hvit — overskyet dagslys",
+          "daylight": "Dagslys — middagssol",
+          "coolDaylight": "Kjølig dagslys — klar blå himmel",
+          "overcastSky": "Kjølig overskyet himmel"
+        }
+      },
+      "details": {
+        "title": "Notater",
+        "sections": [
+          {
+            "title": "Fargetemperatur og lyskvalitet",
+            "body": "Lavere Kelvin-verdier gir varme ravtoner. Høyere verdier gir kjølig blåhvitt lys. Standard glødelampe er 3200 K; dagslys er ca. 5600 K."
+          },
+          {
+            "title": "RGBW hvitkanal",
+            "body": "For RGBW-armaturer flyttes en del av lyset til hvit-LED for høyere effektivitet og bedre nøyaktighet ved nær-hvite temperaturer."
+          },
+          {
+            "title": "Varm hvit / kald hvit-blanding",
+            "body": "RGBWW/CW-armaturer blander varm (2700 K) og kald (6500 K) hvit-LED ved hjelp av mired-interpolasjon for nøyaktig fargetemperaturkontroll."
+          },
+          {
+            "title": "RGB-tilnærming",
+            "body": "Rene RGB-armaturer tilnærmer fargetemperatur gjennom kanalblanding. Nøyaktigheten er begrenset sammenlignet med dedikerte hvitkanaler."
           }
         ]
       }

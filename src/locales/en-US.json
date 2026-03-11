@@ -1099,6 +1099,24 @@
         "description": "Calculate DMX frame time, max refresh rate (FPS), and latency from slot count and timing parameters.",
         "href": "/tools/dmx-refresh-rate",
         "tag": "Free tool"
+      },
+      {
+        "title": "Beam Angle & Throw Distance Calculator",
+        "description": "Calculate beam diameter and coverage area from throw distance and beam angle, or find the minimum angle needed to hit a target size.",
+        "href": "/tools/beam-angle-throw",
+        "tag": "Free tool"
+      },
+      {
+        "title": "Voltage Drop Calculator for Stage Lighting",
+        "description": "Calculate cable voltage drop, end voltage, and drop percentage for copper or aluminium conductors in AWG or mm².",
+        "href": "/tools/voltage-drop",
+        "tag": "Free tool"
+      },
+      {
+        "title": "Kelvin to RGB & DMX Converter",
+        "description": "Convert a color temperature (1000–10000 K) to sRGB, HEX, and DMX channel values for RGB, RGBW, and RGBWW/CW fixtures.",
+        "href": "/tools/kelvin-to-dmx",
+        "tag": "Free tool"
       }
     ],
     "dmxColor": {
@@ -1819,6 +1837,231 @@
           {
             "title": "Flicker threshold",
             "body": "Moving lights and LED fixtures generally require 30 FPS or more for smooth, flicker-free operation. Strobes and pixel mapping may need higher rates."
+          }
+        ]
+      }
+    },
+    "beamAngle": {
+      "metadata": {
+        "title": "Beam Angle & Throw Distance Calculator",
+        "description": "Calculate beam diameter and coverage area from throw distance and beam angle, or find the minimum beam angle needed to hit a target diameter."
+      },
+      "breadcrumb": "Beam Angle Calculator",
+      "intro": {
+        "eyebrow": "Lighting Tool",
+        "title": "Calculate beam spread and throw distance",
+        "body": "Enter a throw distance and beam angle to get beam diameter and coverage area — or work in reverse to find the minimum angle needed for a target spot size."
+      },
+      "howTo": {
+        "title": "How to use the beam angle calculator",
+        "steps": [
+          "Choose Forward mode to calculate beam diameter from throw distance and angle.",
+          "Choose Reverse mode to find the required beam angle for a target diameter.",
+          "Toggle between full-angle and half-angle if your fixture spec uses field angle.",
+          "Switch between metres and feet as needed."
+        ]
+      },
+      "tool": {
+        "modeLabel": "Mode",
+        "modes": {
+          "forward": "Forward — diameter from distance + angle",
+          "reverse": "Reverse — angle from distance + target size"
+        },
+        "angleType": "Angle type",
+        "angleTypes": {
+          "full": "Full beam angle",
+          "half": "Half-angle (field angle)"
+        },
+        "unit": "Unit",
+        "units": {
+          "m": "Metres (m)",
+          "ft": "Feet (ft)"
+        },
+        "beamAngle": "Beam angle (°)",
+        "beamAngleHelp": "Full angle of the beam cone.",
+        "throwDistance": "Throw distance",
+        "throwDistanceHelp": "Distance from fixture to surface.",
+        "targetDiameter": "Target diameter",
+        "targetDiameterHelp": "Desired spot size on the surface.",
+        "resultsTitle": "Results",
+        "beamDiameter": "Beam diameter",
+        "coverageArea": "Coverage area",
+        "minAngle": "Minimum full beam angle needed"
+      },
+      "details": {
+        "title": "Notes",
+        "sections": [
+          {
+            "title": "Full angle vs half-angle",
+            "body": "Manufacturers list beam angle as either the full cone (tip to tip) or the half-angle (centre to edge). Toggle the type to match your fixture spec."
+          },
+          {
+            "title": "Throw distance",
+            "body": "Measured from the front lens to the lit surface. Longer throws need narrower angles for tight spots."
+          },
+          {
+            "title": "Coverage area",
+            "body": "Assumes a circular beam footprint. Angled throws produce elliptical spots — add a correction factor for steep angles."
+          },
+          {
+            "title": "Reverse mode",
+            "body": "Useful when you know the surface size and distance and need to select the right fixture or attachment."
+          }
+        ]
+      }
+    },
+    "voltageDrop": {
+      "metadata": {
+        "title": "Voltage Drop Calculator for Stage Lighting",
+        "description": "Calculate cable voltage drop, end voltage, and drop percentage for copper or aluminium conductors in AWG or mm². Includes pass/warning/danger thresholds."
+      },
+      "breadcrumb": "Voltage Drop Calculator",
+      "intro": {
+        "eyebrow": "Lighting Tool",
+        "title": "Check cable voltage drop before load-in",
+        "body": "Enter supply voltage, current, cable length, and conductor size to see the voltage lost in the cable and the voltage arriving at the fixture."
+      },
+      "howTo": {
+        "title": "How to use the voltage drop calculator",
+        "steps": [
+          "Enter supply voltage and load current.",
+          "Enter cable length and select metres or feet.",
+          "Choose one-way or round-trip length measurement.",
+          "Select conductor material (copper or aluminium) and gauge format.",
+          "Read voltage drop, end voltage, and the pass/warning/danger indicator."
+        ]
+      },
+      "tool": {
+        "supplyVoltage": "Supply voltage (V)",
+        "current": "Current (A)",
+        "cableLength": "Cable length",
+        "unit": "Unit",
+        "units": {
+          "m": "Metres (m)",
+          "ft": "Feet (ft)"
+        },
+        "lengthMode": "Length measurement",
+        "lengthModes": {
+          "oneWay": "One-way (tool doubles for round-trip)",
+          "roundTrip": "Round-trip (total conductor length)"
+        },
+        "material": "Conductor material",
+        "materials": {
+          "cu": "Copper (Cu)",
+          "al": "Aluminium (Al)"
+        },
+        "gaugeFormat": "Gauge format",
+        "gaugeFormats": {
+          "awg": "AWG",
+          "mm2": "mm²"
+        },
+        "gauge": "Conductor gauge",
+        "resultsTitle": "Results",
+        "voltageDrop": "Voltage drop",
+        "dropPercent": "Drop (%)",
+        "endVoltage": "Voltage at fixture",
+        "status": {
+          "ok": "OK — within 3%",
+          "warning": "Warning — 3–5% drop",
+          "danger": "High drop — above 5%"
+        }
+      },
+      "details": {
+        "title": "Notes",
+        "sections": [
+          {
+            "title": "3% threshold",
+            "body": "A drop above 3% is noticeable on dimmers and may affect colour on LED fixtures. Keep long runs under 3% for reliable results."
+          },
+          {
+            "title": "One-way vs round-trip",
+            "body": "Current travels to the fixture and back through the return conductor. Enter the one-way length and let the tool double it, or enter the total cable run directly."
+          },
+          {
+            "title": "Copper vs aluminium",
+            "body": "Aluminium has about 64% of copper's conductivity. Use a larger gauge to compensate for the higher resistivity."
+          },
+          {
+            "title": "AWG and mm²",
+            "body": "AWG sizes are mapped to standard cross-sectional areas. mm² sizes follow IEC cable standards."
+          }
+        ]
+      }
+    },
+    "kelvinToDmx": {
+      "metadata": {
+        "title": "Kelvin to RGB & DMX Converter",
+        "description": "Convert a color temperature (1000–10000 K) to sRGB, HEX, and DMX channel values for RGB, RGBW, and RGBWW/CW fixtures."
+      },
+      "breadcrumb": "Kelvin to DMX",
+      "intro": {
+        "eyebrow": "Lighting Tool",
+        "title": "Convert Kelvin to RGB and DMX values",
+        "body": "Dial in a color temperature and get the matching sRGB values, HEX code, and DMX channel values for your fixture type."
+      },
+      "howTo": {
+        "title": "How to use the Kelvin to DMX converter",
+        "steps": [
+          "Drag the slider or type a Kelvin value (1000–10000 K).",
+          "Select your fixture type: RGB, RGBW, or RGBWW/CW.",
+          "Read the color swatch and description for the selected temperature.",
+          "Copy the DMX channel values for each channel."
+        ]
+      },
+      "tool": {
+        "kelvinLabel": "Color temperature (K)",
+        "kelvinHelp": "1000 K = deep amber, 10000 K = cool blue sky.",
+        "fixtureType": "Fixture type",
+        "fixtureTypes": {
+          "rgb": "RGB",
+          "rgbw": "RGBW",
+          "rgbwwcw": "RGB + Warm White + Cool White"
+        },
+        "swatchLabel": "Color preview",
+        "descriptionLabel": "Description",
+        "resultsTitle": "DMX channel values",
+        "channel": "Channel",
+        "dmxValue": "DMX (0–255)",
+        "channels": {
+          "r": "Red (R)",
+          "g": "Green (G)",
+          "b": "Blue (B)",
+          "w": "White (W)",
+          "ww": "Warm White (WW)",
+          "cw": "Cool White (CW)"
+        },
+        "descriptions": {
+          "candlelight": "Candlelight — very warm amber",
+          "lateGolden": "Late golden hour — deep warm amber",
+          "earlyGolden": "Early golden hour — warm amber",
+          "tungsten": "Tungsten / halogen — warm white",
+          "warmWhite": "Warm white — typical indoor",
+          "neutralWarm": "Neutral warm — photography tungsten",
+          "neutralWhite": "Neutral white — studio standard",
+          "coolWhite": "Cool white — overcast daylight",
+          "daylight": "Daylight — noon sun",
+          "coolDaylight": "Cool daylight — clear blue sky",
+          "overcastSky": "Cool overcast sky"
+        }
+      },
+      "details": {
+        "title": "Notes",
+        "sections": [
+          {
+            "title": "Color temperature and light quality",
+            "body": "Lower Kelvin values produce warm amber tones. Higher values produce cool blue-white light. Standard tungsten is 3200 K; daylight is around 5600 K."
+          },
+          {
+            "title": "RGBW white channel",
+            "body": "For RGBW fixtures, a portion of the light is shifted to the white LED for higher efficiency and better accuracy at near-white temperatures."
+          },
+          {
+            "title": "Warm white / cool white mixing",
+            "body": "RGBWW/CW fixtures blend warm (2700 K) and cool (6500 K) white LEDs using mired-space interpolation for accurate colour temperature control."
+          },
+          {
+            "title": "RGB approximation",
+            "body": "Pure RGB fixtures approximate colour temperature through channel mixing. Accuracy is limited compared to dedicated white channels."
           }
         ]
       }
